@@ -18,7 +18,7 @@ Profile:
 * flying blind in climate change
 * information either too general or too technical
 * variable acceptance of anthropogenic global warming (mirrors general public)
-* climate science literacy very low
+* climate science literacy generally low
 
 Specific research questions:
 
