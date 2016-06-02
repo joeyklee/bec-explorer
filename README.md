@@ -1,5 +1,7 @@
 # BEC Explorer
 
+[![Join the chat at https://gitter.im/joeyklee/bec-explorer](https://badges.gitter.im/joeyklee/bec-explorer.svg)](https://gitter.im/joeyklee/bec-explorer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ![](assets/img/bec-10-beta.png)
 <center>Help us turn this, into something people can use to explore their environent </center>
 
