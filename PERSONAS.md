@@ -8,7 +8,7 @@ June 2, 2016
 
 ###User Group 1:  BEC practitioners
 
-*Priority: High*
+*Priority: Immediate*
 
 Profile:
 
@@ -17,7 +17,7 @@ Profile:
 * knowledge organized by BEC system
 * flying blind in climate change
 * information either too general or too technical
-* many are agnostic about anthropogenic global warming
+* variable acceptance of anthropogenic global warming (mirrors general public)
 * climate science literacy very low
 
 Specific research questions:
@@ -35,7 +35,7 @@ Broader impressionistic knowledge:
 
 ###User Group 2:  BEC students
 
-*Priority: High*
+*Priority: Immediate*
 
 Profile: 
 
@@ -53,7 +53,7 @@ Specific questions:
 
 ###User Group 3:  General public
 
-*Priority: Low*
+*Priority: Future*
 
 Profile:
 
