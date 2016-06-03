@@ -12,7 +12,8 @@ app.map = (function() {
         var params = {
             center: [53.979608, -124.066386],
             zoom: 5,
-            zoomControl: false
+            zoomControl: false,
+            attributionControl: false
         };
 
         // Initialize the map
@@ -52,5 +53,5 @@ app.map = (function() {
 window.addEventListener('DOMContentLoaded', function() {
     app.map.init();
     app.pages.init();
-    // app.drawings.init();
+    app.mapix.init();
 });

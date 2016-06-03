@@ -16,7 +16,7 @@ app.pages = (function() {
 
         $(".nav li a").click(function() {
         	// set the display of the map to none
-        	$('#cartodb-map').css("display", "none");
+        	$('#map-page').css("display", "none");
             // console.log($(this)[0].id);
             // get the name of the button clicked
             buttonName = $(this)[0].id;
@@ -37,6 +37,7 @@ app.pages = (function() {
     function init() {
         sayHello();
         displaySelectedPage();
+        // toggleSideBar();
     }
 
     return {

@@ -1,0 +1,76 @@
+var app = app || {};
+
+app.mapix = (function() {
+    // create empty el to take on attributes of the main el
+    var el = null
+
+
+
+    function sayHello() {
+        console.log("hi there");
+    }
+
+    function toggleSidebar() {
+        // add this function to jquery
+        (function($) {
+            $.fn.clickToggle = function(func1, func2) {
+                var funcs = [func1, func2];
+                this.data('toggleclicked', 0);
+                this.click(function() {
+                    var data = $(this).data();
+                    var tc = data.toggleclicked;
+                    $.proxy(funcs[tc], this)();
+                    data.toggleclicked = (tc + 1) % 2;
+                });
+                return this;
+            };
+        }(jQuery));
+
+        $('#sidebar-toggle-button').clickToggle(function() {
+                $("#sidebar").animate({
+                    "margin-left": "-400px"
+                }, 100);
+            },
+            function() {
+                $("#sidebar").animate({
+                    "margin-left": "0px"
+                }, 100);
+            });
+    }
+
+
+    function selectBecUnit() {
+        $(function() {
+            $(".dropdown-menu li a").click(function() {
+                $(".btn:first-child").text($(this).text());
+                $(".btn:first-child").val($(this).text());
+            });
+
+        });
+    }
+
+
+    function addImages(){
+        var imageList = ['image-1.jpg','image-3.JPG','image-5.JPG','image-2.jpg','image-4.jpg','image-6.jpg'];
+        
+        imageList.forEach(function(d){
+            var image = "images/"+d;
+
+            $("#photo-scroll").append('<div class="col-md-3 photo-thumb"><img src="'+image+'"></div>');
+
+        })
+    }
+
+    // init all the functions
+    function init() {
+        sayHello();
+        selectBecUnit();
+        toggleSidebar();
+        // addImages();
+
+    }
+
+    return {
+        init: init
+    }
+})();

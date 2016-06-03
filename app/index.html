@@ -16,8 +16,6 @@
     <!-- app styles -->
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
-<!-- map -->
-<div id='cartodb-map'></div>
 <!-- Fixed navbar -->
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="col-md-12">
@@ -40,10 +38,88 @@
         </div>
     </div>
 </nav>
+<!-- map -->
+<div id="map-page">
+    <div id='cartodb-map'></div>
+    <!-- bec unit selector -->
+    <div id="bec-unit-selector">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default" id="bec-unit-button">{{BEC UNIT}}</button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="bec-unit-dropdown">
+                <span class="caret"></span>
+                <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="#">{{BEC UNIT 1}}</a></li>
+                <li><a href="#">{{BEC UNIT 2}}</a></li>
+                <li><a href="#">{{BEC UNIT 3}}</a></li>
+                <li class="divider"></li>
+                <li><a href="#">{{BEC UNIT A}}</a></li>
+            </ul>
+        </div>
+    </div>
+    <!-- toggle sidebar -->
+    <div id="sidebar-toggle-button">
+        <div class="glyphicon glyphicon-chevron-right" id="sidebar-toggle-button-arrow"></div>
+    </div>
+    <!-- sidebar -->
+    <div id="sidebar" class="col-md-4">
+        <div id="sidebar-content">
+            <p>Legend</p>
+            <div class="row">
+                <div class="col-md-12" id="legend"></div>
+            </div>
+            <hr>
+            <h3 id="bec-area-name">{{BEC Area Name}}</h3>
+            <div class="row">
+                <div class="col-md-6 pull-left" id="chart-selector">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default" id="chart-select-button">{{Chart Type}}</button>
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="chart-select-dropdown">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#">{{Chart 3}}</a></li>
+                            <li><a href="#">{{Chart 3}}</a></li>
+                            <li><a href="#">{{Chart 3}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- uncomment below to get options button -->
+                <!-- <div id="chart-options" class="col-md-6 pull-right"> options</div> -->
+            </div>
+            <div class="row">
+                <div class="col-md-12" id="chart"></div>
+            </div>
+            <!-- next content area -->
+            <div class="row" id="chart-explanation">
+                <div class="col-md-12">
+                    <p>Lorem ipsum dolor sit amet, forensibus signiferumque in eum, eos ad regione denique eligendi, vim ad discere eleifend senserit. Et sea latine adipisci intellegebat, vis in case percipitur. Ne ridens euripidis necessitatibus sed, ius ex dictas omnium efficiantur. Pro vidisse vituperata ne, nec nusquam suavitate cu. Minimum insolens volutpat pri ex, no sed inermis tractatos instructior. Duo adhuc zril no, ut vivendo fierent electram pro, meis illud est ea. Est quaestio gloriatur in. Ex essent possim scripta pro. Cu quas aliquip nominati usu. Legere theophrastus sea ad, ei elit oportere adolescens eos. Ex mel modo possit, pri an augue commune. Te diam argumentum dissentiunt pro. Cum dicat molestie elaboraret te, indoctum splendide assentior ei nam. Forensibus mediocritatem pri id, possim albucius repudiare te qui. No tempor aperiam periculis mea</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End sidebar menu -->
+    <!-- Bottom Explore bar -->
+    <!-- <div id="explore-bar" class="container">
+        <div class="row">
+            <div class="col-md-12" id="photo-scroll">
+            
+                
+            </div>
+        </div>
+    </div>  -->
+    <!-- end explore bar -->
+
+</div>
+<!-- End map -->
 <!-- About page -->
 <div class="container static-page about">
     <h1>About the BEC Explorer</h1>
     <p>Lorem ipsum dolor sit amet, forensibus signiferumque in eum, eos ad regione denique eligendi, vim ad discere eleifend senserit. Et sea latine adipisci intellegebat, vis in case percipitur. Ne ridens euripidis necessitatibus sed, ius ex dictas omnium efficiantur. Pro vidisse vituperata ne, nec nusquam suavitate cu. Minimum insolens volutpat pri ex, no sed inermis tractatos instructior. Duo adhuc zril no, ut vivendo fierent electram pro, meis illud est ea. Est quaestio gloriatur in. Ex essent possim scripta pro. Cu quas aliquip nominati usu. Legere theophrastus sea ad, ei elit oportere adolescens eos. Ex mel modo possit, pri an augue commune. Te diam argumentum dissentiunt pro. Cum dicat molestie elaboraret te, indoctum splendide assentior ei nam. Forensibus mediocritatem pri id, possim albucius repudiare te qui. No tempor aperiam periculis mea.</p>
+    <h3>data</h3>
+    <p>cartodb, mapbox, leaflet, openstreetmap contributors</p>
 </div>
 <!-- Current Research page -->
 <div class="container static-page current-research">
@@ -60,5 +136,6 @@
 </body>
 <script type="text/javascript" src="js/main.js"></script>
 <script type="text/javascript" src="js/pages.js"></script>
+<script type="text/javascript" src="js/mapix.js"></script>
 
 </html>
