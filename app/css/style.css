@@ -23,5 +23,5 @@ margin-left: -15px;
 	margin-top: 100px;
 }
 .about, .current-research, .contact{
-	display:hidden;
+	display:none;
 }
