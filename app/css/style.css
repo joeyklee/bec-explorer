@@ -1,18 +1,24 @@
-    html,
-    body {
-        width: 100%;
-        height: 100%;
-        padding: 0;
-        margin: 0;
-    }
-    
-    #cartodb-map {
-        width: 100%;
-        height: 100%;
-        background: black;
-    }
+html,
+body {
+width: 100%;
+height: 100%;
+padding: 0;
+margin: 0;
+}
 
+#cartodb-map {
+width: 100%;
+height: 100%;
+background: black;
+}
 /* nav header */
-.navbar-header{
-	margin-left: -15px;
-	}
+
+.navbar-header {
+margin-left: -15px;
+}
+
+/*static page*/
+.static-page{
+	display:hidden;
+	margin-top: 100px;
+}
