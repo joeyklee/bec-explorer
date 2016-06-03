@@ -19,6 +19,9 @@ margin-left: -15px;
 
 /*static page*/
 .static-page{
-	display:hidden;
+	
 	margin-top: 100px;
+}
+.about, .current-research, .contact{
+	display:hidden;
 }
