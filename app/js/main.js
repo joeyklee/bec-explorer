@@ -51,6 +51,6 @@ app.map = (function() {
 // call app.map.init() once the DOM is loaded
 window.addEventListener('DOMContentLoaded', function() {
     app.map.init();
-    // app.domix.init();
+    app.pages.init();
     // app.drawings.init();
 });
