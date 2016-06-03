@@ -1,0 +1,24 @@
+{
+  "name": "bec-explorer",
+  "version": "0.1.0",
+  "homepage": "https://github.com/joeyklee/bec-explorer",
+  "authors": [
+    "joeyklee <josephkanglee@gmail.com>"
+  ],
+  "description": "This repository is for building an interactive data viewer for the Biogeoclimate Ecosystem Classification (BEC) zones in North America",
+  "main": "index.html",
+  "moduleType": [],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.2.4",
+    "bootstrap": "~3.3.6"
+  }
+}
