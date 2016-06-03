@@ -1,6 +1,6 @@
 # Setup
 
-in order to run the app. Fire up your terimal:
+in order to run the app locally. Fire up your terimal:
 
 ```
 cd bec-explorer/app
