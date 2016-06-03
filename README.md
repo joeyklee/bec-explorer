@@ -11,6 +11,9 @@ The BEC Climate Explorer is a project to build an interactive data viewer for th
 ## Contributing
 see [Contributing Guidelines](CONTRIBUTING.md)
 
+## Run web app
+see [Setup](SETUP.md)
+
 ## Roadmap
 see [Roadmap](ROADMAP.md)
 
