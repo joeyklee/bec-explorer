@@ -43,7 +43,6 @@
 <!-- map -->
 <div id="map-page">
     <div id='cartodb-map'></div>
-    
     <!-- bec unit selector -->
     <div id="bec-unit-selector">
         <div class="btn-group">
@@ -60,24 +59,6 @@
                 <li><a href="#">{{BEC UNIT A}}</a></li>
             </ul>
         </div>
-
-        <div class="row">
-
-        <div class="col-md-12">
-            Filter<br>
-            <select name="select" id="filter_property">
-                <option value="ahm">ahm</option>
-                <option value="bffp">bffp</option>
-                <option value="cmd">cmd</option>
-                <option value="elevation" selected>Elevation</option>
-            </select> 
-            Lower
-            <input type="number" id="lower_limit"> <br>
-            Upper
-            <input type="number" id="upper_limit">
-            <button id="apply_filter">Filter</button>
-        </div>
-    </div>
     </div>
     <!-- toggle sidebar -->
     <div id="sidebar-toggle-button">
@@ -86,16 +67,45 @@
     <!-- sidebar -->
     <div id="sidebar" class="col-md-4">
         <div id="sidebar-content">
+            <div class="row">
+                <div class="col-md-6 pull-left" id="climate-variable-selector">
+                </div>
+                <div id="map-options" class="col-md-6 pull-right"> options</div>
+            </div>
+            <div class="row map-options-menu">
+                <div class="col-md-12 map-options-menu">
+                    <div>
+                        <select name="select" id="filter_property">
+                            <option value="ahm">ahm</option>
+                            <option value="bffp">bffp</option>
+                            <option value="cmd">cmd</option>
+                            <option value="elevation" selected>Elevation</option>
+                        </select>
+                    </div>
+                    <div>
+                        <br> Lower
+                        <input type="number" id="lower_limit">
+                        <br> Upper
+                        <input type="number" id="upper_limit">
+                        <br>
+                        <br>
+                        <button id="apply_filter">Filter</button>
+                    </div>
+                </div>
+            </div>
+            <br>
             <p>Legend</p>
             <div class="row">
-                <div class="col-md-12" id="legend"></div>
+                <div class="col-md-12 text-center" id="legend">
+                    <img src="images/tmp-legend.png">
+                </div>
             </div>
             <hr>
-            <h3 id="bec-area-name">{{BEC Area Name}}</h3>
+            <h4 id="bec-area-name">{{BEC Area Name}}</h4>
             <div class="row">
                 <div class="col-md-6 pull-left" id="chart-selector">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-default" id="chart-select-button">{{Chart Type}}</button>
+                        <button type="button" class="btn btn-default" id="chart-select-button">Scatterplot</button>
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="chart-select-dropdown">
                             <span class="caret"></span>
                             <span class="sr-only">Toggle Dropdown</span>
@@ -108,29 +118,32 @@
                     </div>
                 </div>
                 <!-- uncomment below to get options button -->
-                <!-- <div id="chart-options" class="col-md-6 pull-right"> options</div> -->
+                <div id="chart-options" class="col-md-6 pull-right"> options</div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
+            <div class="row chart-options-menu">
+                <div class="col-md-12 chart-options-menu">
+                    <br>
+                    <div>
+                        <p>Select X Axes
+                            <select name="select" id="x_data">
+                                <option value="ahm">ahm</option>
+                                <option value="bffp">bffp</option>
+                                <option value="cmd">cmd</option>
+                                <option value="elevation" selected>Elevation</option>
+                            </select>
+                        </p>
+                    </div>
+                    <div>
+                        <p>Select Y Axes
+                            <select name="select" id="y_data">
+                                <option value="ahm">ahm</option>
+                                <option value="bffp">bffp</option>
+                                <option value="cmd" selected>cmd</option>
+                                <option value="elevation">Elevation</option>
+                            </select>
+                        </p>
+                    </div>
                     <button id="replot">Plot</button>
-                    <div>
-                        Select X Axes
-                        <select name="select" id="x_data">
-                            <option value="ahm">ahm</option>
-                            <option value="bffp">bffp</option>
-                            <option value="cmd">cmd</option>
-                            <option value="elevation" selected>Elevation</option>
-                        </select>
-                    </div>
-                    <div>
-                        Select Y Axes
-                        <select name="select" id="y_data">
-                            <option value="ahm">ahm</option>
-                            <option value="bffp">bffp</option>
-                            <option value="cmd" selected>cmd</option>
-                            <option value="elevation">Elevation</option>
-                        </select>
-                    </div>
                 </div>
             </div>
             <div class="row">
@@ -159,26 +172,42 @@
 <!-- End map -->
 <!-- About page -->
 <div class="container static-page about">
-    <h1>About the BEC Explorer</h1>
-    <p>Lorem ipsum dolor sit amet, forensibus signiferumque in eum, eos ad regione denique eligendi, vim ad discere eleifend senserit. Et sea latine adipisci intellegebat, vis in case percipitur. Ne ridens euripidis necessitatibus sed, ius ex dictas omnium efficiantur. Pro vidisse vituperata ne, nec nusquam suavitate cu. Minimum insolens volutpat pri ex, no sed inermis tractatos instructior. Duo adhuc zril no, ut vivendo fierent electram pro, meis illud est ea. Est quaestio gloriatur in. Ex essent possim scripta pro. Cu quas aliquip nominati usu. Legere theophrastus sea ad, ei elit oportere adolescens eos. Ex mel modo possit, pri an augue commune. Te diam argumentum dissentiunt pro. Cum dicat molestie elaboraret te, indoctum splendide assentior ei nam. Forensibus mediocritatem pri id, possim albucius repudiare te qui. No tempor aperiam periculis mea.</p>
-    <h3>Team</h3>
-    <ul>
-        <li>Concept/Web Design/Development: </li>
-    </ul>
-    <h3>Support</h3>
-    <p>This was built as part of the Mozilla Science Lab Global Sprint 2016. Thanks to the Mozilla Vancouver Space for hosting!</p>
-    <h3>data</h3>
-    <p>cartodb, mapbox, leaflet, openstreetmap contributors</p>
+    <div class="col-md-8 col-md-offset-2">
+        <h1>About the BEC Explorer</h1>
+        <img src="https://github.com/joeyklee/bec-explorer/raw/master/assets/img/bec-10-beta.png" width="500px">
+        <p>The BEC Climate Explorer is a project to build an interactive data viewer for the Biogeoclimate Ecosystem Classification (BEC) zones in North America. The BEC Climate zones "provides immense value as a baseline ecological condition to assess the affects of climate change" but currently there are few/no resources available for researchers working with the BEC zones (e.g. ecologists, foresters, etc) to explore this massive dataset without using desktop GIS tools. The idea is to start building a web based interface for researchers to explore the data. We hope that having an accessible and explorable BEC dataset on the web will help practitioners, students, and the public learn more about the BEC zones and discuss changes as a result of climate change.</p>
+        <h3>Team</h3>
+        <ul>
+            <li>Concept/Scientific Direction: Colin Mahoney </li>
+            <li>Concept/Web Design & Development: Joey Lee </li>
+            <li>Web Development: Victor Barua </li>
+            <li>Design Contributions: Dianna Barry</li>
+        </ul>
+        <h3>Support</h3>
+        <p>This was built as part of the Mozilla Science Lab Global Sprint 2016. 
+            <br>Many thanks to Kristina (Mozilla) and the Mozilla Vancouver Space for hosting!</p>
+        <h3>Data</h3>
+        <p>openstreetmap, BEC zone classification 10</p>
+        <h3>Technology</h3>
+        <p>Built on Cartodb.js and Leaflet.js</p>
+    </div>
 </div>
 <!-- Current Research page -->
 <div class="container static-page current-research">
-    <h1>Current Research: Novel Climates</h1>
-    <p>Lorem ipsum dolor sit amet, forensibus signiferumque in eum, eos ad regione denique eligendi, vim ad discere eleifend senserit. Et sea latine adipisci intellegebat, vis in case percipitur. Ne ridens euripidis necessitatibus sed, ius ex dictas omnium efficiantur. Pro vidisse vituperata ne, nec nusquam suavitate cu. Minimum insolens volutpat pri ex, no sed inermis tractatos instructior. Duo adhuc zril no, ut vivendo fierent electram pro, meis illud est ea. Est quaestio gloriatur in. Ex essent possim scripta pro. Cu quas aliquip nominati usu. Legere theophrastus sea ad, ei elit oportere adolescens eos. Ex mel modo possit, pri an augue commune. Te diam argumentum dissentiunt pro. Cum dicat molestie elaboraret te, indoctum splendide assentior ei nam. Forensibus mediocritatem pri id, possim albucius repudiare te qui. No tempor aperiam periculis mea.</p>
+    <div class="col-md-8 col-md-offset-2">
+        <h1>Current Research: Novel Climates</h1>
+        <p>Lorem ipsum dolor sit amet, forensibus signiferumque in eum, eos ad regione denique eligendi, vim ad discere eleifend senserit. Et sea latine adipisci intellegebat, vis in case percipitur. Ne ridens euripidis necessitatibus sed, ius ex dictas omnium efficiantur. Pro vidisse vituperata ne, nec nusquam suavitate cu. Minimum insolens volutpat pri ex, no sed inermis tractatos instructior. Duo adhuc zril no, ut vivendo fierent electram pro, meis illud est ea. Est quaestio gloriatur in. Ex essent possim scripta pro. Cu quas aliquip nominati usu. Legere theophrastus sea ad, ei elit oportere adolescens eos. Ex mel modo possit, pri an augue commune. Te diam argumentum dissentiunt pro. Cum dicat molestie elaboraret te, indoctum splendide assentior ei nam. Forensibus mediocritatem pri id, possim albucius repudiare te qui. No tempor aperiam periculis mea.</p>
+    </div>
 </div>
 <!-- Contact page -->
 <div class="container static-page contact">
-    <h1>Contact Us!</h1>
-    <p> Hello - we ❤️ you!</p>
+    <div class="col-md-8 col-md-offset-2">
+        <h1>Contact Us!</h1>
+        <h4>Questions</h4>
+        <p>Have questions or comments? Find us on <a href="https://gitter.im/joeyklee/bec-explorer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">gitter chat</a> or email us at: {{email}}</p>
+        <h4>Contribute</h4>
+        <p>You can contribute to the development of the project on <a href="https://github.com/joeyklee/bec-explorer">Github</a></p>
+    </div>
 </div>
 
 <body>

@@ -50,10 +50,11 @@ margin-left: -15px;
 	height:30px;
 }*/
 
-#chart-options{
+#chart-options, #map-options{
 	text-align: right;
 }
-#chart-options:hover{
+
+#map-options:hover, #chart-options:hover{
 	cursor: pointer;
 }
 

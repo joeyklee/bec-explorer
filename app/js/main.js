@@ -8,6 +8,8 @@ app.map = (function() {
         ydata: null,
         scatter_labels: null,
         chart_div: null,
+        chart_options: false,
+        map_options: false
     };
 
 
@@ -57,6 +59,7 @@ app.map = (function() {
                     .on('featureOver', function(e, latlng, pos, data, subLayerIndex) {
                         var cartodb_id = data["cartodb_id"];
                         var area = data["area"];
+                        // var bgcl = data["bgc_label"];
                         pointSelected(cartodb_id, area);
                     })
                     .on('error', function(err) {
@@ -105,12 +108,8 @@ app.map = (function() {
         el.chart_div = $("#chart");
         var xSelector = $("#x_data").val();
         var ySelector = $("#y_data").val();
-        // var xSelector = "elevation";
-        // var ySelector = "elevation";
-
 
         var query = "SELECT DISTINCT bgc_label, " + xSelector + ", + " + ySelector + " FROM bgcv10beta_200m_wgs84_merge WHERE bgc_label IS NOT NULL AND " + xSelector + " IS NOT NULL AND " + ySelector + " IS NOT NULL";
-
 
         $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
             el.xData = data.rows.map(function(obj) {
@@ -136,7 +135,7 @@ app.map = (function() {
                 yaxis: { title: ySelector },
                 width: 100,
                 margin: {
-                    l : 40,
+                    l: 40,
                     r: 20,
                     b: 40,
                     t: 10,
@@ -147,7 +146,7 @@ app.map = (function() {
             };
 
             var traces = [trace];
-            Plotly.newPlot("chart", traces, layout, {staticPlot:false, displayModeBar: false});
+            Plotly.newPlot("chart", traces, layout, { staticPlot: false, displayModeBar: false });
 
             el.chart_div.on('plotly_hover', function(data) {
                     var pointNumber = data.points[0].pointNumber;
@@ -161,15 +160,15 @@ app.map = (function() {
 
     function applyFilter() {
         $("#apply_filter").click(function(e) {
-        	console.log("applyFilter");
+            console.log("applyFilter");
             filterByProperty();
         });
     }
 
-    function replot(){
-    	$("#replot").click(function(e) {
-		  plotData();
-		});
+    function replot() {
+        $("#replot").click(function(e) {
+            plotData();
+        });
     }
 
     // get it all going!

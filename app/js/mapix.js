@@ -50,22 +50,58 @@ app.mapix = (function() {
     }
 
 
-    function addImages(){
-        var imageList = ['image-1.jpg','image-3.JPG','image-5.JPG','image-2.jpg','image-4.jpg','image-6.jpg'];
-        
-        imageList.forEach(function(d){
-            var image = "images/"+d;
+    function addImages() {
+        var imageList = ['image-1.jpg', 'image-3.JPG', 'image-5.JPG', 'image-2.jpg', 'image-4.jpg', 'image-6.jpg'];
 
-            $("#photo-scroll").append('<div class="col-md-3 photo-thumb"><img src="'+image+'"></div>');
+        imageList.forEach(function(d) {
+            var image = "images/" + d;
+
+            $("#photo-scroll").append('<div class="col-md-3 photo-thumb"><img src="' + image + '"></div>');
 
         })
     }
 
+
+    function toggleChartOptions() {
+        $("#chart-options").click(function() {
+            console.log("hello");
+            if (el.chart_options == true) {
+                $('.chart-options-menu').css("display", "block");
+                el.chart_options = false;
+            } else{
+                $('.chart-options-menu').css("display", "none");
+                el.chart_options = true;
+            }
+        })
+    }
+
+    function toggleMapOptions() {
+        $("#map-options").click(function() {
+            console.log("hello");
+            if (el.map_options == true) {
+                $('.map-options-menu').css("display", "block");
+                el.map_options = false;
+            } else{
+                $('.map-options-menu').css("display", "none");
+                el.map_options = true;
+            }
+        })
+    }
+
+    function closeOptions(){
+        $("#map-options").click();
+        $("#chart-options").click();
+    }
+
     // init all the functions
     function init() {
+        el = app.map;
         sayHello();
         selectBecUnit();
         toggleSidebar();
+        toggleChartOptions();
+        toggleMapOptions();
+        closeOptions();
         // addImages();
 
     }
