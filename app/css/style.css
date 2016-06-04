@@ -93,7 +93,8 @@ margin-left: -15px;
 #chart{
 	margin-top: 10px;
 	height:300px;
-	background-color: grey;
+	width:350px;
+	/*background-color: grey;*/
 }
 
 #explore-bar{
