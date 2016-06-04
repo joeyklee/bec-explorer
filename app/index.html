@@ -91,17 +91,17 @@
                         <br>
                         <button id="apply_filter">Filter</button>
                     </div>
-                </div>
-            </div>
-            <br>
-            <p>Legend</p>
-            <div class="row">
-                <div class="col-md-12 text-center" id="legend">
-                    <img src="images/tmp-legend.png">
+                    <hr>
+                    <p>Legend</p>
+                    <div class="row">
+                        <div class="col-md-12 text-center" id="legend">
+                            <img src="images/tmp-legend.png" height="10px">
+                        </div>
+                    </div>
                 </div>
             </div>
             <hr>
-            <h4 id="bec-area-name">{{BEC Area Name}}</h4>
+            <h4>BEC Unit: <span id="bec-area-name"></span></h4>
             <div class="row">
                 <div class="col-md-6 pull-left" id="chart-selector">
                     <div class="btn-group">
@@ -184,7 +184,7 @@
             <li>Design Contributions: Dianna Barry</li>
         </ul>
         <h3>Support</h3>
-        <p>This was built as part of the Mozilla Science Lab Global Sprint 2016. 
+        <p>This was built as part of the Mozilla Science Lab Global Sprint 2016.
             <br>Many thanks to Kristina (Mozilla) and the Mozilla Vancouver Space for hosting!</p>
         <h3>Data</h3>
         <p>openstreetmap, BEC zone classification 10</p>
@@ -203,6 +203,7 @@
 <div class="container static-page contact">
     <div class="col-md-8 col-md-offset-2">
         <h1>Contact Us!</h1>
+        <!-- <img src="images/colin.JPG" width="500px"> -->
         <h4>Questions</h4>
         <p>Have questions or comments? Find us on <a href="https://gitter.im/joeyklee/bec-explorer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge">gitter chat</a> or email us at: {{email}}</p>
         <h4>Contribute</h4>

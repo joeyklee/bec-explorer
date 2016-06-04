@@ -18,7 +18,7 @@ app.map = (function() {
 
         // map paramaters to pass to Leaflet
         var params = {
-            center: [53.979608, -124.066386],
+            center: [53.979608, -130.066386],
             zoom: 5,
             zoomControl: false,
             attributionControl: false
@@ -47,7 +47,7 @@ app.map = (function() {
                 sublayers: [{
                     sql: "SELECT * FROM bgcv10beta_200m_wgs84",
                     cartocss: '#bgcv10beta_200m_wgs84 { polygon-fill: #5EB840; polygon-opacity: 0.5; line-color: #B85E40; line-width: 0.5; line-opacity: 0.5;}',
-                    interactivity: "cartodb_id, area"
+                    interactivity: "cartodb_id, area, bgc_label"
                 }]
             })
             .addTo(el.map)
@@ -58,8 +58,10 @@ app.map = (function() {
                 layer
                     .on('featureOver', function(e, latlng, pos, data, subLayerIndex) {
                         var cartodb_id = data["cartodb_id"];
+                        console.log(data);
                         var area = data["area"];
                         // var bgcl = data["bgc_label"];
+                        updateSelectedUnit(data['bgc_label']);
                         pointSelected(cartodb_id, area);
                     })
                     .on('error', function(err) {
@@ -74,6 +76,10 @@ app.map = (function() {
     // log the point selected
     function pointSelected(cartodb_id, area) {
         console.log(cartodb_id, area);
+    }
+
+    function updateSelectedUnit(istring){
+    	$("#bec-area-name").html(istring)
     }
 
     // filter by property
