@@ -38,6 +38,37 @@ app.mapix = (function() {
             });
     }
 
+    function toggleExploreBar(){
+
+        $('#explore-bar-toggle').clickToggle(function() {
+            console.log("clicked!");
+                $("#explore-bar").animate({
+                    "margin-bottom": "150px"
+                }, 100);
+                $("#explore-bar-toggle").animate({
+                    "margin-bottom": "155px"
+                }, 100);
+            },
+            function() {
+                $("#explore-bar").animate({
+                    "margin-bottom": "0px"
+                }, 100);
+                $("#explore-bar-toggle").animate({
+                    "margin-bottom": "0px"
+                }, 100);
+            });
+    }
+
+    function showLargeImage(){
+        $(".photo-browse").click(function(){
+            var imgsrc = $(this).attr("src");
+
+            $('#photo-browse-large').attr("src", imgsrc);
+            $('#photoModal-trigger').click();
+
+        })
+    }
+
 
     function selectBecUnit() {
         $(function() {
@@ -61,19 +92,6 @@ app.mapix = (function() {
 
         });
     }
-
-
-    function addImages() {
-        var imageList = ['image-1.jpg', 'image-3.JPG', 'image-5.JPG', 'image-2.jpg', 'image-4.jpg', 'image-6.jpg'];
-
-        imageList.forEach(function(d) {
-            var image = "images/" + d;
-
-            $("#photo-scroll").append('<div class="col-md-3 photo-thumb"><img src="' + image + '"></div>');
-
-        })
-    }
-
 
     function toggleChartOptions() {
         $("#chart-options").click(function() {
@@ -106,6 +124,8 @@ app.mapix = (function() {
         $("#chart-options").click();
     }
 
+
+
     // init all the functions
     function init() {
         el = app.map.el;
@@ -115,6 +135,8 @@ app.mapix = (function() {
         toggleChartOptions();
         toggleMapOptions();
         closeOptions();
+        toggleExploreBar();
+        showLargeImage()
         // addImages();
 
     }
