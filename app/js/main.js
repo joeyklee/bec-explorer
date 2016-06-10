@@ -9,11 +9,12 @@ app.map = (function() {
         scatter_labels: null,
         chart_div: null,
         chart_options: false,
+        explore_toggle: false,
         map_options: false,
         bec_cartocss: {
             zone: null,
             subzone: null,
-            unit: null    
+            unit: null
         }
     };
 
@@ -78,15 +79,15 @@ app.map = (function() {
             });
     }
 
-    
+
 
     // log the point selected
     function pointSelected(cartodb_id, area) {
         console.log(cartodb_id, area);
     }
 
-    function updateSelectedUnit(istring){
-    	$("#bec-area-name").html(istring)
+    function updateSelectedUnit(istring) {
+        $("#bec-area-name").html(istring)
     }
 
     // filter by property
@@ -144,8 +145,8 @@ app.map = (function() {
             };
 
             var layout = {
-                xaxis: { title: xSelector },
-                yaxis: { title: ySelector },
+                xaxis: { title: xSelector, type: 'log' },
+                yaxis: { title: ySelector, type: 'log' },
                 width: 100,
                 margin: {
                     l: 40,
@@ -185,8 +186,8 @@ app.map = (function() {
     }
 
     function initializeColors() {
-       // console.log(el.el);
-       // for the bec zones
+        // console.log(el.el);
+        // for the bec zones
         el.bec_cartocss.zone = '#bgcv10beta_200m_wgs84[zone="CMA"]{polygon-fill:#136400 }\
                             #bgcv10beta_200m_wgs84[zone="ESSF"]{polygon-fill:#229A00 }\
                             #bgcv10beta_200m_wgs84[zone="BAFA"]{polygon-fill:#B81609 }\
@@ -203,7 +204,7 @@ app.map = (function() {
                             #bgcv10beta_200m_wgs84[zone="SWB"]{polygon-fill:#FFCC00 }\
                             #bgcv10beta_200m_wgs84[zone="BWBS"]{polygon-fill:#FF5C00 }\
                             #bgcv10beta_200m_wgs84[zone="CDF"]{polygon-fill:#FFA300 }';
-       // for the bec units                            
+        // for the bec units                            
         el.bec_cartocss.unit = '#bgcv10beta_200m_wgs84[map_label="CMAun"]{polygon-fill:rgb(53,177,242)} \
                             #bgcv10beta_200m_wgs84[map_label="ESSFmc"]{polygon-fill:rgb(179,32,225)} \
                             #bgcv10beta_200m_wgs84[map_label="BAFAun"]{polygon-fill:rgb(245,171,249)} \
