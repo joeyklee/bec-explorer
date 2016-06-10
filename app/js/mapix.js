@@ -41,12 +41,13 @@ app.mapix = (function() {
 
     function selectBecUnit() {
         $(function() {
-            $(".dropdown-menu li a").click(function() {
-                $(".btn:first-child").text($(this).text());
-                $(".btn:first-child").val($(this).text());
+            $(".map-dropdown li a").click(function() {
+                console.log($(".btn:first-child"));
+                $("#bec-unit-button-selector:first-child").text($(this).text());
+                $("#bec-unit-button-selector:first-child").val($(this).text());
 
                 var selectedId = $(this).attr('id');
-                console.log(selectedId);
+                // console.log(selectedId);
                 if( selectedId == "bec-unit-button" ){
                     el.data_layer.setCartoCSS(el.bec_cartocss.unit);
                 } else if(selectedId == "bec-zone-button" ){

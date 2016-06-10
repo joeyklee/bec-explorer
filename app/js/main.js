@@ -144,8 +144,8 @@ app.map = (function() {
             };
 
             var layout = {
-                xaxis: { title: xSelector },
-                yaxis: { title: ySelector },
+                xaxis: { title: xSelector, type:'log' },
+                yaxis: { title: ySelector, type:'log' },
                 width: 100,
                 margin: {
                     l: 40,
