@@ -41,7 +41,7 @@ margin-left: -15px;
 
 
 #chart-explanation{
-	height:200px;
+	height:125px;
 	overflow-y:auto;
 	overflow-x: hidden;
 }
@@ -66,7 +66,7 @@ margin-left: -15px;
 	position: absolute;
 }
 
-#bec-unit-button {
+#bec-unit-button-selector {
     width: 320px;
     height: 50px;
 }
@@ -99,23 +99,43 @@ margin-left: -15px;
 	/*background-color: grey;*/
 }
 
+
 #explore-bar{
 	position: absolute;
-	bottom:0;
-	right:0;
+	bottom:0px;
+	right:0px;
 	height:150px;
-	width:50%;
+	width:100%;
 	background-color: white;
-	border: 1px black solid;
+	border-top: 1px solid grey;
+	display: none;
+}
+
+#explore-bar-toggle{
+	position: absolute;
+	bottom:10px;
+	right: 10px;
+	background-color: white;
+	border:1px solid grey;
+	padding:10px;
 }
 
 #photo-scroll{
+	margin-top: 20px;
+	width:100%;
 	overflow-x: auto;
-}
-
-.photo-thumb{
-	width:250px;
 	height:100px;
+	height:120px;
+	white-space:nowrap;
 }
 
+.photo-browse{
+	/*padding-top: 20px;*/
+	width:150px;
+	height:100px;
+	display:inline-block;
+}
 
+#photo-browse-large{
+	width:100%;
+}
