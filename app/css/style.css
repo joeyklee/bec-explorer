@@ -41,7 +41,7 @@ margin-left: -15px;
 
 
 #chart-explanation{
-	height:200px;
+	height:125px;
 	overflow-y:auto;
 	overflow-x: hidden;
 }
@@ -102,12 +102,13 @@ margin-left: -15px;
 
 #explore-bar{
 	position: absolute;
-	bottom:-150px;
-	right:0;
+	bottom:0px;
+	right:0px;
 	height:150px;
 	width:100%;
 	background-color: white;
 	border-top: 1px solid grey;
+	display: none;
 }
 
 #explore-bar-toggle{

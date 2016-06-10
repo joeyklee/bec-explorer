@@ -39,24 +39,24 @@ app.mapix = (function() {
     }
 
     function toggleExploreBar(){
-
-        $('#explore-bar-toggle').clickToggle(function() {
-            console.log("clicked!");
-                $("#explore-bar").animate({
-                    "margin-bottom": "150px"
-                }, 100);
+        $("#explore-bar-toggle").click(function() {
+            console.log("hello");
+            if (el.explore_toggle == true) {
+                $('#explore-bar').css("display", "block");
                 $("#explore-bar-toggle").animate({
                     "margin-bottom": "155px"
                 }, 100);
-            },
-            function() {
-                $("#explore-bar").animate({
-                    "margin-bottom": "0px"
-                }, 100);
+                el.explore_toggle = false;
+                
+            } else{
+                $('#explore-bar').css("display", "none");
                 $("#explore-bar-toggle").animate({
                     "margin-bottom": "0px"
                 }, 100);
-            });
+                el.explore_toggle = true;
+
+            }
+        })
     }
 
     function showLargeImage(){
@@ -134,9 +134,9 @@ app.mapix = (function() {
         toggleSidebar();
         toggleChartOptions();
         toggleMapOptions();
-        closeOptions();
         toggleExploreBar();
-        showLargeImage()
+        showLargeImage();
+        closeOptions();
         // addImages();
 
     }

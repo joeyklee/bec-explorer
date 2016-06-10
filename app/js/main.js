@@ -9,6 +9,7 @@ app.map = (function() {
         scatter_labels: null,
         chart_div: null,
         chart_options: false,
+        explore_toggle: false,
         map_options: false,
         bec_cartocss: {
             zone: null,
