@@ -44,6 +44,18 @@ app.mapix = (function() {
             $(".dropdown-menu li a").click(function() {
                 $(".btn:first-child").text($(this).text());
                 $(".btn:first-child").val($(this).text());
+
+                var selectedId = $(this).attr('id');
+                console.log(selectedId);
+                if( selectedId == "bec-unit-button" ){
+                    el.data_layer.setCartoCSS(el.bec_cartocss.unit);
+                } else if(selectedId == "bec-zone-button" ){
+                    el.data_layer.setCartoCSS(el.bec_cartocss.zone);
+                }else if(selectedId == "bec-subzone-button" ){
+                    console.log("subzone button clicked")
+                }else if(selectedId == "bec-phase-button" ){
+                    console.log("subzone button clicked")
+                };
             });
 
         });
@@ -95,7 +107,7 @@ app.mapix = (function() {
 
     // init all the functions
     function init() {
-        el = app.map;
+        el = app.map.el;
         sayHello();
         selectBecUnit();
         toggleSidebar();
