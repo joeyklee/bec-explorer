@@ -38,7 +38,7 @@ app.mapix = (function() {
             });
     }
 
-    function toggleExploreBar(){
+    function toggleExploreBar() {
         $("#explore-bar-toggle").click(function() {
             console.log("hello");
             if (el.explore_toggle == true) {
@@ -47,8 +47,8 @@ app.mapix = (function() {
                     "margin-bottom": "155px"
                 }, 100);
                 el.explore_toggle = false;
-                
-            } else{
+
+            } else {
                 $('#explore-bar').css("display", "none");
                 $("#explore-bar-toggle").animate({
                     "margin-bottom": "0px"
@@ -59,8 +59,8 @@ app.mapix = (function() {
         })
     }
 
-    function showLargeImage(){
-        $(".photo-browse").click(function(){
+    function showLargeImage() {
+        $(".photo-browse").click(function() {
             var imgsrc = $(this).attr("src");
 
             $('#photo-browse-large').attr("src", imgsrc);
@@ -79,13 +79,13 @@ app.mapix = (function() {
 
                 var selectedId = $(this).attr('id');
                 // console.log(selectedId);
-                if( selectedId == "bec-unit-button" ){
+                if (selectedId == "bec-unit-button") {
                     el.data_layer.setCartoCSS(el.bec_cartocss.unit);
-                } else if(selectedId == "bec-zone-button" ){
+                } else if (selectedId == "bec-zone-button") {
                     el.data_layer.setCartoCSS(el.bec_cartocss.zone);
-                }else if(selectedId == "bec-subzone-button" ){
+                } else if (selectedId == "bec-subzone-button") {
                     console.log("subzone button clicked")
-                }else if(selectedId == "bec-phase-button" ){
+                } else if (selectedId == "bec-phase-button") {
                     console.log("subzone button clicked")
                 };
             });
@@ -99,7 +99,7 @@ app.mapix = (function() {
             if (el.chart_options == true) {
                 $('.chart-options-menu').css("display", "block");
                 el.chart_options = false;
-            } else{
+            } else {
                 $('.chart-options-menu').css("display", "none");
                 el.chart_options = true;
             }
@@ -112,14 +112,14 @@ app.mapix = (function() {
             if (el.map_options == true) {
                 $('.map-options-menu').css("display", "block");
                 el.map_options = false;
-            } else{
+            } else {
                 $('.map-options-menu').css("display", "none");
                 el.map_options = true;
             }
         })
     }
 
-    function closeOptions(){
+    function closeOptions() {
         $("#map-options").click();
         $("#chart-options").click();
     }
