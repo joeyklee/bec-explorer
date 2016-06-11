@@ -59,6 +59,11 @@ app.mapix = (function() {
         })
     }
 
+    // Returns a random number between min (inclusive) and max (exclusive)
+    function getRandomArbitrary(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
     function showLargeImage() {
         $(".photo-browse").click(function() {
             var imgsrc = $(this).attr("src");
@@ -66,6 +71,8 @@ app.mapix = (function() {
             $('#photo-browse-large').attr("src", imgsrc);
             $('#photoModal-trigger').click();
 
+            // replace with coordinates of the photos :)
+            el.map.setView([getRandomArbitrary(49.1, 58.3),getRandomArbitrary(-123.4, -123.0)], 8);
         })
     }
 
