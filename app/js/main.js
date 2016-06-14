@@ -16,14 +16,16 @@ app.map = (function() {
             subzone: null,
             unit: null
         },
+        selected_unit: null,
         hover_poly: null,
         hover_style: {
             color: "#ffffff",
             weight: 2,
             opacity: 0.85,
-            fillOpacity:0
+            fillOpacity: 0
 
-        }
+        },
+        polygons: {}
     };
 
 
@@ -54,8 +56,7 @@ app.map = (function() {
             ext: 'png'
         }).addTo(el.map);
 
-
-        
+        // var polygons = {};
 
         // add cartodb data
         cartodb.createLayer(el.map, {
@@ -64,33 +65,92 @@ app.map = (function() {
                 sublayers: [{
                     sql: "SELECT * FROM bgcv10beta_200m_wgs84",
                     cartocss: el.bec_cartocss.zone,
-                    interactivity: "cartodb_id, area, bgc_label"
+                    interactivity: "cartodb_id, bgc_label"
                 }]
             })
             .addTo(el.map)
             .done(function(layer) {
                 el.data_layer = layer.getSubLayer(0);
 
-                layer.getSubLayer(0).setInteraction(true);
-                layer
-                    .on('featureOver', function(e, latlng, pos, data, subLayerIndex) {
-                        var cartodb_id = data["cartodb_id"];
-                        console.log(data);
-                        var area = data["area"];
-                        // var bgcl = data["bgc_label"];
-                        updateSelectedUnit(data['bgc_label']);
-                        pointSelected(cartodb_id, area);
+                geometryHover('becexplorer', el.map, el.data_layer);
+
+                layer.on('featureOver', function(e, latlng, pos, data, subLayerIndex) {
+                        el.selected_unit = data['bgc_label'];
+                        updateSelectedUnit(el.selected_unit);
                     })
-                    .on('error', function(err) {
-                        console.log('error: ' + err);
-                    });
+                    // layer.getSubLayer(0).setInteraction(true);
+                    // layer
+                    //     .on('featureOver', function(e, latlng, pos, data, subLayerIndex) {
+                    //         el.selected_unit = data['bgc_label'];
+                    //         console.log(el.selected_unit);
+                    //         var cartodb_id = data["cartodb_id"];
+                    //         updateSelectedUnit(el.selected_unit);
+                    //         // pointSelected(cartodb_id, area);
+                    //     })
+                    //     .on('error', function(err) {
+                    //         console.log('error: ' + err);
+                    //     });
             })
             .error(function(err) {
                 console.log("some error occurred: " + err);
             });
     }
 
+    // geom hover
+    function geometryHover(username, map, layer, options) {
 
+        options = options || {}
+        var HIGHLIGHT_STYLE = {
+            weight: 2,
+            color: '#FFFFFF',
+            opacity: 0.85,
+            fillColor: '#FFFFFF',
+            fillOpacity: 0
+        };
+        style = options.style || HIGHLIGHT_STYLE;
+        var polygonsHighlighted = [];
+
+
+        // fetch the geometry
+        var sql = new cartodb.SQL({ user: username, format: 'geojson' });
+        sql.execute("select cartodb_id, ST_Simplify(the_geom, 0.025) as the_geom from (" + layer.getSQL() + ") as _wrap").done(function(geojson) {
+            var features = geojson.features;
+            for (var i = 0; i < features.length; ++i) {
+                var f = geojson.features[i];
+                var key = f.properties.cartodb_id
+
+                // generate geometry
+                var geo = L.GeoJSON.geometryToLayer(features[i].geometry);
+                geo.setStyle(style);
+
+                // add to polygons
+                el.polygons[key] = el.polygons[key] || [];
+                el.polygons[key].push(geo);
+            }
+        });
+
+        function featureOver(e, pos, latlng, data) {
+            featureOut();
+            var pol = el.polygons[data.cartodb_id] || [];
+            for (var i = 0; i < pol.length; ++i) {
+                map.addLayer(pol[i]);
+                polygonsHighlighted.push(pol[i]);
+            }
+        }
+
+        function featureOut() {
+            var pol = polygonsHighlighted;
+            for (var i = 0; i < pol.length; ++i) {
+                map.removeLayer(pol[i]);
+            }
+            polygonsHighlighted = [];
+        }
+
+        layer.on('featureOver', featureOver);
+        layer.on('featureOut', featureOut);
+        layer.setInteraction(true);
+
+    }
 
     // log the point selected
     function pointSelected(cartodb_id, area) {
@@ -174,45 +234,54 @@ app.map = (function() {
             var traces = [trace];
             Plotly.newPlot("chart", traces, layout, { staticPlot: false, displayModeBar: false });
 
-            el.chart_div.on('plotly_hover', function(data) {
+            highlightUnit();
+        });
+    }
+
+    function highlightUnit() {
+        el.chart_div.on('plotly_hover', function(data) {
                 // add geojson polygon for hovered poly
-                    el.hover_poly = L.geoJson(null, el.hover_style).addTo(el.map);
-                    var pointNumber = data.points[0].pointNumber;
-                    // console.log(el.scatter_labels[pointNumber]);
-                    var selected_label = el.scatter_labels[pointNumber];
-                    console.log(selected_label);
-                    var sql = new cartodb.SQL({ user: 'becexplorer', format: 'geojson' });
-                    sql.execute("SELECT * FROM bgcv10beta_200m_wgs84 WHERE bgc_label LIKE '{{unit}}'", { unit: selected_label  })
-                      .done(function(data) {
+
+                el.hover_poly = L.geoJson(null, el.hover_style).addTo(el.map);
+                var pointNumber = data.points[0].pointNumber;
+                // console.log(el.scatter_labels[pointNumber]);
+                var selected_label = el.scatter_labels[pointNumber];
+                // set the selected unit as the selected label
+                el.selected_unit = selected_label;
+                console.log(selected_label);
+                var sql = new cartodb.SQL({ user: 'becexplorer', format: 'geojson' });
+                sql.execute("SELECT * FROM bgcv10beta_200m_wgs84 WHERE bgc_label LIKE '{{unit}}'", { unit: selected_label })
+                    .done(function(data) {
                         // console.log(data);
                         el.hover_poly.addData(data);
-                      })
-                      .error(function(errors) {
+                    })
+                    .error(function(errors) {
                         // errors contains a list of errors
                         console.log("errors:" + errors);
-                      })
+                    })
 
-                })
-                .on('plotly_unhover', function() {
-                    // console.log("Unhovering");
-                    console.log(el.map.removeLayer(el.hover_poly));
-                });
+            })
+            .on('plotly_unhover', function() {
+                // console.log("Unhovering");
+                // console.log(el.map.removeLayer(el.hover_poly));
+                el.map.removeLayer(el.hover_poly);
+            });
 
-            el.chart_div.on('plotly_click', function(data){
-                var sql = new cartodb.SQL({ user: 'becexplorer', format: 'geojson' });
-                var pointNumber = data.points[0].pointNumber;
-                var selected_label = el.scatter_labels[pointNumber];
-                sql.execute("SELECT * FROM bgcv10beta_200m_wgs84 WHERE bgc_label LIKE '{{unit}}'", { unit: selected_label  })
-                  .done(function(data) {
+        el.chart_div.on('plotly_click', function(data) {
+            var sql = new cartodb.SQL({ user: 'becexplorer', format: 'geojson' });
+            var pointNumber = data.points[0].pointNumber;
+            var selected_label = el.scatter_labels[pointNumber];
+            sql.execute("SELECT * FROM bgcv10beta_200m_wgs84 WHERE bgc_label LIKE '{{unit}}'", { unit: selected_label })
+                .done(function(data) {
                     var geojsonLayer = L.geoJson(data);
                     el.map.fitBounds(geojsonLayer.getBounds());
-                  })
-                  .error(function(errors) {
+                })
+                .error(function(errors) {
                     // errors contains a list of errors
                     console.log("errors:" + errors);
-                  })
-                
-            });
+                })
+
+
         });
     }
 
@@ -491,6 +560,7 @@ app.map = (function() {
         plotData();
         replot();
         applyFilter();
+
     }
 
 
