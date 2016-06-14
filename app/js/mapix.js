@@ -40,7 +40,7 @@ app.mapix = (function() {
 
     function toggleExploreBar() {
         $("#explore-bar-toggle").click(function() {
-            console.log("hello");
+            console.log("explore");
             if (el.explore_toggle == true) {
                 $('#explore-bar').css("display", "block");
                 $("#explore-bar-toggle").animate({
@@ -129,6 +129,8 @@ app.mapix = (function() {
     function closeOptions() {
         $("#map-options").click();
         $("#chart-options").click();
+        $("#explore-bar-toggle").click();
+        // toggleExploreBar();
     }
 
 
