@@ -15,6 +15,14 @@ app.map = (function() {
             zone: null,
             subzone: null,
             unit: null
+        },
+        hover_poly: null,
+        hover_style: {
+            color: "#ffffff",
+            weight: 2,
+            opacity: 0.85,
+            fillOpacity:0
+
         }
     };
 
@@ -45,6 +53,9 @@ app.map = (function() {
             maxZoom: 20,
             ext: 'png'
         }).addTo(el.map);
+
+
+        
 
         // add cartodb data
         cartodb.createLayer(el.map, {
@@ -119,7 +130,8 @@ app.map = (function() {
 
     // plot the data on a scatterplot
     function plotData() {
-        el.chart_div = $("#chart");
+        // el.chart_div = $("#chart");
+        el.chart_div = document.getElementById('chart'); // weird issue with jquery selector, use vanilla js - https://plot.ly/javascript/hover-events/
         var xSelector = $("#x_data").val();
         var ySelector = $("#y_data").val();
 
@@ -163,12 +175,44 @@ app.map = (function() {
             Plotly.newPlot("chart", traces, layout, { staticPlot: false, displayModeBar: false });
 
             el.chart_div.on('plotly_hover', function(data) {
+                // add geojson polygon for hovered poly
+                    el.hover_poly = L.geoJson(null, el.hover_style).addTo(el.map);
                     var pointNumber = data.points[0].pointNumber;
-                    console.log(el.scatter_labels[pointNumber]);
+                    // console.log(el.scatter_labels[pointNumber]);
+                    var selected_label = el.scatter_labels[pointNumber];
+                    console.log(selected_label);
+                    var sql = new cartodb.SQL({ user: 'becexplorer', format: 'geojson' });
+                    sql.execute("SELECT * FROM bgcv10beta_200m_wgs84 WHERE bgc_label LIKE '{{unit}}'", { unit: selected_label  })
+                      .done(function(data) {
+                        // console.log(data);
+                        el.hover_poly.addData(data);
+                      })
+                      .error(function(errors) {
+                        // errors contains a list of errors
+                        console.log("errors:" + errors);
+                      })
+
                 })
-                .on('plotly_unhover', function(data) {
+                .on('plotly_unhover', function() {
                     // console.log("Unhovering");
+                    console.log(el.map.removeLayer(el.hover_poly));
                 });
+
+            el.chart_div.on('plotly_click', function(data){
+                var sql = new cartodb.SQL({ user: 'becexplorer', format: 'geojson' });
+                var pointNumber = data.points[0].pointNumber;
+                var selected_label = el.scatter_labels[pointNumber];
+                sql.execute("SELECT * FROM bgcv10beta_200m_wgs84 WHERE bgc_label LIKE '{{unit}}'", { unit: selected_label  })
+                  .done(function(data) {
+                    var geojsonLayer = L.geoJson(data);
+                    el.map.fitBounds(geojsonLayer.getBounds());
+                  })
+                  .error(function(errors) {
+                    // errors contains a list of errors
+                    console.log("errors:" + errors);
+                  })
+                
+            });
         });
     }
 
