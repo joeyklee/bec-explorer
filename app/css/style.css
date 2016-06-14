@@ -120,6 +120,10 @@ body {
     display: none;
 }
 
+#explore-bar-toggle:hover{
+ cursor: pointer;
+}
+
 #explore-bar-toggle {
     position: absolute;
     bottom: 10px;
