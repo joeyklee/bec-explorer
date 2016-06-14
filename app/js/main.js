@@ -56,6 +56,26 @@ app.map = (function() {
             ext: 'png'
         }).addTo(el.map);
 
+       
+
+        var Stamen_TonerLines = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-lines/{z}/{x}/{y}.{ext}', {
+            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            subdomains: 'abcd',
+            minZoom: 0,
+            maxZoom: 20,
+            ext: 'png'
+        }).addTo(el.map);
+        Stamen_TonerLines.bringToFront();
+
+         var Stamen_TonerLabels = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-labels/{z}/{x}/{y}.{ext}', {
+            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+            subdomains: 'abcd',
+            minZoom: 0,
+            maxZoom: 20,
+            ext: 'png'
+        }).addTo(el.map);
+        Stamen_TonerLabels.bringToFront();
+
         // var polygons = {};
 
         // add cartodb data
@@ -248,7 +268,7 @@ app.map = (function() {
                 var selected_label = el.scatter_labels[pointNumber];
                 // set the selected unit as the selected label
                 el.selected_unit = selected_label;
-                console.log(selected_label);
+                // console.log(selected_label);
                 var sql = new cartodb.SQL({ user: 'becexplorer', format: 'geojson' });
                 sql.execute("SELECT * FROM bgcv10beta_200m_wgs84 WHERE bgc_label LIKE '{{unit}}'", { unit: selected_label })
                     .done(function(data) {
