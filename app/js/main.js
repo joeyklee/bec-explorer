@@ -118,7 +118,7 @@ app.map = (function() {
 
     // geom hover
     function geometryHover(username, map, layer, options) {
-
+        // see: http://bl.ocks.org/javisantana/8313604
         options = options || {}
         var HIGHLIGHT_STYLE = {
             weight: 2,
