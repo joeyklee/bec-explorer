@@ -72,6 +72,7 @@ app.mapui = (function() {
 
     function activateMapDisplayButtons() {
         $('.map-display-buttons').click(function() {
+            console.log($(this).text());
             $('.map-display-buttons').addClass("disabled");
             $(this).toggleClass("disabled");
             if ($(this).text().toUpperCase() == "CLIMATE") {

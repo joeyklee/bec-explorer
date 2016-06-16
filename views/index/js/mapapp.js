@@ -90,7 +90,19 @@ app.mapapp = (function() {
         console.log(el.selected_unit);
     };
 
-    
+    var changeMapDisplay = function(){
+        $('.map-display-buttons').click(function() {
+            var sel = $(this).text().toUpperCase()
+            if (sel == "CLIMATE") {
+                console.log("climate button clicked");
+            } else if (sel == "BEC UNITS")  {
+                el.data_layer.setCartoCSS(el.bec_cartocss.unit);
+            } else if (sel == "ZONES"){
+                el.data_layer.setCartoCSS(el.bec_cartocss.zone);
+            };
+        });
+    };
+
 
 
 
@@ -98,6 +110,7 @@ app.mapapp = (function() {
         el = app.main.el;
         initMap();
         initCarto();
+        changeMapDisplay();
     };
 
     return {
