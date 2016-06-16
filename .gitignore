@@ -3,27 +3,8 @@ data/SpatialData/BGCv10beta-raw/*
 data/SpatialData/BGCv10beta.zip
 app/bower_components/*
 private/*
-app/images/colin.JPG	
-app/images/image-2.jpg	
-app/images/image-4.jpg	
-app/images/image-6.jpg
-app/images/image-1.jpg	
-app/images/image-3.JPG	
-app/images/image-5.JPG
-app/images/colin.JPG
+app/*
 
-app/images/colin.JPG
+node_modules/*
 
-app/images/image-1.jpg
 
-app/images/colin.JPG
-
-app/images/image-2.jpg
-
-app/images/colin.JPG
-
-app/images/image-3.JPG
-
-app/images/image-4.jpg
-
-app/images/colin.JPG
