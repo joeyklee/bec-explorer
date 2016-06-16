@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>BEC Explorer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- materialize icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!-- materialize css -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/js/materialize.min.js"></script>
+    <!-- materialize js -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.95.3/css/materialize.min.css" rel="stylesheet" />
+
+    <!-- Cartodb css -->
+    <link rel="stylesheet" href="http://libs.cartocdn.com/cartodb.js/v3/themes/css/cartodb.css" />
+    <!-- cartodb js -->
+    <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
+    <!-- plotly -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+
+<style type="text/css">
+nav .brand-logo {
+    margin-left: 10px;
+}
+
+#nav-logo-text span{
+    font-size: 20px;
+}
+
+#mobile-demo{
+    z-index: 10000;
+}
+
+</style>
+
+
+
+<body>
+    <nav>
+        <div class="nav-wrapper row cyan darken-4">
+         <ul class="left">
+            <a href="/" class="valign-wrapper">
+                <img src="https://raw.githubusercontent.com/joeyklee/bec-explorer/gh-pages/assets/img/header-img.png" height="50px" class="valign circle z-depth-2"> &emsp; <span id="nav-logo-text">BEC EXPLORER</span>
+            </a>
+        </ul>
+        
+            <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="/about">about</a></li>
+                <li><a href="/current">current research</a></li>
+                <li><a href="/contact">contact</a></li>
+                <li><a href="/api">api</a></li>
+            </ul>
+            <ul class="side-nav right" id="mobile-demo">
+                <li><a href="/about">about</a></li>
+                <li><a href="/current">current research</a></li>
+                <li><a href="/contact">contact</a></li>
+                <li><a href="/api">api</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="main-content">
+        {{{body}}}
+    </div>
+</body>
+
+<script type="text/javascript">
+$(".button-collapse").sideNav({
+    menuWidth: 300, // Default is 240
+    edge: 'left', // Choose the horizontal origin
+    closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
+});
+</script>
+
+</html>
+
+{{!-- <div class="left valign-wrapper">
+              <h5 class="valign">This should be vertically aligned</h5>
+              <a href="/" class="header-img valign"><img src="https://raw.githubusercontent.com/joeyklee/bec-explorer/gh-pages/assets/img/header-img.png" alt="" class="circle responsive-img z-depth-2 header-img valign"></a>
+            </div> --}}
+                    
+
+                {{!-- <ul class="left valign-wrapper">
+                    <li>
+                        <a href="/" class="brand-logo"><img src="https://raw.githubusercontent.com/joeyklee/bec-explorer/gh-pages/assets/img/header-img.png" alt="" class="circle responsive-img z-depth-2 header-img valign"></a>
+                    </li>
+                    <li>
+                        <a href="/" class="brand-logo bl-text">BEC Explorer</a>
+                    </li>
+                </ul> --}}
