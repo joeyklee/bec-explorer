@@ -4,6 +4,7 @@ app.main = (function() {
     // store variables in el and expose them to other js files
     var el = {
         map: null,
+        username: "becexplorer",
         bec_cartocss:{
         	zone: null,
         	unit: null
@@ -20,7 +21,8 @@ app.main = (function() {
             fillOpacity: 0
         },
         xSelector: null,
-        ySelector: null
+        ySelector: null,
+        column_names:[],
     };
 
     return {
@@ -36,4 +38,5 @@ window.addEventListener('DOMContentLoaded', function() {
     app.mapapp.init();
     app.mapui.init();
     app.scatterplot.init();
+    
 });

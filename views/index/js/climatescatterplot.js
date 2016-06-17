@@ -12,6 +12,7 @@ app.scatterplot = (function(){
 		// console.log(xSelector, ySelector)
 
 		 var query = "SELECT DISTINCT map_label, " + el.xSelector + ", + " + el.ySelector + " FROM bgcv10beta_200m_wgs84_merge WHERE map_label IS NOT NULL AND " + el.xSelector + " IS NOT NULL AND " + el.ySelector + " IS NOT NULL";
+		 // var query = "SELECT * FROM bgcv10beta_200m_wgs84_merge WHERE map_label IS NOT NULL";
 
 		$.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
 		    el.xData = data.rows.map(function(obj) {
