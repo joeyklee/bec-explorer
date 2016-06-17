@@ -10,3 +10,4 @@ node_modules/*
 
 
 app/bower.json
+bower_components
