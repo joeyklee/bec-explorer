@@ -55,30 +55,23 @@ app.mapapp = (function() {
         console.log("hello");
         cartodb.createLayer(el.map, 'https://becexplorer.cartodb.com/api/v2/viz/f1dab0f4-29b3-11e6-9b74-0ef7f98ade21/viz.json')
             .addTo(el.map).done(function(layer) {
-
-                console.log(layer);
-
-                el.data_layer = layer;
-
+                // create an empty sublayer to add interactivity and color
+                el.data_layer = layer.getSubLayer(0);
                 // change the query for the first layer
-                  var subLayerOptions = {
-                      sql: "SELECT * FROM bgcv10beta_200m_wgs84",
-                                      cartocss: el.bec_cartocss.zone,
-                                      interactivity: "cartodb_id, map_label"
-                        }
-
-                  var sublayer = layer.getSubLayer(0);
-                  sublayer.set(subLayerOptions);
-                // el.data_layer.setCartoCSS(el.bec_cartocss.zone);
-
-                sublayer.setInteraction(true);
-
-                sublayer.on('featureOver', function(e, latlng, pos, data, subLayerIndex) {
+                var subLayerOptions = {
+                    sql: "SELECT * FROM bgcv10beta_200m_wgs84",
+                    cartocss: el.bec_cartocss.zone,
+                    interactivity: "cartodb_id, map_label"
+                }
+                el.data_layer.set(subLayerOptions)
+                    .setInteraction(true);
+                // create the tooltip
+                el.data_layer.on('featureOver', function(e, latlng, pos, data, subLayerIndex) {
                     el.selected_unit = data['map_label'];
                     highlightSelectedUnit();
                 }).on('featureOut', function(e, latlng, pos, data, layer) {
                     // console.log("out");
-                })
+                });
 
                 // cartodb tooltip overlay template
                 layer.leafletMap.viz.addOverlay({
@@ -88,8 +81,6 @@ app.mapapp = (function() {
                     position: 'top|left',
                     fields: [{ name: 'map_label' }]
                 });
-
-
             }).error(function(err) {
                 console.log("some error occurred: " + err);
             });
