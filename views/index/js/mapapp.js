@@ -56,6 +56,7 @@ app.mapapp = (function() {
         cartodb.createLayer(el.map, {
             user_name: el.username,
             type: 'cartodb',
+            https:true,
             sublayers: [{
                 sql: "SELECT * FROM bgcv10beta_200m_wgs84",
                 cartocss: el.bec_cartocss.zone,
