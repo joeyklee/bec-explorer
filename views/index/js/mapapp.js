@@ -11,8 +11,8 @@ app.mapapp = (function() {
             params;
         // map paramaters to pass to Leaflet
         params = {
-            center: [53.979608, -130.066386],
-            zoom: 5,
+            center: [50.536104, -120.947768],
+            zoom: 9,
             zoomControl: false,
             attributionControl: false
         };
@@ -46,13 +46,15 @@ app.mapapp = (function() {
         }).addTo(el.map);
         Stamen_TonerLabels.bringToFront();
 
+        // set timeout to zoom out on whole map
+        setTimeout(function() { el.map.setView([55.706998, -131.601530], 6) }, 3000);
     };
 
 
     var initCarto = function() {
         console.log("hello");
         cartodb.createLayer(el.map, {
-            user_name: 'becexplorer',
+            user_name: el.username,
             type: 'cartodb',
             sublayers: [{
                 sql: "SELECT * FROM bgcv10beta_200m_wgs84",
@@ -64,12 +66,12 @@ app.mapapp = (function() {
             el.data_layer.setInteraction(true);
 
             layer.on('featureOver', function(e, latlng, pos, data, subLayerIndex) {
-                el.selected_unit = data['map_label'];
-                highlightSelectedUnit();
-            }).on('featureOut', function(e, latlng, pos, data, layer) {
-                // console.log("out");
-            })
-            // cartodb tooltip overlay template
+                    el.selected_unit = data['map_label'];
+                    highlightSelectedUnit();
+                }).on('featureOut', function(e, latlng, pos, data, layer) {
+                    // console.log("out");
+                })
+                // cartodb tooltip overlay template
             layer.leafletMap.viz.addOverlay({
                 type: 'tooltip',
                 layer: el.data_layer,
@@ -80,24 +82,24 @@ app.mapapp = (function() {
                 fields: [{ name: 'map_label' }]
             });
 
-            
+
         }).error(function(err) {
             console.log("some error occurred: " + err);
         });
     };
 
-    var highlightSelectedUnit = function(){
+    var highlightSelectedUnit = function() {
         console.log(el.selected_unit);
     };
 
-    var changeMapDisplay = function(){
+    var changeMapDisplay = function() {
         $('.map-display-buttons').click(function() {
             var sel = $(this).text().toUpperCase()
             if (sel == "CLIMATE") {
                 console.log("climate button clicked");
-            } else if (sel == "BEC UNITS")  {
+            } else if (sel == "BEC UNITS") {
                 el.data_layer.setCartoCSS(el.bec_cartocss.unit);
-            } else if (sel == "ZONES"){
+            } else if (sel == "ZONES") {
                 el.data_layer.setCartoCSS(el.bec_cartocss.zone);
             };
         });
