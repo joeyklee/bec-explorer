@@ -46,17 +46,19 @@
     <!-- bec unit selector -->
     <div id="bec-unit-selector">
         <div class="btn-group">
-            <button type="button" class="btn btn-default" id="bec-unit-button">{{BEC UNIT}}</button>
+            <button type="button" class="btn btn-default" id="bec-unit-button-selector">BEC Zones</button>
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="bec-unit-dropdown">
                 <span class="caret"></span>
                 <span class="sr-only">Toggle Dropdown</span>
             </button>
-            <ul class="dropdown-menu" role="menu">
-                <li><a href="#">{{BEC UNIT 1}}</a></li>
-                <li><a href="#">{{BEC UNIT 2}}</a></li>
-                <li><a href="#">{{BEC UNIT 3}}</a></li>
+            <ul class="dropdown-menu map-dropdown" role="menu">
+                <li><a href="#" id="bec-unit-button">BEC Units</a></li>
+                <li><a href="#" id="bec-zone-button">BEC Zones</a></li>
                 <li class="divider"></li>
-                <li><a href="#">{{BEC UNIT A}}</a></li>
+                <li><a href="#">{{Annual Temperature}}</a></li>
+                <li><a href="#">{{Precipitation}}</a></li>
+                <li><a href="#">{{Climate Variable 3}}</a></li>
+                <li><a href="#">{{Climate Variable 4}}</a></li>
             </ul>
         </div>
     </div>
@@ -91,13 +93,13 @@
                         <br>
                         <button id="apply_filter">Filter</button>
                     </div>
-                    <hr>
+                    <!-- <hr>
                     <p>Legend</p>
                     <div class="row">
                         <div class="col-md-12 text-center" id="legend">
                             <img src="images/tmp-legend.png" height="10px">
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <hr>
@@ -110,7 +112,7 @@
                             <span class="caret"></span>
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
-                        <ul class="dropdown-menu" role="menu">
+                        <ul class="dropdown-menu chart-dropdown" role="menu">
                             <li><a href="#">{{Chart 3}}</a></li>
                             <li><a href="#">{{Chart 3}}</a></li>
                             <li><a href="#">{{Chart 3}}</a></li>
@@ -124,17 +126,26 @@
                 <div class="col-md-12 chart-options-menu">
                     <br>
                     <div>
-                        <p>Select X Axes
+                        <p>X:
                             <select name="select" id="x_data">
                                 <option value="ahm">ahm</option>
                                 <option value="bffp">bffp</option>
                                 <option value="cmd">cmd</option>
                                 <option value="elevation" selected>Elevation</option>
                             </select>
+                              Y:
+                            <select name="select" id="y_data">
+                                <option value="ahm">ahm</option>
+                                <option value="bffp">bffp</option>
+                                <option value="cmd" selected>cmd</option>
+                                <option value="elevation">Elevation</option>
+                            </select>
+                            <button id="replot">Plot</button>
                         </p>
+
                     </div>
-                    <div>
-                        <p>Select Y Axes
+                    <!-- <div>
+                        <p>Y:
                             <select name="select" id="y_data">
                                 <option value="ahm">ahm</option>
                                 <option value="bffp">bffp</option>
@@ -142,8 +153,8 @@
                                 <option value="elevation">Elevation</option>
                             </select>
                         </p>
-                    </div>
-                    <button id="replot">Plot</button>
+                    </div> -->
+                    <!-- <button id="replot">Plot</button> -->
                 </div>
             </div>
             <div class="row">
@@ -159,15 +170,43 @@
     </div>
     <!-- End sidebar menu -->
     <!-- Bottom Explore bar -->
-    <!-- <div id="explore-bar" class="container">
-        <div class="row">
-            <div class="col-md-12" id="photo-scroll">
-            
-                
+    <div id="explore-bar-toggle">Explore</div>
+    <div id="explore-bar" class="container">
+        <div class="col-md-12" id="photo-scroll">
+            <img class="photo-browse" src="https://res-5.cloudinary.com/simpleview/image/upload/c_fill,f_auto,h_1110,q_75,w_1920/v1/clients/vancouverbc/itineraries_72c84dca-fe8b-4ed7-8d58-881be3c43d48.jpg">
+            <img class="photo-browse" src="http://www.whistlerblackcomb.com/~/media/Images-Whistler-Blackcomb/Scenic/2015/Winter-Dual-Mountain-Village-Evening--Bluebird-Lights-DavidMcColm-26390.ashx?la=en&hash=4E464BDB819E40C278A3910B6F71BDC1056DD5D5">
+            <img class="photo-browse" src="http://www.whistlerblackcomb.com/~/media/Images-Whistler-Blackcomb/Scenic/2015/Winter-Dual-Mountain-Village-Evening--Bluebird-Lights-DavidMcColm-26390.ashx?la=en&hash=4E464BDB819E40C278A3910B6F71BDC1056DD5D5">
+            <img class="photo-browse" src="https://res-5.cloudinary.com/simpleview/image/upload/c_fill,f_auto,h_1110,q_75,w_1920/v1/clients/vancouverbc/itineraries_72c84dca-fe8b-4ed7-8d58-881be3c43d48.jpg">
+            <img class="photo-browse" src="https://res-5.cloudinary.com/simpleview/image/upload/c_fill,f_auto,h_1110,q_75,w_1920/v1/clients/vancouverbc/itineraries_72c84dca-fe8b-4ed7-8d58-881be3c43d48.jpg">
+            <img class="photo-browse" src="http://www.whistlerblackcomb.com/~/media/Images-Whistler-Blackcomb/Scenic/2015/Winter-Dual-Mountain-Village-Evening--Bluebird-Lights-DavidMcColm-26390.ashx?la=en&hash=4E464BDB819E40C278A3910B6F71BDC1056DD5D5">
+            <img class="photo-browse" src="https://res-5.cloudinary.com/simpleview/image/upload/c_fill,f_auto,h_1110,q_75,w_1920/v1/clients/vancouverbc/itineraries_72c84dca-fe8b-4ed7-8d58-881be3c43d48.jpg">
+            <img class="photo-browse" src="https://res-5.cloudinary.com/simpleview/image/upload/c_fill,f_auto,h_1110,q_75,w_1920/v1/clients/vancouverbc/itineraries_72c84dca-fe8b-4ed7-8d58-881be3c43d48.jpg">
+            <img class="photo-browse" src="https://res-5.cloudinary.com/simpleview/image/upload/c_fill,f_auto,h_1110,q_75,w_1920/v1/clients/vancouverbc/itineraries_72c84dca-fe8b-4ed7-8d58-881be3c43d48.jpg">
+            <img class="photo-browse" src="https://res-5.cloudinary.com/simpleview/image/upload/c_fill,f_auto,h_1110,q_75,w_1920/v1/clients/vancouverbc/itineraries_72c84dca-fe8b-4ed7-8d58-881be3c43d48.jpg">
+            <img class="photo-browse" src="https://res-5.cloudinary.com/simpleview/image/upload/c_fill,f_auto,h_1110,q_75,w_1920/v1/clients/vancouverbc/itineraries_72c84dca-fe8b-4ed7-8d58-881be3c43d48.jpg">
+        </div>
+    </div>
+    <!-- end explore bar -->
+    <!-- Modal -->
+    <button id="photoModal-trigger" type="button" class="btn btn-info btn-lg hidden" data-toggle="modal" data-target="#photoModal">Open Modal</button>
+    <div id="photoModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                    <img src="" id="photo-browse-large">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
-    </div>  -->
-    <!-- end explore bar -->
+    </div>
 </div>
 <!-- End map -->
 <!-- About page -->

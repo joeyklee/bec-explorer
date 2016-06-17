@@ -1,0 +1,126 @@
+<link rel="stylesheet" type="text/css" href="index/style/style.css">
+<link rel="stylesheet" type="text/css" href="index/style/nouislider.css">
+
+<div id="mapid"></div>
+
+<div id="domelems">
+    <div class="row">
+        <div class="expander active z-depth-1"></div>
+        <div class="sidebar active white z-depth-2">
+            <div class="sidebar-items">
+                <div class="row sidebar-nav-top">
+                    <div class="center-align">
+                        <a class="waves-effect waves-light btn disabled map-display-buttons">BEC Units</a>
+                        <a class="waves-effect waves-light btn map-display-buttons">Zones</a>
+                        <a class="waves-effect waves-light btn disabled map-display-buttons">Climate</a>
+                        <a><i class="material-icons climate-tool-button">arrow_drop_down_circle</i></a>
+                    </div>
+                    <div class="climate-tools">
+                        <label>Climate Scenario</label>
+                        <div class="input-field">
+                            <select>
+                                <option value="1" selected>RCP 4.5</option>
+                                <option value="2">RCP 8.0</option>
+                            </select>
+                        </div>
+                        <label>Time Period</label>
+                        <div class="input-field">
+                            <select>
+                                <option value="1" selected>1961-1990</option>
+                                <option value="2">2011-2040</option>
+                                <option value="3">2041-2070</option>
+                                <option value="3">2071-2100</option>
+                            </select>
+                        </div>
+                        <label>Climate Variable</label>
+                        <div class="input-field climate-variables">
+                            <select>
+                                <option value="map" selected>Mean Annual Precip</option>
+                                <option value="ahm">Annual Heat Moisture Index</option>
+                                <option value="elevation">Elevation</option>
+                            </select>
+                        </div>
+                        <br>
+                        <label>Select Range</label>
+                        <div class="" id="range-input"></div>
+                        <br>
+                    </div>
+                </div>
+                <div class="row">
+                    <ul class="collapsible z-depth-0" data-collapsible="accordion">
+                        <li>
+                            <div class="collapsible-header map-description"> <i class="material-icons right">add</i>Description</div>
+                            <div class="collapsible-body">
+                                <div class="row col s12">
+                                    <div class="col s6 offset-s3">
+                                        <img src="https://raw.githubusercontent.com/joeyklee/bec-explorer/gh-pages/assets/img/header-img.png" alt="" class="circle responsive-img z-depth-2 header-img">
+                                    </div>
+                                </div>
+                                <p>
+                                    <b>Welcome to the BEC Explorer</b>. Using this tool, you can access the Biogeoclimate Ecosystem Classification (BEC) zones data - past, present, and future. Visualize the data on the map and as a scatterplot and timeseries. The tool is under active development :) </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="collapsible-header scatter-panel"> <i class="material-icons right">add</i>Scatterplot</div>
+                            <div class="collapsible-body">
+                            	<div id="scatter-chart"></div>
+                                {{!-- <img id="scatter-chart" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Bertrand3-scatterplot.svg/2000px-Bertrand3-scatterplot.svg.png"> --}}
+                                <div class="row scatter-control-panel">
+                                    <div class="col s12">
+                                        <div class="col s6">
+                                            <label>x</label>
+                                            <div class="input-field scatter-x climate-variables">
+                                                <select>
+                                                    <option value="map" selected>Mean Annual Precip</option>
+                                                    <option value="ahm">Annual Heat Moisture Index</option>
+                                                    <option value="elevation">Elevation</option>
+                                                </select>
+                                            </div>
+                                            <div class="switch">
+                                                <label>
+                                                    Log: Off
+                                                    <input type="checkbox">
+                                                    <span class="lever"></span> On
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col s6">
+                                            <label>y</label>
+                                            <div class="input-field scatter-y climate-variables">
+                                                <select>
+                                                    <option value="map" selected>Mean Annual Precip</option>
+                                                    <option value="ahm">Annual Heat Moisture Index</option>
+                                                    <option value="elevation">Elevation</option>
+                                                </select>
+                                            </div>
+                                            <div class="switch">
+                                                <label>
+                                                    Log: Off
+                                                    <input type="checkbox">
+                                                    <span class="lever"></span> On
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="collapsible-header"> <i class="material-icons right">add</i>Time Series</div>
+                            <div class="collapsible-body">
+                                <img id="scatter-chart" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Bertrand3-scatterplot.svg/2000px-Bertrand3-scatterplot.svg.png">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="index/js/nouislider.js"></script>
+<script type="text/javascript" src="index/js/index.js"></script>
+<script type="text/javascript" src="index/js/mapcolors.js"></script>
+<script type="text/javascript" src="index/js/mapapp.js"></script>
+<script type="text/javascript" src="index/js/mapui.js"></script>
+<script type="text/javascript" src="index/js/climatescatterplot.js"></script>
