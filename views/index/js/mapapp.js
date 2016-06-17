@@ -53,42 +53,16 @@ app.mapapp = (function() {
 
     var initCarto = function() {
         console.log("hello");
-        // cartodb.createLayer(el.map, {
-        //     user_name: el.username,
-        //     type: 'cartodb',
-        //     https: true,
-        //     sublayers: [{
-        //         sql: "SELECT * FROM bgcv10beta_200m_wgs84",
-        //         cartocss: el.bec_cartocss.zone,
-        //         interactivity: "cartodb_id, map_label"
-        //     }]
-        // }).addTo(el.map).done(function(layer) {
-        //     el.data_layer = layer.getSubLayer(0);
-        //     el.data_layer.setInteraction(true);
-
-        //     layer.on('featureOver', function(e, latlng, pos, data, subLayerIndex) {
-        //             el.selected_unit = data['map_label'];
-        //             highlightSelectedUnit();
-        //         }).on('featureOut', function(e, latlng, pos, data, layer) {
-        //             // console.log("out");
-        //         })
-        //         // cartodb tooltip overlay template
-        //     layer.leafletMap.viz.addOverlay({
-        //         type: 'tooltip',
-        //         layer: el.data_layer,
-        //         // template: '<div class="cartodb-tooltip-content-wrapper"><br>\
-        //         // <center><h5>{{map_label}}</h5></center><br></div>', 
-        //         template: '<p>{{map_label}}</p>',
-        //         position: 'top|left',
-        //         fields: [{ name: 'map_label' }]
-        //     });
-        // }).error(function(err) {
-        //     console.log("some error occurred: " + err);
-        // });
-
-        cartodb.createLayer(el.map, 'https://becexplorer.cartodb.com/api/v2/viz/f1dab0f4-29b3-11e6-9b74-0ef7f98ade21/viz.json')
-        .addTo(el.map).done(function(layer) {
-            console.log(layer);
+        cartodb.createLayer(el.map, {
+            user_name: el.username,
+            type: 'cartodb',
+            https:true,
+            sublayers: [{
+                sql: "SELECT * FROM bgcv10beta_200m_wgs84",
+                cartocss: el.bec_cartocss.zone,
+                interactivity: "cartodb_id, map_label"
+            }]
+        }).addTo(el.map).done(function(layer) {
             el.data_layer = layer.getSubLayer(0);
             el.data_layer.setInteraction(true);
 
@@ -108,11 +82,11 @@ app.mapapp = (function() {
                 position: 'top|left',
                 fields: [{ name: 'map_label' }]
             });
+
+
         }).error(function(err) {
             console.log("some error occurred: " + err);
         });
-
-        
     };
 
     var highlightSelectedUnit = function() {
