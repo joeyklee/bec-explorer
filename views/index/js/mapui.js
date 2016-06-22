@@ -83,6 +83,33 @@ app.mapui = (function() {
         });
     }
 
+    function populate(selector, objlist) {
+        objlist.forEach(function(d, i) {
+            if (i == 0) {
+                $(selector)
+                    .append('<option value="' + d + '" selected>' + d + '</option>')
+            } else {
+                $(selector)
+                    .append('<option value="' + d + '">' + d + '</option>')
+            }
+        })
+    }
+
+    function feedBecUnitSelector(){
+        var query = "SELECT DISTINCT map_label FROM bgcv10beta_200m_wgs84_merge WHERE map_label IS NOT NULL";
+        $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
+            // console.log(data.rows);
+            data.rows.forEach(function(d){
+                el.bec_names.push(d.map_label);
+            })
+
+            // console.log(el.bec_names);
+            $('.bec-unit-variables select').children().remove().end();
+            populate('.bec-unit-variables select', el.bec_names);
+        });
+        // $("select").material_select();
+    }
+
     function getAllClimateVariables() {
         // fetch the geometry
         var sql = new cartodb.SQL({ user: el.username, format: "geojson" });
@@ -93,26 +120,15 @@ app.mapui = (function() {
 
             $('.climate-variables select').children().remove().end();
 
-            function populate(selector) {
-                el.column_names.forEach(function(d, i) {
-                    if (i == 0) {
-                        $(selector)
-                            .append('<option value="' + d + '" selected>' + d + '</option>')
-                    } else {
-                        $(selector)
-                            .append('<option value="' + d + '">' + d + '</option>')
-                    }
-                })
-            }
-
-            populate('.climate-variables select');
+            populate('.climate-variables select', el.column_names);
 
             // call material select AFTER updating all the options to get the material style
             // otherwise it wont work !! 
             $("select").material_select();
         });
-
     }
+
+
 
     var init = function() {
         el = app.main.el;
@@ -123,7 +139,9 @@ app.mapui = (function() {
         initWithMapDescription();
         initSlider();
         activateMapDisplayButtons();
+        feedBecUnitSelector();
         getAllClimateVariables();
+        
         // initMaterialDesignSelection(); // need to call this after getAllClimateVariables to update the form
 
         // initSideNav(); // this is done in the main layout

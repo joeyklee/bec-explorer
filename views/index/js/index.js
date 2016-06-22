@@ -23,6 +23,7 @@ app.main = (function() {
         xSelector: null,
         ySelector: null,
         column_names:[],
+        bec_names:[]
     };
 
     return {

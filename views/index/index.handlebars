@@ -16,34 +16,61 @@
                         <a><i class="material-icons climate-tool-button">arrow_drop_down_circle</i></a>
                     </div>
                     <div class="climate-tools">
-                        <label>Climate Scenario</label>
-                        <div class="input-field">
-                            <select>
-                                <option value="1" selected>RCP 4.5</option>
-                                <option value="2">RCP 8.0</option>
-                            </select>
+                        <label>Toolbox</label>
+                        <div class="row">
+                            <div class="col s12 comparison-dropdowns">
+                                <div class="col s6">
+                                    <label>Focal BEC Unit</label>
+                                    <div class="input-field bec-unit-variables">
+                                        <select>
+                                            <option value="1" selected>BEC Unit 1</option>
+                                            <option value="2">BEC Unit 2</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col s6">
+                                    <label>Comparison BEC Unit</label>
+                                    <div class="input-field bec-unit-variables">
+                                        <select>
+                                            <option value="1" selected>BEC Unit 1</option>
+                                            <option value="2">BEC Unit 2</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        
+                            <div class="col s12">
+                                <label>Climate Scenario</label>
+                                <div class="input-field">
+                                    <select>
+                                        <option value="1" selected>RCP 4.5</option>
+                                        <option value="2">RCP 8.0</option>
+                                    </select>
+                                </div>
+                            <label>Time Period</label>
+                            <div class="input-field">
+                                <select>
+                                    <option value="1" selected>1961-1990</option>
+                                    <option value="2">2011-2040</option>
+                                    <option value="3">2041-2070</option>
+                                    <option value="3">2071-2100</option>
+                                </select>
+                            </div>
+                            <label>Climate Variable</label>
+                            <div class="input-field climate-variables">
+                                <select>
+                                    <option value="map" selected>Mean Annual Precip</option>
+                                    <option value="ahm">Annual Heat Moisture Index</option>
+                                    <option value="elevation">Elevation</option>
+                                </select>
+                            </div>
+                            <br>
+                            <label>Select Range</label>
+                            <div class="" id="range-input"></div>
+                            <br>
+                            </div>
                         </div>
-                        <label>Time Period</label>
-                        <div class="input-field">
-                            <select>
-                                <option value="1" selected>1961-1990</option>
-                                <option value="2">2011-2040</option>
-                                <option value="3">2041-2070</option>
-                                <option value="3">2071-2100</option>
-                            </select>
-                        </div>
-                        <label>Climate Variable</label>
-                        <div class="input-field climate-variables">
-                            <select>
-                                <option value="map" selected>Mean Annual Precip</option>
-                                <option value="ahm">Annual Heat Moisture Index</option>
-                                <option value="elevation">Elevation</option>
-                            </select>
-                        </div>
-                        <br>
-                        <label>Select Range</label>
-                        <div class="" id="range-input"></div>
-                        <br>
                     </div>
                 </div>
                 <div class="row">
