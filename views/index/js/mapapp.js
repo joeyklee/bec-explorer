@@ -48,6 +48,10 @@ app.mapapp = (function() {
 
         // set timeout to zoom out on whole map
         setTimeout(function() { el.map.setView([55.706998, -131.601530], 6) }, 3000);
+
+        // set geojson layers:
+        el.focal_poly = L.geoJson(null,el.focal_style).addTo(el.map)
+        el.comparison_poly = L.geoJson(null, el.comparison_style).addTo(el.map)
     };
 
 
@@ -137,9 +141,14 @@ app.mapapp = (function() {
                     draggable: true
                 }).addTo(el.map);
 
+                var marker;
+                var position;
                 el.focal_pin.on("drag", function(e) {
-                    var marker = e.target;
-                    var position = marker.getLatLng();
+                    marker = e.target;
+                    position = marker.getLatLng();
+                    el.focal_poly.clearLayers();
+                }).on("dragend", function(e){
+                    showComparisonUnit(position, el.focal_poly);
                 });
             } else{
                 console.log("focal pin already added");
@@ -154,9 +163,14 @@ app.mapapp = (function() {
                     draggable: true
                 }).addTo(el.map);
 
+                var marker;
+                var position;
                 el.comparison_pin.on("drag", function(e) {
-                    var marker = e.target;
-                    var position = marker.getLatLng();
+                    marker = e.target;
+                    position = marker.getLatLng();
+                    el.comparison_poly.clearLayers();
+                }).on("dragend", function(e){
+                    showComparisonUnit(position, el.comparison_poly);
                 });
             } else{
                 console.log("comparison pin already added");
@@ -171,8 +185,23 @@ app.mapapp = (function() {
             el.map.removeLayer(el.comparison_pin);
             el.focal_pin = null;
             el.comparison_pin = null;
+            el.focal_poly.clearLayers();
+            el.comparison_poly.clearLayers();
         })
     }
+
+    function showComparisonUnit(location, polyobj){
+        var lat = location.lat;
+        var lng = location.lng;
+        var query = 'SELECT * from bgcv10beta_200m_wgs84 WHERE  ST_Intersects( ST_SetSRID(ST_Point(' + lng+ ',' + lat +'),4326), bgcv10beta_200m_wgs84.the_geom)'
+
+        var sql = new cartodb.SQL({ user: el.username, format: "geojson" });
+        sql.execute(query).done(function(data) {
+            polyobj.addData(data);
+        });
+    }   
+        
+        
 
     var init = function() {
         el = app.main.el;

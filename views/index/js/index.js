@@ -20,12 +20,26 @@ app.main = (function() {
             opacity: 0.85,
             fillOpacity: 0
         },
+        focal_style: {
+            color: "#ff9999",
+            weight: 2,
+            opacity: 0.85,
+            fillOpacity: 0.15
+        },
+        comparison_style: {
+            color: "#b3d9ff",
+            weight: 2,
+            opacity: 0.85,
+            fillOpacity: 0.15
+        },
         xSelector: null,
         ySelector: null,
         column_names:[],
         bec_names:[],
         focal_pin:null,
-        comparison_pin:null
+        comparison_pin:null,
+        focal_poly: null,
+        comparison_poly: null
     };
 
     return {
