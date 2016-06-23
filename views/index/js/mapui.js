@@ -52,8 +52,9 @@ app.mapui = (function() {
         // init the materialize selection
         $('.map-description').click();
         // $('.scatter-panel').click();
-
     }
+
+
 
 
     function initSlider() {
@@ -78,7 +79,7 @@ app.mapui = (function() {
             if ($(this).text().toUpperCase() == "CLIMATE") {
                 $('.climate-tools, .climate-tool-button').addClass("active");
             } else {
-                $('.climate-tools, .climate-tool-button').removeClass("active");
+                $('.climate-tools, .climate-tool-button').addClass("active");
             };
         });
     }
@@ -109,6 +110,8 @@ app.mapui = (function() {
         });
         // $("select").material_select();
     }
+
+    
 
     function getAllClimateVariables() {
         // fetch the geometry
