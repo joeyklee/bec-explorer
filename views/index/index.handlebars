@@ -1,27 +1,48 @@
 <link rel="stylesheet" type="text/css" href="index/style/style.css">
 <link rel="stylesheet" type="text/css" href="index/style/nouislider.css">
+<link rel="stylesheet" type="text/css" href="index/style/cartodb-infowindow-default.css">
+<div id="mapid">
+    
 
-<div id="mapid"></div>
+</div>
+
+<div class="my-action-buttons">
+    <div class="fixed-action-btn horizontal click-to-toggle">
+       <a class="btn-floating btn-large teal">
+         <i class="material-icons">menu</i>
+       </a>
+       <ul>
+         <li><a class="btn-floating red add-focal-pin"><i class="material-icons">location_on</i></a></li>
+         <li><a class="btn-floating yellow darken-1 add-comparison-pin"><i class="material-icons">location_on</i></a></li>
+         <li><a class="btn-floating green reset-comparison-pins"><i class="material-icons">location_off</i></a></li>
+         <li><a class="btn-floating blue"><i class="material-icons">publish</i></a></li>
+       </ul>
+     </div>
+</div> 
+
 
 <div id="domelems">
     <div class="row">
         <div class="expander active z-depth-1"></div>
         <div class="sidebar active white z-depth-2">
             <div class="sidebar-items">
-                <div class="row sidebar-nav-top">
-                    <div class="center-align">
-                        <a class="waves-effect waves-light btn disabled map-display-buttons">BEC Units</a>
-                        <a class="waves-effect waves-light btn map-display-buttons">Zones</a>
-                        <a class="waves-effect waves-light btn disabled map-display-buttons">Climate</a>
-                        <a><i class="material-icons climate-tool-button">arrow_drop_down_circle</i></a>
+                    <div class="row sidebar-nav-top">
+                    <div class="row">
+                        <label>Map By</label>
+                        <div class="center-align">
+                            <a class="waves-effect waves-light btn disabled map-display-buttons">BEC Units</a>
+                            <a class="waves-effect waves-light btn map-display-buttons">Zones</a>
+                            <a class="waves-effect waves-light btn disabled map-display-buttons">Climate</a>
+                            <a><i class="material-icons climate-tool-button">arrow_drop_down_circle</i></a>
+                        </div>
                     </div>
                     <div class="climate-tools">
                         <label>Toolbox</label>
                         <div class="row">
-                            <div class="col s12 comparison-dropdowns">
+                            <div class="comparison-dropdowns">
                                 <div class="col s6">
                                     <label>Focal BEC Unit</label>
-                                    <div class="input-field bec-unit-variables">
+                                    <div class="input-field bec-unit-variables bec-focal-selector">
                                         <select>
                                             <option value="1" selected>BEC Unit 1</option>
                                             <option value="2">BEC Unit 2</option>
@@ -38,8 +59,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                        
                             <div class="col s12">
                                 <label>Climate Scenario</label>
                                 <div class="input-field">
@@ -48,27 +67,27 @@
                                         <option value="2">RCP 8.0</option>
                                     </select>
                                 </div>
-                            <label>Time Period</label>
-                            <div class="input-field">
-                                <select>
-                                    <option value="1" selected>1961-1990</option>
-                                    <option value="2">2011-2040</option>
-                                    <option value="3">2041-2070</option>
-                                    <option value="3">2071-2100</option>
-                                </select>
-                            </div>
-                            <label>Climate Variable</label>
-                            <div class="input-field climate-variables">
-                                <select>
-                                    <option value="map" selected>Mean Annual Precip</option>
-                                    <option value="ahm">Annual Heat Moisture Index</option>
-                                    <option value="elevation">Elevation</option>
-                                </select>
-                            </div>
-                            <br>
-                            <label>Select Range</label>
-                            <div class="" id="range-input"></div>
-                            <br>
+                                <label>Time Period</label>
+                                <div class="input-field">
+                                    <select>
+                                        <option value="1" selected>1961-1990</option>
+                                        <option value="2">2011-2040</option>
+                                        <option value="3">2041-2070</option>
+                                        <option value="3">2071-2100</option>
+                                    </select>
+                                </div>
+                                <label>Climate Variable</label>
+                                <div class="input-field climate-variables">
+                                    <select>
+                                        <option value="map" selected>Mean Annual Precip</option>
+                                        <option value="ahm">Annual Heat Moisture Index</option>
+                                        <option value="elevation">Elevation</option>
+                                    </select>
+                                </div>
+                                <br>
+                                <label>Select Range</label>
+                                <div class="" id="range-input"></div>
+                                <br>
                             </div>
                         </div>
                     </div>
@@ -84,14 +103,14 @@
                                     </div>
                                 </div>
                                 <p>
-                                    <b>Welcome to the BEC Climate Explorer.</b> This web tool helps you dig deep into the climates of British Columbia — past, present, and future. The heart of this tool is the Biogeoclimatic Ecosystem Classification (BEC). BEC differentiates more than 200 climate types — a richly detailed map of British Columbia’s climatic diversity. Use this tool to explore the climates of BC, compare them to each other, and see how they are changing over time. 
- 								</p>
+                                    <b>Welcome to the BEC Climate Explorer.</b> This web tool helps you dig deep into the climates of British Columbia — past, present, and future. The heart of this tool is the Biogeoclimatic Ecosystem Classification (BEC). BEC differentiates more than 200 climate types — a richly detailed map of British Columbia’s climatic diversity. Use this tool to explore the climates of BC, compare them to each other, and see how they are changing over time.
+                                </p>
                             </div>
                         </li>
                         <li>
                             <div class="collapsible-header scatter-panel"> <i class="material-icons right">add</i>Scatterplot</div>
                             <div class="collapsible-body">
-                            	<div id="scatter-chart"></div>
+                                <div id="scatter-chart"></div>
                                 {{!-- <img id="scatter-chart" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Bertrand3-scatterplot.svg/2000px-Bertrand3-scatterplot.svg.png"> --}}
                                 <div class="row scatter-control-panel">
                                     <div class="col s12">
@@ -146,9 +165,15 @@
     </div>
 </div>
 
+
+
+
+
 <script type="text/javascript" src="index/js/nouislider.js"></script>
 <script type="text/javascript" src="index/js/index.js"></script>
 <script type="text/javascript" src="index/js/mapcolors.js"></script>
 <script type="text/javascript" src="index/js/mapapp.js"></script>
 <script type="text/javascript" src="index/js/mapui.js"></script>
 <script type="text/javascript" src="index/js/climatescatterplot.js"></script>
+
+

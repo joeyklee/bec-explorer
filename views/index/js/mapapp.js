@@ -61,14 +61,39 @@ app.mapapp = (function() {
                 var subLayerOptions = {
                     sql: "SELECT * FROM bgcv10beta_200m_wgs84",
                     cartocss: el.bec_cartocss.zone,
-                    interactivity: "cartodb_id, map_label"
+                    interactivity: "cartodb_id, map_label",
+                    infowindow:true
                 }
+                
                 el.data_layer.set(subLayerOptions)
                     .setInteraction(true);
+               
+                // el.map.on('click', function(e) {        
+                //         var popLocation= e.latlng;
+                //         var popup = L.popup()
+                //         .setLatLng(popLocation)
+                //         .setContent('<div class="my-info-window"></div>\
+                //             <div><button>Focal</button><button>Comparison</button></div>')
+                //         .openOn(el.map);        
+                //     });
+                // // when you create a visualization from scratch you need to 
+                // // use cdb.vis.Vis.addInfowindow to set the params
+                // // if you use viz.json the infowindow params are inside it
+                // cdb.vis.Vis.addInfowindow(el.map, el.data_layer, ['cartodb_id','map_label'], {
+                //   // we provide a nice default template, if you want yours uncomment this
+                //   infowindowTemplate: $('#infowindow_template').html()
+                // });
+
                 // create the tooltip
+                // el.data_layer.on('featureClick', function(e, latlng, pos, data, subLayerIndex) {
+                //     el.selected_unit = data['map_label'];
+                //     $('.my-info-window').text(el.selected_unit);
+                // })
+
                 el.data_layer.on('featureOver', function(e, latlng, pos, data, subLayerIndex) {
                     el.selected_unit = data['map_label'];
                     highlightSelectedUnit();
+
                 }).on('featureOut', function(e, latlng, pos, data, layer) {
                     // console.log("out");
                 });
@@ -87,7 +112,7 @@ app.mapapp = (function() {
     };
 
     var highlightSelectedUnit = function() {
-        console.log(el.selected_unit);
+        // console.log(el.selected_unit);
     };
 
     var changeMapDisplay = function() {
@@ -104,13 +129,59 @@ app.mapapp = (function() {
     };
 
 
+    function addFocalPin(){
+        $('.add-focal-pin').click( function(){
+            if(el.focal_pin == null){
+                var location = el.map.getCenter();
+                el.focal_pin = new L.marker(location,{
+                    draggable: true
+                }).addTo(el.map);
 
+                el.focal_pin.on("drag", function(e) {
+                    var marker = e.target;
+                    var position = marker.getLatLng();
+                });
+            } else{
+                console.log("focal pin already added");
+            }
+        });
+    }
+    function addComparisonPin(){
+        $('.add-comparison-pin').click( function(){
+            if(el.comparison_pin == null){
+                var location = el.map.getCenter();
+                el.comparison_pin = new L.marker(location,{
+                    draggable: true
+                }).addTo(el.map);
+
+                el.comparison_pin.on("drag", function(e) {
+                    var marker = e.target;
+                    var position = marker.getLatLng();
+                });
+            } else{
+                console.log("comparison pin already added");
+            }
+        });
+    }
+
+    function clearComparisonPins(){
+        $('.reset-comparison-pins').click(function(){
+            console.log('reset clicked');
+            el.map.removeLayer(el.focal_pin);
+            el.map.removeLayer(el.comparison_pin);
+            el.focal_pin = null;
+            el.comparison_pin = null;
+        })
+    }
 
     var init = function() {
         el = app.main.el;
         initMap();
         initCarto();
         changeMapDisplay();
+        addFocalPin();
+        addComparisonPin();
+        clearComparisonPins();
     };
 
     return {

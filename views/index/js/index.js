@@ -23,7 +23,9 @@ app.main = (function() {
         xSelector: null,
         ySelector: null,
         column_names:[],
-        bec_names:[]
+        bec_names:[],
+        focal_pin:null,
+        comparison_pin:null
     };
 
     return {
