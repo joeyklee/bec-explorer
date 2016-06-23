@@ -50,7 +50,7 @@ app.mapapp = (function() {
         setTimeout(function() { el.map.setView([55.706998, -131.601530], 6) }, 3000);
 
         // set geojson layers:
-        el.focal_poly = L.geoJson(null,el.focal_style).addTo(el.map)
+        el.focal_poly = L.geoJson(null, el.focal_style).addTo(el.map)
         el.comparison_poly = L.geoJson(null, el.comparison_style).addTo(el.map)
     };
 
@@ -66,12 +66,12 @@ app.mapapp = (function() {
                     sql: "SELECT * FROM bgcv10beta_200m_wgs84",
                     cartocss: el.bec_cartocss.zone,
                     interactivity: "cartodb_id, map_label",
-                    infowindow:true
+                    infowindow: true
                 }
-                
+
                 el.data_layer.set(subLayerOptions)
                     .setInteraction(true);
-               
+
                 // el.map.on('click', function(e) {        
                 //         var popLocation= e.latlng;
                 //         var popup = L.popup()
@@ -133,11 +133,11 @@ app.mapapp = (function() {
     };
 
 
-    function addFocalPin(){
-        $('.add-focal-pin').click( function(){
-            if(el.focal_pin == null){
+    function addFocalPin() {
+        $('.add-focal-pin').click(function() {
+            if (el.focal_pin == null) {
                 var location = el.map.getCenter();
-                el.focal_pin = new L.marker(location,{
+                el.focal_pin = new L.marker(location, {
                     draggable: true
                 }).addTo(el.map);
 
@@ -147,19 +147,20 @@ app.mapapp = (function() {
                     marker = e.target;
                     position = marker.getLatLng();
                     el.focal_poly.clearLayers();
-                }).on("dragend", function(e){
-                    showComparisonUnit(position, el.focal_poly);
+                }).on("dragend", function(e) {
+                    showComparisonUnit(position, el.focal_poly, "focal");
                 });
-            } else{
+            } else {
                 console.log("focal pin already added");
             }
         });
     }
-    function addComparisonPin(){
-        $('.add-comparison-pin').click( function(){
-            if(el.comparison_pin == null){
+
+    function addComparisonPin() {
+        $('.add-comparison-pin').click(function() {
+            if (el.comparison_pin == null) {
                 var location = el.map.getCenter();
-                el.comparison_pin = new L.marker(location,{
+                el.comparison_pin = new L.marker(location, {
                     draggable: true
                 }).addTo(el.map);
 
@@ -169,17 +170,17 @@ app.mapapp = (function() {
                     marker = e.target;
                     position = marker.getLatLng();
                     el.comparison_poly.clearLayers();
-                }).on("dragend", function(e){
-                    showComparisonUnit(position, el.comparison_poly);
+                }).on("dragend", function(e) {
+                    showComparisonUnit(position, el.comparison_poly, "comparison");
                 });
-            } else{
+            } else {
                 console.log("comparison pin already added");
             }
         });
     }
 
-    function clearComparisonPins(){
-        $('.reset-comparison-pins').click(function(){
+    function clearComparisonPins() {
+        $('.reset-comparison-pins').click(function() {
             console.log('reset clicked');
             el.map.removeLayer(el.focal_pin);
             el.map.removeLayer(el.comparison_pin);
@@ -190,18 +191,39 @@ app.mapapp = (function() {
         })
     }
 
-    function showComparisonUnit(location, polyobj){
+    function showComparisonUnit(location, polyobj, selectDropdown) {
         var lat = location.lat;
         var lng = location.lng;
-        var query = 'SELECT * from bgcv10beta_200m_wgs84 WHERE  ST_Intersects( ST_SetSRID(ST_Point(' + lng+ ',' + lat +'),4326), bgcv10beta_200m_wgs84.the_geom)'
+        
+        var query = 'SELECT * from bgcv10beta_200m_wgs84 WHERE ST_Intersects( ST_SetSRID(ST_Point(' + lng + ',' + lat + '),4326), bgcv10beta_200m_wgs84.the_geom)'
+
 
         var sql = new cartodb.SQL({ user: el.username, format: "geojson" });
         sql.execute(query).done(function(data) {
             polyobj.addData(data);
+
+            if (selectDropdown == "focal") {
+                console.log('focal');
+                updateSelectedFocalDropdown(data.features[0].properties.map_label);
+            } else {
+                console.log('comparison');
+                updateSelectedComparisonDropdown(data.features[0].properties.map_label);
+            }
         });
-    }   
-        
-        
+    }
+
+    function updateSelectedFocalDropdown(selectedUnit) {
+        console.log(selectedUnit);
+        $(".bec-focal-selector select").val(selectedUnit);
+        $('select').material_select();
+    }
+
+    function updateSelectedComparisonDropdown(selectedUnit) {
+        console.log(selectedUnit);
+        $(".bec-comparison-selector select").val(selectedUnit);
+        $('select').material_select();
+    }
+
 
     var init = function() {
         el = app.main.el;
