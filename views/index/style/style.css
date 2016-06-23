@@ -141,8 +141,10 @@ body {
   padding:0 1.5rem;
 }
 
+
 i.climate-tool-button{
   color:grey;
+  cursor:pointer;
 }
 i.climate-tool-button.active{
   color:teal;
@@ -153,6 +155,17 @@ i.climate-tool-button.active{
 	width:450px;
 }
 
+
+.fixed-action-btn{
+  position: absolute; 
+  height: 70px;
+  top: 75px; 
+  right: 10px;
+}
+
+.fixed-action-btn.horizontal ul{
+  width:275px;
+}
 
 /*.collapsible-body p{
   padding: 0.5 2rem;
