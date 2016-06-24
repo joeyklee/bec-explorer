@@ -196,7 +196,7 @@ app.mapapp = (function() {
         var lat = location.lat;
         var lng = location.lng;
         
-        var query = 'SELECT * from bgcv10beta_200m_wgs84_merge_normal_1981_2010msy WHERE ST_Intersects( ST_SetSRID(ST_Point(' + lng + ',' + lat + '),4326), bgcv10beta_200m_wgs84.the_geom)'
+        var query = 'SELECT * from bgcv10beta_200m_wgs84 WHERE ST_Intersects( ST_SetSRID(ST_Point(' + lng + ',' + lat + '),4326), bgcv10beta_200m_wgs84.the_geom)'
 
 
         var sql = new cartodb.SQL({ user: el.username, format: "geojson" });
