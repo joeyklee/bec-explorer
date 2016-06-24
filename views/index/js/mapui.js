@@ -188,7 +188,8 @@ app.mapui = (function() {
     }
 
     // super hacky way to recolor map - take care of this later by 
-    // refactoring the colorMapByClimate() function
+    // refactoring the colorMapByClimate() function - but in the end it kind of works nicely
+    // since it fires the "climate" button and updates the map at the same time.
     function updateClimateMap(){
         $('.climate-variables-map').change(function(){
             $('.climate-variables-button').click();
@@ -204,7 +205,7 @@ app.mapui = (function() {
         initExpander();
         initClimateToolsNavigation();
         initWithMapDescription();
-        initSlider();
+        // initSlider();
         activateMapDisplayButtons();
         feedBecUnitSelector();
         getAllClimateVariables();
