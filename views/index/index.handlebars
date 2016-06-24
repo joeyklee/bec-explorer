@@ -32,7 +32,7 @@
                         <div class="center-align">
                             <a class="waves-effect waves-light btn disabled map-display-buttons">BEC Units</a>
                             <a class="waves-effect waves-light btn map-display-buttons">Zones</a>
-                            <a class="waves-effect waves-light btn disabled map-display-buttons">Climate</a>
+                            <a class="waves-effect waves-light btn disabled map-display-buttons climate-variables-button">Climate</a>
                             <a><i class="material-icons climate-tool-button">arrow_drop_down_circle</i></a>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                             <div class="comparison-dropdowns">
                                 <div class="col s6">
                                     <div class="col s10">
-                                        <label>Focal BEC Unit</label>
+                                        <label>Compare:</label>
                                         <div class="input-field bec-unit-variables bec-focal-selector">
                                             <select>
                                                 <option value="1" selected>BEC Unit 1</option>
@@ -56,7 +56,7 @@
                                 </div>
                                 <div class="col s6">
                                     <div class="col s10">
-                                        <label>Comparison BEC Unit</label>
+                                        <label>To:</label>
                                         <div class="input-field bec-unit-variables bec-comparison-selector">
                                             <select>
                                                 <option value="1" selected>BEC Unit 1</option>
@@ -71,6 +71,24 @@
                                 <a class="col s12"><label class="reset-comparison-pins right">Reset Pins</label></a>
                             </div>
                             <div class="row">
+                                <label>Climate Variable</label>
+
+                                <div class="input-field climate-variables climate-variables-map">
+                                    <select>
+                                        <option value="map" selected>Mean Annual Precip</option>
+                                        <option value="ahm">Annual Heat Moisture Index</option>
+                                        <option value="elevation">Elevation</option>
+                                    </select>
+                                </div>
+                                 <a class="col s12"><label class="update-climate-map right">Update</label></a>
+                                <label>Time of Year</label>
+                                <div class="input-field">
+                                    <select>
+                                        <option value="1" selected>Annual</option>
+                                        <option value="2">Seasonal</option>
+                                        <option value="2">Monthly</option>
+                                    </select>
+                                </div>
                                 <label>Climate Scenario</label>
                                 <div class="input-field">
                                     <select>
@@ -85,14 +103,6 @@
                                         <option value="2">2011-2040</option>
                                         <option value="3">2041-2070</option>
                                         <option value="3">2071-2100</option>
-                                    </select>
-                                </div>
-                                <label>Climate Variable</label>
-                                <div class="input-field climate-variables">
-                                    <select>
-                                        <option value="map" selected>Mean Annual Precip</option>
-                                        <option value="ahm">Annual Heat Moisture Index</option>
-                                        <option value="elevation">Elevation</option>
                                     </select>
                                 </div>
                                 <br>
@@ -169,6 +179,10 @@
                                 <img id="scatter-chart" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Bertrand3-scatterplot.svg/2000px-Bertrand3-scatterplot.svg.png">
                             </div>
                         </li>
+                        <li class="empty-class">
+                            <h1></h1>
+                            <h1></h1>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -186,5 +200,5 @@
 <script type="text/javascript" src="index/js/mapapp.js"></script>
 <script type="text/javascript" src="index/js/mapui.js"></script>
 <script type="text/javascript" src="index/js/climatescatterplot.js"></script>
-
+<script type="text/javascript" src="index/js/colorbrewer.min.js"></script>
 

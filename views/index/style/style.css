@@ -189,6 +189,15 @@ i.add-comparison-pin{
   color:red;
 }
 
+.update-climate-map{
+  cursor: pointer;
+  color:grey;
+}
+
+.update-climate-map:hover{
+  color:red;
+}
+
 /*.collapsible-body p{
   padding: 0.5 2rem;
 }*/

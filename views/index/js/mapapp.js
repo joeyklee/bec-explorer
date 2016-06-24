@@ -47,7 +47,7 @@ app.mapapp = (function() {
         Stamen_TonerLabels.bringToFront();
 
         // set timeout to zoom out on whole map
-        setTimeout(function() { el.map.setView([55.706998, -131.601530], 6) }, 3000);
+        // setTimeout(function() { el.map.setView([55.706998, -131.601530], 6) }, 3000);
 
         // set geojson layers:
         el.focal_poly = L.geoJson(null, el.focal_style).addTo(el.map)
@@ -63,7 +63,7 @@ app.mapapp = (function() {
                 el.data_layer = layer.getSubLayer(0);
                 // change the query for the first layer
                 var subLayerOptions = {
-                    sql: "SELECT * FROM bgcv10beta_200m_wgs84",
+                    sql: "SELECT * FROM bgcv10beta_200m_wgs84_merge_normal_1981_2010msy",
                     cartocss: el.bec_cartocss.zone,
                     interactivity: "cartodb_id, map_label",
                     infowindow: true
@@ -124,6 +124,7 @@ app.mapapp = (function() {
             var sel = $(this).text().toUpperCase()
             if (sel == "CLIMATE") {
                 console.log("climate button clicked");
+                el.data_layer.setCartoCSS(el.bec_cartocss[el.selected_unit]);
             } else if (sel == "BEC UNITS") {
                 el.data_layer.setCartoCSS(el.bec_cartocss.unit);
             } else if (sel == "ZONES") {
@@ -195,7 +196,7 @@ app.mapapp = (function() {
         var lat = location.lat;
         var lng = location.lng;
         
-        var query = 'SELECT * from bgcv10beta_200m_wgs84 WHERE ST_Intersects( ST_SetSRID(ST_Point(' + lng + ',' + lat + '),4326), bgcv10beta_200m_wgs84.the_geom)'
+        var query = 'SELECT * from bgcv10beta_200m_wgs84_merge_normal_1981_2010msy WHERE ST_Intersects( ST_SetSRID(ST_Point(' + lng + ',' + lat + '),4326), bgcv10beta_200m_wgs84.the_geom)'
 
 
         var sql = new cartodb.SQL({ user: el.username, format: "geojson" });
@@ -225,6 +226,8 @@ app.mapapp = (function() {
     }
 
 
+
+
     var init = function() {
         el = app.main.el;
         initMap();
@@ -233,6 +236,8 @@ app.mapapp = (function() {
         addFocalPin();
         addComparisonPin();
         clearComparisonPins();
+        // updateClimateMap();
+      
     };
 
     return {

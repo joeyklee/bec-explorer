@@ -14,6 +14,7 @@ app.main = (function() {
         chart_div: null,
         scatter_labels: null,
         hover_poly: null,
+        climate_selected: null,
         hover_style: {
             color: "#ffffff",
             weight: 2,

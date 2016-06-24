@@ -97,7 +97,7 @@ app.mapui = (function() {
     }
 
     function feedBecUnitSelector(){
-        var query = "SELECT DISTINCT map_label FROM bgcv10beta_200m_wgs84_merge WHERE map_label IS NOT NULL";
+        var query = "SELECT DISTINCT map_label FROM bgcv10beta_200m_wgs84_merge_normal_1981_2010msy WHERE map_label IS NOT NULL";
         $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
             // console.log(data.rows);
             data.rows.forEach(function(d){
@@ -116,7 +116,7 @@ app.mapui = (function() {
     function getAllClimateVariables() {
         // fetch the geometry
         var sql = new cartodb.SQL({ user: el.username, format: "geojson" });
-        sql.execute("SELECT * FROM bgcv10beta_200m_wgs84_merge WHERE cartodb_id = 1").done(function(data) {
+        sql.execute("SELECT * FROM bgcv10beta_200m_wgs84_merge_normal_1981_2010msy WHERE cartodb_id = 1").done(function(data) {
 
             for (var k in data.features[0].properties) { el.column_names.push(k) };
             // console.log(el.column_names);
@@ -128,8 +128,72 @@ app.mapui = (function() {
             // call material select AFTER updating all the options to get the material style
             // otherwise it wont work !! 
             $("select").material_select();
+
+            setClimateSelected();
         });
     }
+
+    function setClimateSelected(){
+        el.climate_selected = $('.climate-variables-map :selected').text();
+        console.log(el.climate_selected);
+    }
+
+    function colorMapByClimate(){
+        $('.climate-variables-button, .update-climate-map').click(function(){
+            setClimateSelected();
+            var query = 'SELECT ' + el.climate_selected + ', cartodb_id FROM bgcv10beta_200m_wgs84_merge_normal_1981_2010msy';
+            console.log(query);
+
+            // NEEED TO FIND A GOOD WAY TO CALCULATE BREAKS
+            // THEN STYLE THE VALUES BASED ON THE BREAKS WITH CONDITIONALS!!!
+            $.getJSON('https://'+el.username+'.cartodb.com/api/v2/sql/?q='+query, function(data) {
+                console.log(data.rows[0]);
+
+                var max = d3.max(data.rows, function(d){ 
+                    return d[el.climate_selected];
+                })
+                var min = d3.min(data.rows, function(d){ 
+                    return d[el.climate_selected];
+                })
+
+                var quantize = d3.scale.quantize()
+                  .domain([min, max])
+                  .range([min, max]);
+              
+                var color = d3.scale.quantize()
+                    .domain([min, max])
+                    .range(colorbrewer.GnBu[9]);
+
+                var dom = color.domain(),
+                    l = (dom[1] - dom[0])/color.range().length,
+                    breaks = d3.range(0, color.range().length).map(function(i) { return i * l; });
+                    breaks = breaks.reverse();
+                    // console.log(breaks);
+
+                 var styleArray = [];
+
+                 breaks.forEach(function(d, i){
+                    var output;
+                    output = '#bgcv10beta_200m_wgs84_merge_normal_1981_2010msy['+ el.climate_selected + ' <= ' + d + ']{polygon-fill:' + color(d) + '}';
+                    styleArray.push(output)
+                 })
+                 styleArray.unshift('#bgcv10beta_200m_wgs84_merge_normal_1981_2010msy['+ el.climate_selected + ' < ' + max+ ']{polygon-fill:' + color(max) + '}');
+    
+                // set the color
+                el.bec_cartocss[el.climate_selected] = null;
+                el.bec_cartocss[el.climate_selected] = styleArray.join("\n");
+                el.data_layer.setCartoCSS(el.bec_cartocss[el.climate_selected]);
+            });
+        });
+    }
+
+    // function updateClimateMap(){
+    //     $('.update-climate-map, climate-variables-button').click(function(){
+    //         console.log(el.bec_cartocss[el.climate_selected]);
+    //         // console.log(el.bec_cartocss.zone);
+    //         el.data_layer.setCartoCSS(el.bec_cartocss[el.climate_selected]);
+    //     })
+    // }
 
 
 
@@ -144,7 +208,7 @@ app.mapui = (function() {
         activateMapDisplayButtons();
         feedBecUnitSelector();
         getAllClimateVariables();
-        
+        colorMapByClimate();
         // initMaterialDesignSelection(); // need to call this after getAllClimateVariables to update the form
 
         // initSideNav(); // this is done in the main layout
