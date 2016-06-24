@@ -4,6 +4,7 @@ app.main = (function() {
     // store variables in el and expose them to other js files
     var el = {
         map: null,
+        dataset_selected: null,
         username: "becexplorer",
         bec_cartocss:{
         	zone: null,

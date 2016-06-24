@@ -97,7 +97,7 @@ app.mapui = (function() {
     }
 
     function feedBecUnitSelector(){
-        var query = "SELECT DISTINCT map_label FROM bgcv10beta_200m_wgs84_merge_normal_1981_2010msy WHERE map_label IS NOT NULL";
+        var query = "SELECT DISTINCT map_label FROM " + el.dataset_selected + " WHERE map_label IS NOT NULL";
         $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
             // console.log(data.rows);
             data.rows.forEach(function(d){
@@ -116,7 +116,7 @@ app.mapui = (function() {
     function getAllClimateVariables() {
         // fetch the geometry
         var sql = new cartodb.SQL({ user: el.username, format: "geojson" });
-        sql.execute("SELECT * FROM bgcv10beta_200m_wgs84_merge_normal_1981_2010msy WHERE cartodb_id = 1").done(function(data) {
+        sql.execute("SELECT * FROM " + el.dataset_selected + " WHERE cartodb_id = 1").done(function(data) {
 
             for (var k in data.features[0].properties) { el.column_names.push(k) };
             // console.log(el.column_names);
@@ -141,7 +141,7 @@ app.mapui = (function() {
     function colorMapByClimate(){
         $('.climate-variables-button, .update-climate-map').click(function(){
             setClimateSelected();
-            var query = 'SELECT ' + el.climate_selected + ', cartodb_id FROM bgcv10beta_200m_wgs84_merge_normal_1981_2010msy';
+            var query = 'SELECT ' + el.climate_selected + ', cartodb_id FROM ' + el.dataset_selected;
             console.log(query);
 
             // NEEED TO FIND A GOOD WAY TO CALCULATE BREAKS
@@ -174,10 +174,10 @@ app.mapui = (function() {
 
                  breaks.forEach(function(d, i){
                     var output;
-                    output = '#bgcv10beta_200m_wgs84_merge_normal_1981_2010msy['+ el.climate_selected + ' <= ' + d + ']{polygon-fill:' + color(d) + '}';
+                    output = '#' + el.dataset_selected + '['+ el.climate_selected + ' <= ' + d + ']{polygon-fill:' + color(d) + '}';
                     styleArray.push(output)
                  })
-                 styleArray.unshift('#bgcv10beta_200m_wgs84_merge_normal_1981_2010msy['+ el.climate_selected + ' < ' + max+ ']{polygon-fill:' + color(max) + '}');
+                 styleArray.unshift('#' + el.dataset_selected + '['+ el.climate_selected + ' < ' + max+ ']{polygon-fill:' + color(max) + '}');
     
                 // set the color
                 el.bec_cartocss[el.climate_selected] = null;
@@ -187,13 +187,13 @@ app.mapui = (function() {
         });
     }
 
-    // function updateClimateMap(){
-    //     $('.update-climate-map, climate-variables-button').click(function(){
-    //         console.log(el.bec_cartocss[el.climate_selected]);
-    //         // console.log(el.bec_cartocss.zone);
-    //         el.data_layer.setCartoCSS(el.bec_cartocss[el.climate_selected]);
-    //     })
-    // }
+    // super hacky way to recolor map - take care of this later by 
+    // refactoring the colorMapByClimate() function
+    function updateClimateMap(){
+        $('.climate-variables-map').change(function(){
+            $('.climate-variables-button').click();
+        });
+    }
 
 
 
@@ -209,6 +209,7 @@ app.mapui = (function() {
         feedBecUnitSelector();
         getAllClimateVariables();
         colorMapByClimate();
+        updateClimateMap();
         // initMaterialDesignSelection(); // need to call this after getAllClimateVariables to update the form
 
         // initSideNav(); // this is done in the main layout

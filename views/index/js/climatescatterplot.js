@@ -11,7 +11,7 @@ app.scatterplot = (function(){
 		el.ySelector = $(".scatter-y select option:selected").val();
 		// console.log(xSelector, ySelector)
 
-		 var query = "SELECT DISTINCT map_label, " + el.xSelector + ", + " + el.ySelector + " FROM bgcv10beta_200m_wgs84_merge_normal_1981_2010msy WHERE map_label IS NOT NULL AND " + el.xSelector + " IS NOT NULL AND " + el.ySelector + " IS NOT NULL";
+		 var query = "SELECT DISTINCT map_label, " + el.xSelector + ", + " + el.ySelector + " FROM  " + el.dataset_selected + " WHERE map_label IS NOT NULL AND " + el.xSelector + " IS NOT NULL AND " + el.ySelector + " IS NOT NULL";
 		 // var query = "SELECT * FROM bgcv10beta_200m_wgs84_merge WHERE map_label IS NOT NULL";
 
 		$.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
@@ -74,7 +74,7 @@ app.scatterplot = (function(){
 	            el.selected_unit = selected_label;
 	            // console.log(selected_label);
 	            var sql = new cartodb.SQL({ user: 'becexplorer', format: 'geojson' });
-	            sql.execute("SELECT cartodb_id, the_geom FROM bgcv10beta_200m_wgs84_merge_normal_1981_2010msy WHERE map_label LIKE '{{unit}}'", { unit: selected_label })
+	            sql.execute("SELECT cartodb_id, the_geom FROM " + el.dataset_selected + " WHERE map_label LIKE '{{unit}}'", { unit: selected_label })
 	                .done(function(data) {
 	                    // console.log(data);
 	                    el.hover_poly.addData(data);
@@ -93,7 +93,7 @@ app.scatterplot = (function(){
 	        var sql = new cartodb.SQL({ user: 'becexplorer', format: 'geojson' });
 	        var pointNumber = data.points[0].pointNumber;
 	        var selected_label = el.scatter_labels[pointNumber];
-	        sql.execute("SELECT cartodb_id, the_geom FROM bgcv10beta_200m_wgs84_merge_normal_1981_2010msy WHERE map_label LIKE '{{unit}}'", { unit: selected_label })
+	        sql.execute("SELECT cartodb_id, the_geom FROM  " + el.dataset_selected + " WHERE map_label LIKE '{{unit}}'", { unit: selected_label })
 	            .done(function(data) {
 	                var geojsonLayer = L.geoJson(data);
 	                el.map.fitBounds(geojsonLayer.getBounds());

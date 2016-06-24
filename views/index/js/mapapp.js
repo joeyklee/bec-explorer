@@ -52,6 +52,9 @@ app.mapapp = (function() {
         // set geojson layers:
         el.focal_poly = L.geoJson(null, el.focal_style).addTo(el.map)
         el.comparison_poly = L.geoJson(null, el.comparison_style).addTo(el.map)
+
+        // initialize dataset_selected:
+        el.dataset_selected = 'bgcv10beta_200m_wgs84_merge_normal_1981_2010msy';
     };
 
 
@@ -63,7 +66,7 @@ app.mapapp = (function() {
                 el.data_layer = layer.getSubLayer(0);
                 // change the query for the first layer
                 var subLayerOptions = {
-                    sql: "SELECT * FROM bgcv10beta_200m_wgs84_merge_normal_1981_2010msy",
+                    sql: "SELECT * FROM " + el.dataset_selected,
                     cartocss: el.bec_cartocss.zone,
                     interactivity: "cartodb_id, map_label",
                     infowindow: true
