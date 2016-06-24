@@ -43,7 +43,7 @@ body {
   z-index: 1000;
   position: absolute;
   height: 100%;
-  margin-left: -450px;
+  margin-left: -550px;
 }
 
 /*.sidebar-items{
@@ -165,6 +165,28 @@ i.climate-tool-button.active{
 
 .fixed-action-btn.horizontal ul{
   width:275px;
+}
+
+
+.comparison-dropdowns .col{
+  padding:0px;
+}
+
+i.add-focal-pin{
+  color:#00e6ac;
+  cursor: pointer;
+}
+i.add-comparison-pin{
+  color:#6699ff;
+  cursor: pointer;
+}
+
+.reset-comparison-pins{
+  cursor: pointer;
+  color:grey;
+}
+.reset-comparison-pins:hover{
+  color:red;
 }
 
 /*.collapsible-body p{

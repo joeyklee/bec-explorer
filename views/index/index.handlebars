@@ -6,7 +6,7 @@
 
 </div>
 
-<div class="my-action-buttons">
+{{!-- <div class="my-action-buttons">
     <div class="fixed-action-btn horizontal click-to-toggle">
        <a class="btn-floating btn-large teal">
          <i class="material-icons">menu</i>
@@ -18,7 +18,7 @@
          <li><a class="btn-floating yellow"><i class="material-icons">publish</i></a></li>
        </ul>
      </div>
-</div> 
+</div>  --}}
 
 
 <div id="domelems">
@@ -41,25 +41,36 @@
                         <div class="row">
                             <div class="comparison-dropdowns">
                                 <div class="col s6">
-                                    <label>Focal BEC Unit</label>
-                                    <div class="input-field bec-unit-variables bec-focal-selector">
-                                        <select>
-                                            <option value="1" selected>BEC Unit 1</option>
-                                            <option value="2">BEC Unit 2</option>
-                                        </select>
+                                    <div class="col s10">
+                                        <label>Focal BEC Unit</label>
+                                        <div class="input-field bec-unit-variables bec-focal-selector">
+                                            <select>
+                                                <option value="1" selected>BEC Unit 1</option>
+                                                <option value="2">BEC Unit 2</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col s2 add-pin-div">
+                                        <a class="add-focal-pin"><i class="material-icons add-focal-pin">location_on</i></a>
                                     </div>
                                 </div>
                                 <div class="col s6">
-                                    <label>Comparison BEC Unit</label>
-                                    <div class="input-field bec-unit-variables bec-comparison-selector">
-                                        <select>
-                                            <option value="1" selected>BEC Unit 1</option>
-                                            <option value="2">BEC Unit 2</option>
-                                        </select>
+                                    <div class="col s10">
+                                        <label>Comparison BEC Unit</label>
+                                        <div class="input-field bec-unit-variables bec-comparison-selector">
+                                            <select>
+                                                <option value="1" selected>BEC Unit 1</option>
+                                                <option value="2">BEC Unit 2</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col s2 add-pin-div">
+                                        <a class="add-comparison-pin"><i class="material-icons add-comparison-pin">location_on</i></a>
                                     </div>
                                 </div>
+                                <a class="col s12"><label class="reset-comparison-pins right">Reset Pins</label></a>
                             </div>
-                            <div class="col s12">
+                            <div class="row">
                                 <label>Climate Scenario</label>
                                 <div class="input-field">
                                     <select>

@@ -21,13 +21,13 @@ app.main = (function() {
             fillOpacity: 0
         },
         focal_style: {
-            color: "#ff9999",
+            color: "#00e6ac",
             weight: 2,
             opacity: 0.85,
             fillOpacity: 0.15
         },
         comparison_style: {
-            color: "#b3d9ff",
+            color: "#6699ff",
             weight: 2,
             opacity: 0.85,
             fillOpacity: 0.15
