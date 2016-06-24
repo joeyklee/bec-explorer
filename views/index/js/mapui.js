@@ -108,7 +108,7 @@ app.mapui = (function() {
             $('.bec-unit-variables select').children().remove().end();
             populate('.bec-unit-variables select', el.bec_names);
         });
-        // $("select").material_select();
+        $("select").material_select();
     }
 
     
