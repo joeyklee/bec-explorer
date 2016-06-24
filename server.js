@@ -9,6 +9,16 @@ var mongojs = require('mongojs');
 
 // Here we find an appropriate database to connect to, defaulting to
 // localhost if we don't find one.  
+
+
+app.use('*', function(req, res, next) {
+    // set CORS response header
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
+});
+
+
 var MONGOCONNECTION =
     process.env.MONGOLAB_URI ||
     process.env.MONGOHQ_URL ||
