@@ -107,8 +107,10 @@ app.mapui = (function() {
             // console.log(el.bec_names);
             $('.bec-unit-variables select').children().remove().end();
             populate('.bec-unit-variables select', el.bec_names);
+            // make sure that the material select is called to update the dropdown
+            $("select").material_select();
         });
-        $("select").material_select();
+        
     }
 
     
