@@ -33,9 +33,10 @@ app.scatterplot = (function(){
 		        title: 'PLOTS PLOTS PLOTS'
 		    };
 
+		    console.log(el.yselector_axis);
 		    var layout = {
-		        xaxis: { title: el.xSelector, type: 'log' },
-		        yaxis: { title: el.ySelector, type: 'log' },
+		        xaxis: { title: el.xSelector, type: el.xSelector_axis },
+		        yaxis: { title: el.ySelector, type: el.ySelector_axis },
 		        width: 400,
 		        margin: {
 		            l: 60,
@@ -114,10 +115,33 @@ app.scatterplot = (function(){
 	    });
 	}
 
+	function toggleLogAxes(){
+		
+	}
+
+	function initAxesSwitch(){
+		// if x selector is log
+		if(el.xSelector_axis == 'log'){
+			$('.scatter-x-axis input').prop("checked", true);
+		} else{
+			$('.scatter-x-axis input').prop('checked',false);
+		}
+
+		// if y selector is log
+		if(el.ySelector_axis == 'log'){
+			$('.scatter-y-axis input').prop("checked", true);
+		} else{
+			$('.scatter-y-axis input').prop('checked',false);
+		}
+	}
+
+
 	var init = function(){
 		el = app.main.el;
 		plotScatter();
 		replot();
+		initAxesSwitch();
+		// axesSwitches();
 	}
 
 	return {

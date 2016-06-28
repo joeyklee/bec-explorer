@@ -13,6 +13,7 @@ app.main = (function() {
         data_layer: null,
         selected_unit: null,
         chart_div: null,
+        tschart_div: null,
         scatter_labels: null,
         hover_poly: null,
         climate_selected: null,
@@ -35,6 +36,8 @@ app.main = (function() {
             fillOpacity: 0.15
         },
         xSelector: null,
+        xSelector_axis: 'log',
+        ySelector_axis: 'log',
         ySelector: null,
         column_names:[],
         bec_names:[],
@@ -57,5 +60,6 @@ window.addEventListener('DOMContentLoaded', function() {
     app.mapapp.init();
     app.mapui.init();
     app.scatterplot.init();
+    app.climatetimeseries.init();
     
 });
