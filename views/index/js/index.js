@@ -14,6 +14,7 @@ app.main = (function() {
         selected_unit: null,
         chart_div: null,
         tschart_div: null,
+        timescale_selected: null,
         scatter_labels: null,
         hover_poly: null,
         climate_selected: null,

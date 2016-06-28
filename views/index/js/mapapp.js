@@ -55,6 +55,9 @@ app.mapapp = (function() {
 
         // initialize dataset_selected:
         el.dataset_selected = 'bgcv10beta_200m_wgs84_merge_normal_1981_2010msy';
+
+        // initialize the timescale selected:
+        el.timescale_selected = 'monthly';
     };
 
 
@@ -228,7 +231,13 @@ app.mapapp = (function() {
         $('select').material_select();
     }
 
-
+    function updateTimeScaleSelected(){
+        $('.timescale-selector select').change(function(){
+            el.timescale_selected = $(".timescale-selector select").val();
+            console.log(el.timescale_selected);
+            $('select').material_select();
+        });
+    }
 
 
     var init = function() {
@@ -239,6 +248,7 @@ app.mapapp = (function() {
         addFocalPin();
         addComparisonPin();
         clearComparisonPins();
+        updateTimeScaleSelected();
         // updateClimateMap();
       
     };
