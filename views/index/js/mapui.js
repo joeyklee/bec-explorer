@@ -106,12 +106,18 @@ app.mapui = (function() {
             })
             $('.bec-unit-variables select').children().remove().end();
             populate('.bec-unit-variables select', el.bec_names);
+
+             // console.log($('.bec-focal-selector :selected').text());
+            el.focal_name =  $('.bec-focal-selector :selected').text();
+            el.comparison_name =  $('.bec-comparison-selector :selected').text();
+            console.log(el.focal_name);
             // make sure that the material select is called to update the dropdown
             $("select").material_select();
         });
         
     }
 
+    
     
 
     // function getAllClimateVariables() {
@@ -221,6 +227,11 @@ app.mapui = (function() {
         });
     }
 
+    // function updateTimeRanges(){
+    //     $('.timerange-selector select').change(function(){
+    //         console.log('changed');
+    //     });
+    // }
 
     
 

@@ -225,15 +225,23 @@ app.mapapp = (function() {
     function updateSelectedFocalDropdown(selectedUnit) {
         console.log(selectedUnit);
         $(".bec-focal-selector select").val(selectedUnit);
+        el.focal_name = selectedUnit;
         $('select').material_select();
     }
 
     function updateSelectedComparisonDropdown(selectedUnit) {
         console.log(selectedUnit);
         $(".bec-comparison-selector select").val(selectedUnit);
+        el.comparison_name = selectedUnit;
         $('select').material_select();
     }
 
+    function updatedFCDropdown(){
+        $('.bec-unit-variables').change(function(){
+            el.focal_name = $('.bec-focal-selector :selected').text();
+            el.comparison_name = $('.bec-comparison-selector :selected').text();
+        })
+    }
 
 
 
@@ -247,6 +255,7 @@ app.mapapp = (function() {
         addComparisonPin();
         clearComparisonPins();
         // updateClimateMap();
+        updatedFCDropdown();
       
     };
 

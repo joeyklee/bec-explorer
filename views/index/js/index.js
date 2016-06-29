@@ -5,6 +5,7 @@ app.main = (function() {
     var el = {
         map: null,
         dataset_selected: 'bgcv10beta_200m_wgs84_merge_normal_1981_2010msy',
+        climateNormals_1901_2014: 'bec10centroid_1901_2014msyt',
         username: "becexplorer",
         bec_cartocss:{
         	zone: null,
@@ -46,13 +47,16 @@ app.main = (function() {
         seasonal_columns: [], // seasonal columns
         bec_names:[],
         focal_pin:null,
+        focal_name: 'ESSFdv2',
+        comparison_name: 'ESSFdv2',
         comparison_pin:null,
         focal_poly: null,
         comparison_poly: null,
         ts_yName: null,
         ts_xName: null,
-        timeRange_from: null,
-        timeRange_to: null
+        timeRange_from: 2011, // initialize to 2011
+        timeRange_to: 2013, // init to 2013
+
     };
 
     return {

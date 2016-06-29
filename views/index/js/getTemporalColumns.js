@@ -55,20 +55,17 @@ app.getTemporalColumns = (function() {
     }
 
     function setTimeRangeSelected(){
-        el.timeRange_from = 2011;
-        el.timeRange_to = 2013;
+            $('.timerange-select-from select').val(el.timeRange_from);
+            $('.timerange-select-to select').val(el.timeRange_to);
+            // update the dropdown
+            $("select").material_select();
 
-        // change the value
-        $('.timerange-select-from :selected').val(el.timeRange_from);
-        $('.timerange-select-to :selected').val(el.timeRange_to);
-        // change the text
-        $('.timerange-select-from :selected').text(el.timeRange_from);
-        $('.timerange-select-to :selected').text(el.timeRange_to);
-        // update the dropdown
-        console.log($('.timerange-select-to :selected').text())
-        $("select").material_select();
+            $('.timerange-select').change(function(){
+                el.timeRange_to =  $('.timerange-select-to :selected').text();
+                el.timeRange_from = $('.timerange-select-from :selected').text();
+                $("select").material_select();
+            });
     }
-
 
     function populate(selector, objlist) {
         objlist.forEach(function(d, i) {
