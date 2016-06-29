@@ -9,6 +9,7 @@ app.climatetimeseries = (function() {
         // el.xSelector = $(".scatter-x select option:selected").val();
         if (el.ts_ySelector == null) {
             el.ts_ySelector = ['tmin01', 'tmin02', 'tmin03', 'tmin04', 'tmin05', 'tmin06', 'tmin07', 'tmin08', 'tmin09', 'tmin10', 'tmin11', 'tmin12'];
+            el.ts_yName = "tmin";
         }
 
         var tsvar = $(".climate-variables-map option:selected").val();
@@ -24,6 +25,8 @@ app.climatetimeseries = (function() {
                 el.ts_ySelector.push(output);
             })
             el.ts_xSelector = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+            el.ts_xName = "Monthly (Jan-Dec)";
+            el.ts_yName = tsvar.substring(0, tsvar.length - 2);
         }
 
         if (ssuffix.indexOf(tsvar.slice(-2)) >= 1) {
@@ -33,13 +36,11 @@ app.climatetimeseries = (function() {
                 el.ts_ySelector.push(output);
             })
             el.ts_xSelector = [1, 2, 3, 4];
+            el.ts_xName = "seasonal (autumn, winter, spring, summer)";
+            el.ts_yName = tsvar.substring(0, tsvar.length - 3); // -3 to remove the underscore
         }
-        console.log(el.ts_ySelector);
-        // el.ts_ySelector = ['tmin01', 'tmin02', 'tmin03', 'tmin04', 'tmin05', 'tmin06', 'tmin07', 'tmin08', 'tmin09', 'tmin10', 'tmin11', 'tmin12']
-        // console.log(xSelector, ySelector)
 
         var query = "SELECT DISTINCT map_label, " + el.ts_ySelector.join(", ") + " FROM " + el.dataset_selected + " WHERE map_label IS NOT NULL";
-        // var query = "SELECT * FROM bgcv10beta_200m_wgs84_merge WHERE map_label IS NOT NULL";
         console.log(query);
         $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
             // console.log(data);
@@ -61,8 +62,8 @@ app.climatetimeseries = (function() {
                 } 
             })
             var layout = {
-                xaxis: { title: 'months', type: 'linear' },
-                yaxis: { title: 'temp', type: 'linear' },
+                xaxis: { title: el.ts_xName, type: 'linear' },
+                yaxis: { title: el.ts_yName, type: 'linear' },
                 width: 400,
                 margin: {
                     l: 60,

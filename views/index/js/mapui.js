@@ -193,9 +193,7 @@ app.mapui = (function() {
         });
     }
 
-    function initTimeScaleSelected(){
 
-    }
 
     function updateTimeScaleSelected(){
         $('.timescale-selector select').change(function(){

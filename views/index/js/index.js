@@ -48,7 +48,9 @@ app.main = (function() {
         focal_pin:null,
         comparison_pin:null,
         focal_poly: null,
-        comparison_poly: null
+        comparison_poly: null,
+        ts_yName: null,
+        ts_xName: null,
     };
 
     return {
