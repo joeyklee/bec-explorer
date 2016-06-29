@@ -45,6 +45,31 @@ app.getTemporalColumns = (function() {
     	$("select").material_select();
     }
 
+
+    function fillTimeRangeDropdown(){
+        var timeRange  = [];
+        for(var i=1901; i<2101; i++){timeRange.push(i)};
+        $('.timerange-select select').children().remove().end();
+        populate('.timerange-select select', timeRange);
+        $("select").material_select();
+    }
+
+    function setTimeRangeSelected(){
+        el.timeRange_from = 2011;
+        el.timeRange_to = 2013;
+
+        // change the value
+        $('.timerange-select-from :selected').val(el.timeRange_from);
+        $('.timerange-select-to :selected').val(el.timeRange_to);
+        // change the text
+        $('.timerange-select-from :selected').text(el.timeRange_from);
+        $('.timerange-select-to :selected').text(el.timeRange_to);
+        // update the dropdown
+        console.log($('.timerange-select-to :selected').text())
+        $("select").material_select();
+    }
+
+
     function populate(selector, objlist) {
         objlist.forEach(function(d, i) {
             if (i == 0) {
@@ -61,6 +86,9 @@ app.getTemporalColumns = (function() {
     var init = function() {
         el = app.main.el;
         getColumns();
+        fillTimeRangeDropdown();
+        setTimeRangeSelected();
+
     }
 
     return {

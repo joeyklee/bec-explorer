@@ -54,17 +54,21 @@ app.mapui = (function() {
         // $('.scatter-panel').click();
     }
 
+    function initWithToolbox(){
+        $('.climate-tool-button').click();
+    }
+
 
     function initSlider() {
         // range slider
         var slider = document.getElementById('range-input');
         noUiSlider.create(slider, {
-            start: [20, 80],
+            start: [2000, 2013],
             connect: true,
             step: 1,
             range: {
-                'min': 0,
-                'max': 100
+                'min': 1901,
+                'max': 2100
             }
         });
     }
@@ -234,6 +238,7 @@ app.mapui = (function() {
         colorMapByClimate();
         updateClimateMap();
         updateTimeScaleSelected();
+        initWithToolbox();
         // initMaterialDesignSelection(); // need to call this after getAllClimateVariables to update the form
 
         // initSideNav(); // this is done in the main layout

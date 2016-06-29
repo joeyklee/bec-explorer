@@ -51,6 +51,8 @@ app.main = (function() {
         comparison_poly: null,
         ts_yName: null,
         ts_xName: null,
+        timeRange_from: null,
+        timeRange_to: null
     };
 
     return {

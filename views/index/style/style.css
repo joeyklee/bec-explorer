@@ -171,6 +171,13 @@ i.climate-tool-button.active{
 .comparison-dropdowns .col{
   padding:0px;
 }
+.timerange-dropdowns .col{
+  padding:0px;
+}
+
+.timerange-select-from{
+  padding-right:10px;
+}
 
 i.add-focal-pin{
   color:#00e6ac;
