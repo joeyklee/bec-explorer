@@ -4,7 +4,7 @@ app.main = (function() {
     // store variables in el and expose them to other js files
     var el = {
         map: null,
-        dataset_selected: null,
+        dataset_selected: 'bgcv10beta_200m_wgs84_merge_normal_1981_2010msy',
         username: "becexplorer",
         bec_cartocss:{
         	zone: null,
@@ -14,7 +14,7 @@ app.main = (function() {
         selected_unit: null,
         chart_div: null,
         tschart_div: null,
-        timescale_selected: null,
+        timescale_selected: 'all',
         scatter_labels: null,
         hover_poly: null,
         climate_selected: null,
@@ -40,7 +40,10 @@ app.main = (function() {
         xSelector_axis: 'log',
         ySelector_axis: 'log',
         ySelector: null,
-        column_names:[],
+        column_names:[], // all columns
+        monthly_columns:[], // monthly columns
+        annual_columns: [], // annual columns
+        seasonal_columns: [], // seasonal columns
         bec_names:[],
         focal_pin:null,
         comparison_pin:null,
@@ -57,6 +60,7 @@ app.main = (function() {
 
 // call app.map.init() once the DOM is loaded
 window.addEventListener('DOMContentLoaded', function() {
+    app.getTemporalColumns.init();
 	app.mapcolors.init();
     app.mapapp.init();
     app.mapui.init();

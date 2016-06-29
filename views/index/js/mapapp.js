@@ -54,10 +54,10 @@ app.mapapp = (function() {
         el.comparison_poly = L.geoJson(null, el.comparison_style).addTo(el.map)
 
         // initialize dataset_selected:
-        el.dataset_selected = 'bgcv10beta_200m_wgs84_merge_normal_1981_2010msy';
+        // el.dataset_selected = 'bgcv10beta_200m_wgs84_merge_normal_1981_2010msy';
 
         // initialize the timescale selected:
-        el.timescale_selected = 'monthly';
+        el.timescale_selected = 'all';
     };
 
 
@@ -68,6 +68,9 @@ app.mapapp = (function() {
                 // create an empty sublayer to add interactivity and color
                 el.data_layer = layer.getSubLayer(0);
                 // change the query for the first layer
+
+                // if el.timeseries_selected is monthly, then give me back everything with 01-12 at the end
+
                 var subLayerOptions = {
                     sql: "SELECT * FROM " + el.dataset_selected,
                     cartocss: el.bec_cartocss.zone,
@@ -231,13 +234,8 @@ app.mapapp = (function() {
         $('select').material_select();
     }
 
-    function updateTimeScaleSelected(){
-        $('.timescale-selector select').change(function(){
-            el.timescale_selected = $(".timescale-selector select").val();
-            console.log(el.timescale_selected);
-            $('select').material_select();
-        });
-    }
+
+
 
 
     var init = function() {
@@ -248,7 +246,6 @@ app.mapapp = (function() {
         addFocalPin();
         addComparisonPin();
         clearComparisonPins();
-        updateTimeScaleSelected();
         // updateClimateMap();
       
     };

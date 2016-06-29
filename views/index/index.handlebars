@@ -68,22 +68,15 @@
                                 <a class="col s12"><label class="reset-comparison-pins right">Reset Pins</label></a>
                             </div>
                             <div class="row">
-                                <label>Climate Variable</label>
 
-                                <div class="input-field climate-variables climate-variables-map">
-                                    <select>
-                                        <option value="map" selected>Mean Annual Precip</option>
-                                        <option value="ahm">Annual Heat Moisture Index</option>
-                                        <option value="elevation">Elevation</option>
-                                    </select>
-                                </div>
                                  {{!-- <a class="col s12"><label class="update-climate-map right">Update</label></a> --}}
                                 <label>Time of Year</label>
                                 <div class="input-field timescale-selector">
                                     <select>
+                                        <option value="all" selected>All Variables</option>
                                         <option value="annual">Annual</option>
                                         <option value="seasonal">Seasonal</option>
-                                        <option value="monthly" selected>Monthly</option>
+                                        <option value="monthly">Monthly</option>
                                     </select>
                                 </div>
                                 {{!-- <label>Climate Scenario</label>
@@ -100,6 +93,15 @@
                                         <option value="2">2011-2040</option>
                                         <option value="3">2041-2070</option>
                                         <option value="3">2071-2100</option>
+                                    </select>
+                                </div>
+                                <label>Climate Variable</label>
+
+                                <div class="input-field climate-variables climate-variables-map">
+                                    <select>
+                                        <option value="map" selected>Mean Annual Precip</option>
+                                        <option value="ahm">Annual Heat Moisture Index</option>
+                                        <option value="elevation">Elevation</option>
                                     </select>
                                 </div>
                                 {{!-- <br>
@@ -194,6 +196,7 @@
 
 <script type="text/javascript" src="index/js/nouislider.js"></script>
 <script type="text/javascript" src="index/js/index.js"></script>
+<script type="text/javascript" src="index/js/getTemporalColumns.js"></script>
 <script type="text/javascript" src="index/js/mapcolors.js"></script>
 <script type="text/javascript" src="index/js/mapapp.js"></script>
 <script type="text/javascript" src="index/js/mapui.js"></script>

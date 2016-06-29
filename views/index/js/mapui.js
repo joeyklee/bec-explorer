@@ -55,8 +55,6 @@ app.mapui = (function() {
     }
 
 
-
-
     function initSlider() {
         // range slider
         var slider = document.getElementById('range-input');
@@ -99,12 +97,9 @@ app.mapui = (function() {
     function feedBecUnitSelector(){
         var query = "SELECT DISTINCT map_label FROM " + el.dataset_selected + " WHERE map_label IS NOT NULL";
         $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
-            // console.log(data.rows);
             data.rows.forEach(function(d){
                 el.bec_names.push(d.map_label);
             })
-
-            // console.log(el.bec_names);
             $('.bec-unit-variables select').children().remove().end();
             populate('.bec-unit-variables select', el.bec_names);
             // make sure that the material select is called to update the dropdown
@@ -115,25 +110,25 @@ app.mapui = (function() {
 
     
 
-    function getAllClimateVariables() {
-        // fetch the geometry
-        var sql = new cartodb.SQL({ user: el.username, format: "geojson" });
-        sql.execute("SELECT * FROM " + el.dataset_selected + " WHERE cartodb_id = 1").done(function(data) {
+    // function getAllClimateVariables() {
+    //     // fetch the geometry
+    //     var sql = new cartodb.SQL({ user: el.username, format: "geojson" });
+    //     sql.execute("SELECT * FROM " + el.dataset_selected + " WHERE cartodb_id = 1").done(function(data) {
 
-            for (var k in data.features[0].properties) { el.column_names.push(k) };
-            // console.log(el.column_names);
+    //         for (var k in data.features[0].properties) { el.column_names.push(k) };
+    //         // console.log(el.column_names);
 
-            $('.climate-variables select').children().remove().end();
+    //         $('.climate-variables select').children().remove().end();
 
-            populate('.climate-variables select', el.column_names);
+    //         populate('.climate-variables select', el.column_names);
 
-            // call material select AFTER updating all the options to get the material style
-            // otherwise it wont work !! 
-            $("select").material_select();
+    //         // call material select AFTER updating all the options to get the material style
+    //         // otherwise it wont work !! 
+    //         $("select").material_select();
 
-            setClimateSelected();
-        });
-    }
+    //         setClimateSelected();
+    //     });
+    // }
 
     function setClimateSelected(){
         el.climate_selected = $('.climate-variables-map :selected').text();
@@ -198,7 +193,34 @@ app.mapui = (function() {
         });
     }
 
+    function initTimeScaleSelected(){
 
+    }
+
+    function updateTimeScaleSelected(){
+        $('.timescale-selector select').change(function(){
+            el.timescale_selected = $(".timescale-selector select").val();
+
+                if (el.timescale_selected == "all"){
+                    $('.climate-variables select').children().remove().end();
+                    populate('.climate-variables select', el.column_names);
+                } else if (el.timescale_selected == "monthly"){
+                    $('.climate-variables select').children().remove().end();
+                    populate('.climate-variables select', el.monthly_columns);
+                } else if (el.timescale_selected == "seasonal"){
+                    $('.climate-variables select').children().remove().end();
+                    populate('.climate-variables select', el.seasonal_columns);
+                } else if (el.timescale_selected == "annual"){
+                    $('.climate-variables select').children().remove().end();
+                    populate('.climate-variables select', el.annual_columns);
+                }
+
+            $('select').material_select();
+        });
+    }
+
+
+    
 
     var init = function() {
         el = app.main.el;
@@ -210,9 +232,10 @@ app.mapui = (function() {
         // initSlider();
         activateMapDisplayButtons();
         feedBecUnitSelector();
-        getAllClimateVariables();
+        // getAllClimateVariables();
         colorMapByClimate();
         updateClimateMap();
+        updateTimeScaleSelected();
         // initMaterialDesignSelection(); // need to call this after getAllClimateVariables to update the form
 
         // initSideNav(); // this is done in the main layout
