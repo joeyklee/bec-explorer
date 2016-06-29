@@ -36,44 +36,101 @@ app.climatetimeseries = (function() {
         var query = "SELECT DISTINCT id2, year," + el.ts_ySelector.join(", ") + " FROM " + el.climateNormals_1901_2014 + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year >= " + el.timeRange_from + " AND year <= " + el.timeRange_to;
         console.log(query);
         $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
+            
+            
+            data.rows.sort(function(a, b) {
+                return parseFloat(a.year) - parseFloat(b.year);
+            });
+
             console.log(data);
-            var ts = [];
+            console.log(el.ts_ySelector);
 
-            // el.ts_xSelector = [];
-            // el.ts_ySelector = [];
-            // console.log(el.ts_ySelector);
+            var xdat1 = [], 
+                ydat1 = [], 
+                xdat2 = [], 
+                ydat2 = [];
 
-            data.rows.forEach(function(d) {
-                var ydat = [];
-                var xdat = [];
-                Object.keys(d).forEach(function(j) {
-                    if (j !== "id2" && j !== "year") {
-                        console.log(d[j]);
-                        ydat.push(d[j]);
+            data.rows.forEach(function(d){
+                if(d.id2 == el.focal_name){
+                    el.ts_ySelector.forEach(function(j,i){
+                        ydat1.push(d[j]);
 
-                        if (msuffix.indexOf(tsvar.slice(-2)) >= 1) {
-                            xdat.push(d.year + "-" + j.slice(-2));
-                        } else if (ssuffix.indexOf(tsvar.slice(-2)) >= 1) {
-                            ssuffix.forEach(function(k, i) {
-                                xdat.push(d.year + "-0" + i + 1);
-                            });
-                        } else {
-                            xdat.push(d.year);
+                        if(el.ts_ySelector.length == 1){
+                            xdat1.push(d.year);
+                        } else if (el.ts_ySelector.length == 4){
+                            xdat1.push(d.year + "-0" + i*3); // *3 to evenly space across seasons
+                        } else{
+                            xdat1.push(d.year + "-" + i);
                         }
-                    }
-                });
+                    });
+                } else if (d.id2 == el.comparison_name){ 
+                    el.ts_ySelector.forEach(function(j,i){
+                        ydat2.push(d[j]);
 
-                var output = {
-                    x: xdat,
-                    y: ydat,
-                    text: d.id2,
-                    type: "scatter",
-                    name: d.id2
+                        if(el.ts_ySelector.length == 1){
+                            xdat2.push(d.year);
+                        } else if (el.ts_ySelector.length == 4){
+                            xdat2.push(d.year + "-0" + i*3); // *3 to evenly space across seasons
+                        } else{
+                            xdat2.push(d.year + "-" + i);
+                        }
+                    });
                 }
 
-                ts.push(output);
-            });
-            console.log(ts);
+            })
+
+            var ts1 = {
+                x: xdat1,
+                y: ydat1,
+                text: el.focal_name,
+                type: "scatter",
+                name: el.focal_name
+            }
+
+            var ts2 = {
+                x: xdat2,
+                y: ydat2,
+                text: el.comparison_name,
+                type: "scatter",
+                name: el.comparison_name
+            }
+
+            var ts = [ts1, ts2];
+            // console.log(ts);
+            // // data.rows.forEach(function(d) {
+            // //     var ydat = [];
+            // //     var xdat = [];
+            // //     Object.keys(d).forEach(function(j) {
+            // //         if (j !== "id2" && j !== "year") {
+            // //             console.log(d[j]);
+            // //             ydat.push(d[j]);
+
+            // //             if (msuffix.indexOf(tsvar.slice(-2)) >= 1) {
+            // //                 xdat.push(d.year + "-" + j.slice(-2));
+            // //             } else if (ssuffix.indexOf(tsvar.slice(-2)) >= 1) {
+            // //                 ssuffix.forEach(function(k, i) {
+            // //                     xdat.push(d.year + "-0" + i + 1);
+            // //                 });
+            // //             } else {
+            // //                 xdat.push(d.year);
+            // //             }
+            // //         }
+            // //     });
+
+            // //     var output = {
+            // //         x: xdat,
+            // //         y: ydat,
+            // //         text: d.id2,
+            // //         type: "scatter",
+            // //         name: d.id2
+            // //     }
+
+            // //     ts.push(output);
+            // // });
+
+
+
+            // // console.log(ts);
 
             var layout = {
                 // xaxis: { title: el.ts_xName, type: 'linear' },
