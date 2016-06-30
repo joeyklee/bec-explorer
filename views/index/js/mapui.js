@@ -52,7 +52,10 @@ app.mapui = (function() {
         // init the materialize selection
         $('.map-description').click();
         // $('.scatter-panel').click();
+    }
 
+    function initWithToolbox(){
+        $('.climate-tool-button').click();
     }
 
 
@@ -60,12 +63,12 @@ app.mapui = (function() {
         // range slider
         var slider = document.getElementById('range-input');
         noUiSlider.create(slider, {
-            start: [20, 80],
+            start: [2000, 2013],
             connect: true,
             step: 1,
             range: {
-                'min': 0,
-                'max': 100
+                'min': 1901,
+                'max': 2100
             }
         });
     }
@@ -78,41 +81,133 @@ app.mapui = (function() {
             if ($(this).text().toUpperCase() == "CLIMATE") {
                 $('.climate-tools, .climate-tool-button').addClass("active");
             } else {
-                $('.climate-tools, .climate-tool-button').removeClass("active");
+                $('.climate-tools, .climate-tool-button').addClass("active");
             };
         });
     }
 
-    function getAllClimateVariables() {
-        // fetch the geometry
-        var sql = new cartodb.SQL({ user: el.username, format: "geojson" });
-        sql.execute("SELECT * FROM bgcv10beta_200m_wgs84_merge WHERE cartodb_id = 1").done(function(data) {
-
-            for (var k in data.features[0].properties) { el.column_names.push(k) };
-            // console.log(el.column_names);
-
-            $('.climate-variables select').children().remove().end();
-
-            function populate(selector) {
-                el.column_names.forEach(function(d, i) {
-                    if (i == 0) {
-                        $(selector)
-                            .append('<option value="' + d + '" selected>' + d + '</option>')
-                    } else {
-                        $(selector)
-                            .append('<option value="' + d + '">' + d + '</option>')
-                    }
-                })
+    function populate(selector, objlist) {
+        objlist.forEach(function(d, i) {
+            if (i == 0) {
+                $(selector)
+                    .append('<option value="' + d + '" selected>' + d + '</option>')
+            } else {
+                $(selector)
+                    .append('<option value="' + d + '">' + d + '</option>')
             }
+        })
+    }
 
-            populate('.climate-variables select');
+    function feedBecUnitSelector(){
+        var query = "SELECT DISTINCT map_label FROM " + el.dataset_selected + " WHERE map_label IS NOT NULL";
+        $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
+            data.rows.forEach(function(d){
+                el.bec_names.push(d.map_label);
+            })
+            $('.bec-unit-variables select').children().remove().end();
+            populate('.bec-unit-variables select', el.bec_names);
 
-            // call material select AFTER updating all the options to get the material style
-            // otherwise it wont work !! 
+             // console.log($('.bec-focal-selector :selected').text());
+            el.focal_name =  $('.bec-focal-selector :selected').text();
+            el.comparison_name =  $('.bec-comparison-selector :selected').text();
+            console.log(el.focal_name);
+            // make sure that the material select is called to update the dropdown
             $("select").material_select();
         });
-
+        
     }
+
+    
+    function setClimateSelected(){
+        el.climate_selected = $('.climate-variables-map :selected').text();
+        $("select").material_select();
+        console.log(el.climate_selected);
+    }
+
+    function colorMapByClimate(){
+        $('.climate-variables-button, .update-climate-map').click(function(){
+            setClimateSelected();
+            var query = 'SELECT ' + el.climate_selected + ', cartodb_id FROM ' + el.dataset_selected;
+            console.log(query);
+
+            // NEEED TO FIND A GOOD WAY TO CALCULATE BREAKS
+            // THEN STYLE THE VALUES BASED ON THE BREAKS WITH CONDITIONALS!!!
+            $.getJSON('https://'+el.username+'.cartodb.com/api/v2/sql/?q='+query, function(data) {
+                console.log(data.rows[0]);
+
+                var max = d3.max(data.rows, function(d){ 
+                    return d[el.climate_selected];
+                })
+                var min = d3.min(data.rows, function(d){ 
+                    return d[el.climate_selected];
+                })
+
+                var quantize = d3.scale.quantize()
+                  .domain([min, max])
+                  .range([min, max]);
+              
+                var color = d3.scale.quantize()
+                    .domain([min, max])
+                    .range(colorbrewer.GnBu[9]);
+
+                var dom = color.domain(),
+                    l = (dom[1] - dom[0])/color.range().length,
+                    breaks = d3.range(0, color.range().length).map(function(i) { return i * l; });
+                    breaks = breaks.reverse();
+                    // console.log(breaks);
+
+                 var styleArray = [];
+
+                 breaks.forEach(function(d, i){
+                    var output;
+                    output = '#' + el.dataset_selected + '['+ el.climate_selected + ' <= ' + d + ']{polygon-fill:' + color(d) + '}';
+                    styleArray.push(output)
+                 })
+                 styleArray.unshift('#' + el.dataset_selected + '['+ el.climate_selected + ' < ' + max+ ']{polygon-fill:' + color(max) + '}');
+    
+                // set the color
+                el.bec_cartocss[el.climate_selected] = null;
+                el.bec_cartocss[el.climate_selected] = styleArray.join("\n");
+                el.data_layer.setCartoCSS(el.bec_cartocss[el.climate_selected]);
+            });
+        });
+    }
+
+    // super hacky way to recolor map - take care of this later by 
+    // refactoring the colorMapByClimate() function - but in the end it kind of works nicely
+    // since it fires the "climate" button and updates the map at the same time.
+    function updateClimateMap(){
+        $('.climate-variables-map').change(function(){
+            $('.climate-variables-button').click();
+        });
+    }
+
+
+
+    function updateTimeScaleSelected(){
+        $('.timescale-selector select').change(function(){
+            el.timescale_selected = $(".timescale-selector select").val();
+
+                if (el.timescale_selected == "all"){
+                    $('.climate-variables select').children().remove().end();
+                    populate('.climate-variables select', el.column_names);
+                } else if (el.timescale_selected == "monthly"){
+                    $('.climate-variables select').children().remove().end();
+                    populate('.climate-variables select', el.monthly_columns);
+                } else if (el.timescale_selected == "seasonal"){
+                    $('.climate-variables select').children().remove().end();
+                    populate('.climate-variables select', el.seasonal_columns);
+                } else if (el.timescale_selected == "annual"){
+                    $('.climate-variables select').children().remove().end();
+                    populate('.climate-variables select', el.annual_columns);
+                }
+
+            $('select').material_select();
+        });
+    }
+
+    
+    
 
     var init = function() {
         el = app.main.el;
@@ -121,9 +216,13 @@ app.mapui = (function() {
         initExpander();
         initClimateToolsNavigation();
         initWithMapDescription();
-        initSlider();
+        // initSlider();
         activateMapDisplayButtons();
-        getAllClimateVariables();
+        feedBecUnitSelector();
+        colorMapByClimate();
+        updateClimateMap();
+        updateTimeScaleSelected();
+        initWithToolbox();
         // initMaterialDesignSelection(); // need to call this after getAllClimateVariables to update the form
 
         // initSideNav(); // this is done in the main layout

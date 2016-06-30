@@ -1,0 +1,29 @@
+Order,Element,Element Name,Type,Time-scalable?,Default Scale,Comment
+1,Tave,Mean temperature (oC),Primary,Yes,Raw,Annual average is MAT
+1,MAT,Mean annual temperature (oC),Primary,No,Raw,is the annual average for Tave
+2,Tmax,Mean daily maximum temperature (oC),Primary,Yes,Raw,No Annual available (could be calculated as average of seasonal… though not that meaningful)
+3,Tmin,Mean daily minimum temperature (oC),Primary,Yes,Raw,No Annual available (could be calculated as average of seasonal… though not that meaningful)
+4,PPT,Precipitation (mm),Primary,Yes,Log,Annual total is MAP
+4,MAP,Annual precipitation (mm),Primary,No,Log,is the annual total for PPT
+5,MSP,Growing season (May to September) precipitation (mm),Primary,No,Log,
+6,MWMT,Mean warmest month temperature (oC),Primary,No,Raw,
+7,MCMT,Mean coldest month temperature (oC),Primary,No,Raw,
+8,TD,"Temperature difference between MWMT and MCMT, or continentality (oC)",Primary,No,Raw,
+9,AHM,Annual heat:moisture index (MAT+10)/(MAP/1000)),Primary,No,Log,
+10,SHM,Summer heat:moisture index ((MWMT)/(MSP/1000)),Primary,No,Log,
+11,EMT,Extreme minimum temperature over 30 years,Primary,No,Raw,
+12,EXT,Extreme maximum temperature over 30 years,Primary,No,Raw,
+13,DD_0,Degree-days below 0oC (chilling degree-days),Derived,Yes,Log,
+14,DD5,"Degree-days above 5oC, growing degree-days",Derived,Yes,Log,
+15,DD_18,Degree-days below 18oC (heating degree-days),Derived,Yes,Log,
+16,DD18,Degree-days above 18oC (cooling degree-days),Derived,Yes,Log,
+17,NFFD,Number of frost-free days,Derived,Yes,Raw,
+18,FFP,Frost-free period,Derived,No,Raw,
+19,bFFP,The Julian date on which FFP begins,Derived,No,Raw,
+20,eFFP,The Julian date on which FFP ends,Derived,No,Raw,
+21,PAS,Precipitation as snow (mm),Derived,Yes,Log,
+22,Eref,Hargreaves reference evaporation,Derived,Yes,Log,
+23,CMD,Hargreaves climatic moisture deficit,Derived,Yes,Log,
+24,RH,Relative humidity,Derived,Yes,Raw,
+,Rad,IGNORE,NA,NA,,
+,MAR,IGNORE,NA,NA,,

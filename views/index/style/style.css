@@ -43,7 +43,7 @@ body {
   z-index: 1000;
   position: absolute;
   height: 100%;
-  margin-left: -450px;
+  margin-left: -550px;
 }
 
 /*.sidebar-items{
@@ -141,8 +141,10 @@ body {
   padding:0 1.5rem;
 }
 
+
 i.climate-tool-button{
   color:grey;
+  cursor:pointer;
 }
 i.climate-tool-button.active{
   color:teal;
@@ -153,6 +155,55 @@ i.climate-tool-button.active{
 	width:450px;
 }
 
+
+.fixed-action-btn{
+  position: absolute; 
+  height: 70px;
+  top: 75px; 
+  right: 10px;
+}
+
+.fixed-action-btn.horizontal ul{
+  width:275px;
+}
+
+
+.comparison-dropdowns .col{
+  padding:0px;
+}
+.timerange-dropdowns .col{
+  padding:0px;
+}
+
+.timerange-select-from{
+  padding-right:10px;
+}
+
+i.add-focal-pin{
+  color:#00e6ac;
+  cursor: pointer;
+}
+i.add-comparison-pin{
+  color:#6699ff;
+  cursor: pointer;
+}
+
+.reset-comparison-pins{
+  cursor: pointer;
+  color:grey;
+}
+.reset-comparison-pins:hover{
+  color:red;
+}
+
+.update-climate-map{
+  cursor: pointer;
+  color:grey;
+}
+
+.update-climate-map:hover{
+  color:red;
+}
 
 /*.collapsible-body p{
   padding: 0.5 2rem;

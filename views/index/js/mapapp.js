@@ -47,7 +47,17 @@ app.mapapp = (function() {
         Stamen_TonerLabels.bringToFront();
 
         // set timeout to zoom out on whole map
-        setTimeout(function() { el.map.setView([55.706998, -131.601530], 6) }, 3000);
+        // setTimeout(function() { el.map.setView([55.706998, -131.601530], 6) }, 3000);
+
+        // set geojson layers:
+        el.focal_poly = L.geoJson(null, el.focal_style).addTo(el.map)
+        el.comparison_poly = L.geoJson(null, el.comparison_style).addTo(el.map)
+
+        // initialize dataset_selected:
+        // el.dataset_selected = 'bgcv10beta_200m_wgs84_merge_normal_1981_2010msy';
+
+        // initialize the timescale selected:
+        el.timescale_selected = 'all';
     };
 
 
@@ -58,17 +68,45 @@ app.mapapp = (function() {
                 // create an empty sublayer to add interactivity and color
                 el.data_layer = layer.getSubLayer(0);
                 // change the query for the first layer
+
+                // if el.timeseries_selected is monthly, then give me back everything with 01-12 at the end
+
                 var subLayerOptions = {
-                    sql: "SELECT * FROM bgcv10beta_200m_wgs84",
+                    sql: "SELECT * FROM " + el.dataset_selected,
                     cartocss: el.bec_cartocss.zone,
-                    interactivity: "cartodb_id, map_label"
+                    interactivity: "cartodb_id, map_label",
+                    infowindow: true
                 }
+
                 el.data_layer.set(subLayerOptions)
                     .setInteraction(true);
+
+                // el.map.on('click', function(e) {        
+                //         var popLocation= e.latlng;
+                //         var popup = L.popup()
+                //         .setLatLng(popLocation)
+                //         .setContent('<div class="my-info-window"></div>\
+                //             <div><button>Focal</button><button>Comparison</button></div>')
+                //         .openOn(el.map);        
+                //     });
+                // // when you create a visualization from scratch you need to 
+                // // use cdb.vis.Vis.addInfowindow to set the params
+                // // if you use viz.json the infowindow params are inside it
+                // cdb.vis.Vis.addInfowindow(el.map, el.data_layer, ['cartodb_id','map_label'], {
+                //   // we provide a nice default template, if you want yours uncomment this
+                //   infowindowTemplate: $('#infowindow_template').html()
+                // });
+
                 // create the tooltip
+                // el.data_layer.on('featureClick', function(e, latlng, pos, data, subLayerIndex) {
+                //     el.selected_unit = data['map_label'];
+                //     $('.my-info-window').text(el.selected_unit);
+                // })
+
                 el.data_layer.on('featureOver', function(e, latlng, pos, data, subLayerIndex) {
                     el.selected_unit = data['map_label'];
                     highlightSelectedUnit();
+
                 }).on('featureOut', function(e, latlng, pos, data, layer) {
                     // console.log("out");
                 });
@@ -87,7 +125,7 @@ app.mapapp = (function() {
     };
 
     var highlightSelectedUnit = function() {
-        console.log(el.selected_unit);
+        // console.log(el.selected_unit);
     };
 
     var changeMapDisplay = function() {
@@ -95,6 +133,7 @@ app.mapapp = (function() {
             var sel = $(this).text().toUpperCase()
             if (sel == "CLIMATE") {
                 console.log("climate button clicked");
+                el.data_layer.setCartoCSS(el.bec_cartocss[el.selected_unit]);
             } else if (sel == "BEC UNITS") {
                 el.data_layer.setCartoCSS(el.bec_cartocss.unit);
             } else if (sel == "ZONES") {
@@ -104,6 +143,107 @@ app.mapapp = (function() {
     };
 
 
+    function addFocalPin() {
+        $('.add-focal-pin').click(function() {
+            if (el.focal_pin == null) {
+                var location = el.map.getCenter();
+                el.focal_pin = new L.marker(location, {
+                    draggable: true
+                }).addTo(el.map);
+
+                var marker;
+                var position;
+                el.focal_pin.on("drag", function(e) {
+                    marker = e.target;
+                    position = marker.getLatLng();
+                    el.focal_poly.clearLayers();
+                }).on("dragend", function(e) {
+                    showComparisonUnit(position, el.focal_poly, "focal");
+                });
+            } else {
+                console.log("focal pin already added");
+            }
+        });
+    }
+
+    function addComparisonPin() {
+        $('.add-comparison-pin').click(function() {
+            if (el.comparison_pin == null) {
+                var location = el.map.getCenter();
+                el.comparison_pin = new L.marker(location, {
+                    draggable: true
+                }).addTo(el.map);
+
+                var marker;
+                var position;
+                el.comparison_pin.on("drag", function(e) {
+                    marker = e.target;
+                    position = marker.getLatLng();
+                    el.comparison_poly.clearLayers();
+                }).on("dragend", function(e) {
+                    showComparisonUnit(position, el.comparison_poly, "comparison");
+                });
+            } else {
+                console.log("comparison pin already added");
+            }
+        });
+    }
+
+    function clearComparisonPins() {
+        $('.reset-comparison-pins').click(function() {
+            console.log('reset clicked');
+            el.map.removeLayer(el.focal_pin);
+            el.map.removeLayer(el.comparison_pin);
+            el.focal_pin = null;
+            el.comparison_pin = null;
+            el.focal_poly.clearLayers();
+            el.comparison_poly.clearLayers();
+        })
+    }
+
+    function showComparisonUnit(location, polyobj, selectDropdown) {
+        var lat = location.lat;
+        var lng = location.lng;
+        
+        var query = 'SELECT * from bgcv10beta_200m_wgs84 WHERE ST_Intersects( ST_SetSRID(ST_Point(' + lng + ',' + lat + '),4326), bgcv10beta_200m_wgs84.the_geom)'
+
+
+        var sql = new cartodb.SQL({ user: el.username, format: "geojson" });
+        sql.execute(query).done(function(data) {
+            polyobj.addData(data);
+
+            if (selectDropdown == "focal") {
+                console.log('focal');
+                updateSelectedFocalDropdown(data.features[0].properties.map_label);
+            } else {
+                console.log('comparison');
+                updateSelectedComparisonDropdown(data.features[0].properties.map_label);
+            }
+        });
+    }
+
+    function updateSelectedFocalDropdown(selectedUnit) {
+        console.log(selectedUnit);
+        $(".bec-focal-selector select").val(selectedUnit);
+        el.focal_name = selectedUnit;
+        $('select').material_select();
+    }
+
+    function updateSelectedComparisonDropdown(selectedUnit) {
+        console.log(selectedUnit);
+        $(".bec-comparison-selector select").val(selectedUnit);
+        el.comparison_name = selectedUnit;
+        $('select').material_select();
+    }
+
+    function updatedFCDropdown(){
+        $('.bec-unit-variables').change(function(){
+            el.focal_name = $('.bec-focal-selector :selected').text();
+            el.comparison_name = $('.bec-comparison-selector :selected').text();
+        })
+    }
+
+
 
 
     var init = function() {
@@ -111,6 +251,12 @@ app.mapapp = (function() {
         initMap();
         initCarto();
         changeMapDisplay();
+        addFocalPin();
+        addComparisonPin();
+        clearComparisonPins();
+        // updateClimateMap();
+        updatedFCDropdown();
+      
     };
 
     return {
