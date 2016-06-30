@@ -133,6 +133,7 @@ app.climatetimeseries = (function() {
             query = "SELECT DISTINCT id2, year," + tsvar + " FROM " + el.climateNormals_1901_2014 + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year >= " + el.timeRange_from + " AND year <= " + 2014;
             //45
             query_45 = "SELECT DISTINCT id2, year," + tsvar + " FROM " + 'bec10centroid_access1_0_rcp45_2011_2100msyt' + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year > " + 2014 + " AND year <= " + el.timeRange_to;
+            query_85 = "SELECT DISTINCT id2, year," + tsvar + " FROM " + 'bec10centroid_access1_0_rcp85_2011_2100msyt' + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year > " + 2014 + " AND year <= " + el.timeRange_to;
             $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
                 normalsPlusModeled(data);
             });
@@ -189,7 +190,9 @@ app.climatetimeseries = (function() {
                     t: 10,
                     pad: 2
                 },
-                hovermode: 'closest'
+                hovermode: 'closest',
+                showlegend: true,
+                legend: { "orientation": "h" }
             };
 
             Plotly.newPlot("timeseries-chart", ts, layout, { staticPlot: false, displayModeBar: false });
@@ -203,129 +206,179 @@ app.climatetimeseries = (function() {
 
         function normalsPlusModeled(data) {
             $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query_45, function(data_45) {
-                data.rows.sort(function(a, b) {
-                    return parseFloat(a.year) - parseFloat(b.year);
-                });
+                $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query_85, function(data_85) {
+                    data.rows.sort(function(a, b) {
+                        return parseFloat(a.year) - parseFloat(b.year);
+                    });
 
-                data_45.rows.sort(function(a, b) {
-                    return parseFloat(a.year) - parseFloat(b.year);
-                });
+                    data_45.rows.sort(function(a, b) {
+                        return parseFloat(a.year) - parseFloat(b.year);
+                    });
 
-                console.log(data_45.rows)
+                    data_85.rows.sort(function(a, b) {
+                        return parseFloat(a.year) - parseFloat(b.year);
+                    });
 
-                var xdat1 = [],
-                    ydat1 = [],
-                    xdat1_45 = [],
-                    ydat1_45 = [],
-                    xdat2 = [],
-                    ydat2 = [],
-                    xdat2_45 = [],
-                    ydat2_45 = [];
+                    console.log(data_45.rows)
+
+                    var xdat1 = [],
+                        ydat1 = [],
+                        xdat1_45 = [],
+                        ydat1_45 = [],
+                        xdat1_85 = [],
+                        ydat1_85 = [],
+                        xdat2 = [],
+                        ydat2 = [],
+                        xdat2_45 = [],
+                        ydat2_45 = [],
+                        xdat2_85 = [],
+                        ydat2_85 = [];
 
 
 
-                data.rows.forEach(function(d) {
+                    data.rows.forEach(function(d) {
 
-                    if (d.id2 == el.focal_name) {
-                        ydat1.push(d[tsvar]);
-                        xdat1.push(d.year);
+                        if (d.id2 == el.focal_name) {
+                            ydat1.push(d[tsvar]);
+                            xdat1.push(d.year);
 
-                    } else if (d.id2 == el.comparison_name) {
-                        ydat2.push(d[tsvar]);
-                        xdat2.push(d.year);
+                        } else if (d.id2 == el.comparison_name) {
+                            ydat2.push(d[tsvar]);
+                            xdat2.push(d.year);
+                        }
+                    });
+
+                    data_45.rows.forEach(function(d) {
+
+                        if (d.id2 == el.focal_name) {
+                            ydat1_45.push(d[tsvar]);
+                            xdat1_45.push(d.year);
+
+                        } else if (d.id2 == el.comparison_name) {
+                            ydat2_45.push(d[tsvar]);
+                            xdat2_45.push(d.year);
+                        }
+                    });
+
+                    data_85.rows.forEach(function(d) {
+
+                        if (d.id2 == el.focal_name) {
+                            ydat1_85.push(d[tsvar]);
+                            xdat1_85.push(d.year);
+
+                        } else if (d.id2 == el.comparison_name) {
+                            ydat2_85.push(d[tsvar]);
+                            xdat2_85.push(d.year);
+                        }
+                    });
+
+                    var ts1 = {
+                        x: xdat1,
+                        y: ydat1,
+                        text: el.focal_name,
+                        type: "scatter",
+                        line: {
+                            color: '#00e6ac',
+                            width: 3,
+                            opacity: 1
+                        },
+                        name: el.focal_name
                     }
-                });
 
-                data_45.rows.forEach(function(d) {
-
-                    if (d.id2 == el.focal_name) {
-                        ydat1_45.push(d[tsvar]);
-                        xdat1_45.push(d.year);
-
-                    } else if (d.id2 == el.comparison_name) {
-                        ydat2_45.push(d[tsvar]);
-                        xdat2_45.push(d.year);
+                    var ts2 = {
+                        x: xdat2,
+                        y: ydat2,
+                        text: el.comparison_name,
+                        type: "scatter",
+                        line: {
+                            color: '#6699ff',
+                            width: 3,
+                            opacity: 1
+                        },
+                        name: el.comparison_name
                     }
+
+                    var ts1_45 = {
+                        x: xdat1_45,
+                        y: ydat1_45,
+                        text: el.focal_name + " RCP 4.5",
+                        type: "scatter",
+                        line: {
+                            color: 'rgba(0, 204, 153, 0.5)',
+                            width: 2,
+                            opacity: 0.25
+                        },
+                        name: el.focal_name + " RCP 4.5"
+                    }
+
+                    var ts2_45 = {
+                        x: xdat2_45,
+                        y: ydat2_45,
+                        text: el.comparison_name + " RCP 4.5",
+                        type: "scatter",
+                        line: {
+                            color: 'rgb(51, 119, 255, 0.5)',
+                            width: 2,
+                            opacity: 0.25
+                        },
+                        name: el.comparison_name + " RCP 4.5"
+                    }
+
+                    var ts1_85 = {
+                        x: xdat1_85,
+                        y: ydat1_85,
+                        text: el.focal_name + " RCP 8.5",
+                        type: "scatter",
+                        line: {
+                            color: 'rgb(0, 128, 96, 0.5)',
+                            width: 2,
+                            opacity: 0.25
+                        },
+                        name: el.focal_name + " RCP 8.5"
+                    }
+
+                    var ts2_85 = {
+                        x: xdat2_85,
+                        y: ydat2_85,
+                        text: el.comparison_name + " RCP 8.5",
+                        type: "scatter",
+                        line: {
+                            color: 'rgb(0, 77, 230, 0.5)',
+                            width: 2,
+                            opacity: 0.25
+                        },
+                        name: el.comparison_name + " RCP 8.5"
+                    }
+
+                    var ts = [ts1, ts2, ts1_45, ts2_45, ts1_85, ts2_85];
+                    // var ts = [ts1, ts2];
+
+                    console.log(ts);
+
+                    var layout = {
+                        yaxis: { title: el.ts_yName, type: 'linear' },
+                        width: 400,
+                        margin: {
+                            l: 60,
+                            r: 40,
+                            b: 60,
+                            t: 10,
+                            pad: 2
+                        },
+                        hovermode: 'closest',
+                        showlegend: true,
+                        legend: { "orientation": "h" }
+                    };
+
+                    Plotly.newPlot("timeseries-chart", ts, layout, { staticPlot: false, displayModeBar: false });
+
+                    var update = {
+                        width: 400, // or any new width
+                    };
+
+                    Plotly.relayout('timeseries-chart', update);
+
                 });
-
-                var ts1 = {
-                    x: xdat1,
-                    y: ydat1,
-                    text: el.focal_name,
-                    type: "scatter",
-                    line: {
-                        color: '#00e6ac',
-                        width: 3,
-                        opacity: 1               
-                    },
-                    name: el.focal_name
-                }
-
-                var ts2 = {
-                    x: xdat2,
-                    y: ydat2,
-                    text: el.comparison_name,
-                    type: "scatter",
-                    line: {
-                        color: '#6699ff',
-                        width: 3,
-                        opacity: 1
-                    },
-                    name: el.comparison_name
-                }
-
-                var ts1_45 = {
-                    x: xdat1_45,
-                    y: ydat1_45,
-                    text: el.focal_name + " RCP 4.5",
-                    type: "scatter",
-                    line: {
-                        color: '#008c69',
-                        width: 1,
-                        opacity: 0.5
-                    },
-                    name: el.focal_name + " RCP 4.5"
-                }
-
-                var ts2_45 = {
-                    x: xdat2_45,
-                    y: ydat2_45,
-                    text: el.comparison_name + " RCP 4.5",
-                    type: "scatter",
-                    line: {
-                        color: '#476bb2',
-                        width: 1,
-                        opacity: 0.5
-                    },
-                    name: el.comparison_name + " RCP 4.5"
-                }
-
-                var ts = [ts1, ts2, ts1_45, ts2_45];
-                // var ts = [ts1, ts2];
-
-                console.log(ts);
-
-                var layout = {
-                    yaxis: { title: el.ts_yName, type: 'linear' },
-                    width: 400,
-                    margin: {
-                        l: 60,
-                        r: 40,
-                        b: 60,
-                        t: 10,
-                        pad: 2
-                    },
-                    hovermode: 'closest'
-                };
-
-                Plotly.newPlot("timeseries-chart", ts, layout, { staticPlot: false, displayModeBar: false });
-
-                var update = {
-                    width: 400, // or any new width
-                };
-
-                Plotly.relayout('timeseries-chart', update);
-
             });
         }
 
