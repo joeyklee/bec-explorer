@@ -12,9 +12,9 @@ app.scatterplot = (function(){
 		// console.log(xSelector, ySelector)
 
 		 var query = "SELECT DISTINCT map_label, " + el.xSelector + ", + " + el.ySelector + " FROM  " + el.dataset_selected + " WHERE map_label IS NOT NULL AND " + el.xSelector + " IS NOT NULL AND " + el.ySelector + " IS NOT NULL";
-		 // var query = "SELECT * FROM bgcv10beta_200m_wgs84_merge WHERE map_label IS NOT NULL";
-
+		 // var query = "SELECT DISTINCT * FROM  " + el.dataset_selected + " WHERE map_label IS NOT NULL";
 		$.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
+			console.log("the number of objects is:", data.rows.length);
 		    el.xData = data.rows.map(function(obj) {
 		        return obj[el.xSelector];
 		    });
@@ -152,7 +152,7 @@ app.scatterplot = (function(){
 		});
 	}
 
-	
+
 
 
 	var init = function(){
