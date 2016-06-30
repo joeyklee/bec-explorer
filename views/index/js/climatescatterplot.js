@@ -102,8 +102,6 @@ app.scatterplot = (function() {
                     // errors contains a list of errors
                     console.log("errors:" + errors);
                 })
-
-
         });
     }
 
