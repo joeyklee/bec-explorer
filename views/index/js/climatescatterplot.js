@@ -108,7 +108,7 @@ app.scatterplot = (function() {
     }
 
     function replot() {
-        $(".scatter-x, .scatter-y").change(function(e) {
+        $(".scatter-x, .scatter-y, .climate-variables-map, .timescale-selector").change(function(e) {
             // el.xData = 
             plotScatter();
         });
