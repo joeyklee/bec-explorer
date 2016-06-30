@@ -9,7 +9,9 @@ app.getTemporalColumns = (function() {
 
             for (var k in data.features[0].properties) {
                 // get all the columns
-                el.column_names.push(k);
+                if(k != "cartodb_id"){
+                    el.column_names.push(k);
+                }
                 // selectively choose
                 if (k.endsWith('01') || k.endsWith('02') || k.endsWith('03') || k.endsWith('04') || k.endsWith('05') || k.endsWith('06') ||
                         k.endsWith('07') || k.endsWith('08') || k.endsWith('09') || k.endsWith('10') || k.endsWith('11') || k.endsWith('12' || k == "zone" ||k == "map_label")) {
