@@ -110,7 +110,6 @@ app.mapui = (function() {
              // console.log($('.bec-focal-selector :selected').text());
             el.focal_name =  $('.bec-focal-selector :selected').text();
             el.comparison_name =  $('.bec-comparison-selector :selected').text();
-            console.log(el.focal_name);
             // make sure that the material select is called to update the dropdown
             $("select").material_select();
         });
@@ -120,21 +119,18 @@ app.mapui = (function() {
     
     function setClimateSelected(){
         el.climate_selected = $('.climate-variables-map :selected').text();
+        console.log("setClimateSelected - mapui is:", el.climate_selected);
         $("select").material_select();
-        console.log(el.climate_selected);
     }
 
     function colorMapByClimate(){
         $('.climate-variables-button, .update-climate-map').click(function(){
             setClimateSelected();
             var query = 'SELECT ' + el.climate_selected + ', cartodb_id FROM ' + el.dataset_selected;
-            console.log(query);
 
             // NEEED TO FIND A GOOD WAY TO CALCULATE BREAKS
             // THEN STYLE THE VALUES BASED ON THE BREAKS WITH CONDITIONALS!!!
             $.getJSON('https://'+el.username+'.cartodb.com/api/v2/sql/?q='+query, function(data) {
-                console.log(data.rows[0]);
-
                 var max = d3.max(data.rows, function(d){ 
                     return d[el.climate_selected];
                 })

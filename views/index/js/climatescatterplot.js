@@ -8,9 +8,8 @@ app.scatterplot = (function() {
         console.log("initscatter");
         el.chart_div = document.getElementById('scatter-chart'); // weird issue with jquery selector, use vanilla js - https://plot.ly/javascript/hover-events/
         el.xSelector = $(".scatter-x select option:selected").val();
-        console.log(el.xSelector);
         el.ySelector = $(".scatter-y select option:selected").val();
-        // console.log(xSelector, ySelector)
+        console.log(el.xSelector, el.ySelector);
 
         var query = "SELECT DISTINCT map_label, " + el.xSelector + ", + " + el.ySelector + " FROM  " + el.dataset_selected + " WHERE map_label IS NOT NULL AND " + el.xSelector + " IS NOT NULL AND " + el.ySelector + " IS NOT NULL";
         // var query = "SELECT DISTINCT * FROM  " + el.dataset_selected + " WHERE map_label IS NOT NULL";
@@ -34,7 +33,6 @@ app.scatterplot = (function() {
                 title: 'PLOTS PLOTS PLOTS'
             };
 
-            console.log(el.yselector_axis);
             var layout = {
                 xaxis: { title: el.xSelector, type: el.xSelector_axis },
                 yaxis: { title: el.ySelector, type: el.ySelector_axis },
