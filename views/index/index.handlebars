@@ -118,9 +118,9 @@
                                 <label>Climate Variable</label>
                                 <div class="input-field climate-variables climate-variables-map">
                                     <select>
-                                        <option value="map" selected>Mean Annual Precip</option>
-                                        <option value="ahm">Annual Heat Moisture Index</option>
-                                        <option value="elevation">Elevation</option>
+                                        <option value="cartodb_id" selected>cartodb_id</option>
+                                        {{!-- <option value="ahm">Annual Heat Moisture Index</option> --}}
+                                        {{!-- <option value="elevation">Elevation</option> --}}
                                     </select>
                                 </div>
                                 {{!-- <br>
@@ -148,7 +148,7 @@
                         </div>
                     </li>
                     <li>
-                        <div class="collapsible-header scatter-panel"> <i class="material-icons right">add</i>Scatterplot</div>
+                        <div class="collapsible-header scatter-panel"> <i class="material-icons right">add</i>Scatterplot: Climate Normals 1981-2010</div>
                         <div class="collapsible-body">
                             <div id="scatter-chart"></div>
                             {{!-- <img id="scatter-chart" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Bertrand3-scatterplot.svg/2000px-Bertrand3-scatterplot.svg.png"> --}}

@@ -118,30 +118,9 @@ app.mapui = (function() {
     }
 
     
-    
-
-    // function getAllClimateVariables() {
-    //     // fetch the geometry
-    //     var sql = new cartodb.SQL({ user: el.username, format: "geojson" });
-    //     sql.execute("SELECT * FROM " + el.dataset_selected + " WHERE cartodb_id = 1").done(function(data) {
-
-    //         for (var k in data.features[0].properties) { el.column_names.push(k) };
-    //         // console.log(el.column_names);
-
-    //         $('.climate-variables select').children().remove().end();
-
-    //         populate('.climate-variables select', el.column_names);
-
-    //         // call material select AFTER updating all the options to get the material style
-    //         // otherwise it wont work !! 
-    //         $("select").material_select();
-
-    //         setClimateSelected();
-    //     });
-    // }
-
     function setClimateSelected(){
         el.climate_selected = $('.climate-variables-map :selected').text();
+        $("select").material_select();
         console.log(el.climate_selected);
     }
 
@@ -227,12 +206,6 @@ app.mapui = (function() {
         });
     }
 
-    // function updateTimeRanges(){
-    //     $('.timerange-selector select').change(function(){
-    //         console.log('changed');
-    //     });
-    // }
-
     
 
     var init = function() {
@@ -245,7 +218,6 @@ app.mapui = (function() {
         // initSlider();
         activateMapDisplayButtons();
         feedBecUnitSelector();
-        // getAllClimateVariables();
         colorMapByClimate();
         updateClimateMap();
         updateTimeScaleSelected();

@@ -115,10 +115,6 @@ app.scatterplot = (function(){
 	    });
 	}
 
-	function toggleLogAxes(){
-		
-	}
-
 	function initAxesSwitch(){
 		// if x selector is log
 		if(el.xSelector_axis == 'log'){
@@ -135,13 +131,36 @@ app.scatterplot = (function(){
 		}
 	}
 
+	function toggleLogLinearAxes(){
+		$('.scatter-x-axis input').change(function(){
+			console.log("x switch toggled");
+			if(el.xSelector_axis == 'log'){
+				el.xSelector_axis = "linear";
+			} else{
+				el.xSelector_axis = "log";
+			}
+		});
+
+		$('.scatter-y-axis input').change(function(){
+			console.log("y switch toggled");
+			// if y selector is log
+			if(el.ySelector_axis == 'log'){
+				el.ySelector_axis = "linear";
+			} else{
+				el.ySelector_axis = "log";
+			}
+		});
+	}
+
+	
+
 
 	var init = function(){
 		el = app.main.el;
 		plotScatter();
 		replot();
 		initAxesSwitch();
-		// axesSwitches();
+		toggleLogLinearAxes();
 	}
 
 	return {
