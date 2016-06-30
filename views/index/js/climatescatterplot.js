@@ -151,9 +151,7 @@ app.scatterplot = (function() {
         });
     }
 
-    function setInitalClimateVariable() {
 
-    }
 
 
     var init = function() {

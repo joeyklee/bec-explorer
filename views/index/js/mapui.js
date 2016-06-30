@@ -202,6 +202,12 @@ app.mapui = (function() {
         });
     }
 
+    // this is a temporary fix!!! on page load make sure the variables shown are same as what is loaded async
+    // with the cliamte variables
+    function setInitalClimateVariable() {
+        $('.climate-variables :selected').val('rh_wt');
+        $("select").material_select();   
+    }
     
     
 
@@ -219,6 +225,7 @@ app.mapui = (function() {
         updateClimateMap();
         updateTimeScaleSelected();
         initWithToolbox();
+         setInitalClimateVariable();
         // initMaterialDesignSelection(); // need to call this after getAllClimateVariables to update the form
 
         // initSideNav(); // this is done in the main layout
