@@ -189,7 +189,9 @@ app.climatetimeseries = (function() {
                     t: 10,
                     pad: 2
                 },
-                hovermode: 'closest'
+                hovermode: 'closest',
+                showlegend: true,
+                legend: {"orientation": "h"}
             };
 
             Plotly.newPlot("timeseries-chart", ts, layout, { staticPlot: false, displayModeBar: false });
@@ -315,7 +317,9 @@ app.climatetimeseries = (function() {
                         t: 10,
                         pad: 2
                     },
-                    hovermode: 'closest'
+                    hovermode: 'closest',
+                    showlegend: true,
+                    legend: {"orientation": "h"}
                 };
 
                 Plotly.newPlot("timeseries-chart", ts, layout, { staticPlot: false, displayModeBar: false });
