@@ -34,16 +34,11 @@ app.climatetimeseries = (function() {
         }
 
         var query = "SELECT DISTINCT id2, year," + el.ts_ySelector.join(", ") + " FROM " + el.climateNormals_1901_2014 + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year >= " + el.timeRange_from + " AND year <= " + el.timeRange_to;
-        console.log(query);
         $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
-
 
             data.rows.sort(function(a, b) {
                 return parseFloat(a.year) - parseFloat(b.year);
             });
-
-            console.log(data);
-            console.log(el.ts_ySelector);
 
             var xdat1 = [],
                 ydat1 = [],
@@ -127,7 +122,6 @@ app.climatetimeseries = (function() {
 
         var tsvar = $(".climate-variables-map option:selected").val();
         var query = "SELECT DISTINCT id2, year," + tsvar + " FROM " + el.climateNormals_1901_2014 + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year >= " + el.timeRange_from + " AND year <= " + el.timeRange_to;
-        console.log(query);
         $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
 
 
@@ -135,8 +129,6 @@ app.climatetimeseries = (function() {
                 return parseFloat(a.year) - parseFloat(b.year);
             });
 
-            console.log(data);
-            console.log(el.ts_ySelector);
 
             var xdat1 = [],
                 ydat1 = [],

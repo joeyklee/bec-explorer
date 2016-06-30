@@ -18,7 +18,7 @@ app.getTemporalColumns = (function() {
                     el.monthly_columns.push(k);
                 } else if (k.endsWith('_at') || k.endsWith('_sm') || k.endsWith('_sp') || k.endsWith('_wt' || k == "zone" ||k == "map_label")) {
                     el.seasonal_columns.push(k);
-                } else {
+                } else if (k != "cartodb_id") {
                     el.annual_columns.push(k);
                 }
             };
@@ -38,12 +38,12 @@ app.getTemporalColumns = (function() {
 
     function setClimateSelected() {
         el.climate_selected = $('.climate-variables-map :selected').text();
-        console.log(el.climate_selected);
+        console.log("setClimateSelected is:", el.climate_selected);
+        $("select").material_select();
     }
 
     function setTimeSelected(){
     	$('.timescale-selector :selected').val('all');
-    	console.log(el.timescale_selected);
     	$("select").material_select();
     }
 
