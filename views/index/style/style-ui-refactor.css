@@ -59,11 +59,9 @@ body {
 
 }
 
-/*.sidebar-main{
-	padding-left:5px;
-	padding-right:5px;
-	padding-top:10px;
-}*/
+.sidebar-main{
+	padding-bottom: 200px;
+}
 
 
 .chart-selector-row{
@@ -75,7 +73,7 @@ body {
 	background-color: #f3e5f5;
 }
 .welcome-map-inner{
-	padding: 10px 5px 5px 5px;
+	padding: 10px 5px 100px 5px;
 }
 
 .map-selection-row{
