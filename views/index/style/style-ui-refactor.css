@@ -77,7 +77,6 @@ body {
 }
 
 .map-selection-row{
-	/*padding: 10px 5px 10px 5px;*/
 	display:none;
 }
 .map-selection-row.active{
