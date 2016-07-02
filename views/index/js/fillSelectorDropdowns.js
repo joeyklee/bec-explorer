@@ -1,6 +1,6 @@
 var app = app || {};
 
-app.getTemporalColumns = (function() {
+app.fillSelectorDropdowns = (function() {
     var el = null;
 
     function getColumns() {
@@ -69,6 +69,7 @@ app.getTemporalColumns = (function() {
             });
     }
 
+
     function populate(selector, objlist) {
         objlist.forEach(function(d, i) {
             if (i == 0) {
@@ -82,11 +83,53 @@ app.getTemporalColumns = (function() {
     }
 
 
+
+    function feedBecUnitSelector(){
+        var query = "SELECT DISTINCT map_label FROM " + el.dataset_selected + " WHERE map_label IS NOT NULL";
+        $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
+            data.rows.forEach(function(d){
+                el.bec_names.push(d.map_label);
+            })
+            $('.bec-unit-variables select').children().remove().end();
+            populate('.bec-unit-variables select', el.bec_names);
+
+             // console.log($('.bec-focal-selector :selected').text());
+            el.focal_name =  $('.bec-focal-selector :selected').text();
+            el.comparison_name =  $('.bec-comparison-selector :selected').text();
+            // make sure that the material select is called to update the dropdown
+            $("select").material_select();
+        });
+        
+    }
+
+    function updateTimeScaleSelected(){
+        $('.timescale-selector select').change(function(){
+            el.timescale_selected = $(".timescale-selector select").val();
+                if (el.timescale_selected == "all"){
+                    $('.climate-variables select').children().remove().end();
+                    populate('.climate-variables select', el.column_names);
+                } else if (el.timescale_selected == "monthly"){
+                    $('.climate-variables select').children().remove().end();
+                    populate('.climate-variables select', el.monthly_columns);
+                } else if (el.timescale_selected == "seasonal"){
+                    $('.climate-variables select').children().remove().end();
+                    populate('.climate-variables select', el.seasonal_columns);
+                } else if (el.timescale_selected == "annual"){
+                    $('.climate-variables select').children().remove().end();
+                    populate('.climate-variables select', el.annual_columns);
+                }
+
+            $('select').material_select();
+        });
+    }
+
     var init = function() {
         el = app.main.el;
         getColumns();
         fillTimeRangeDropdown();
         setTimeRangeSelected();
+        feedBecUnitSelector();
+        updateTimeScaleSelected();
 
     }
 
