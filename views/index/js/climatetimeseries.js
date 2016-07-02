@@ -578,7 +578,8 @@ app.climatetimeseries = (function() {
         var sql = new cartodb.SQL({ user: el.username, format: "geojson" });
         sql.execute(query).done(function(data) {
             polyobj.addData(data);
-
+            
+            
             if (selectDropdown == "focal") {
                 console.log('focal');
                 updateSelectedFocalDropdown(data.features[0].properties.map_label);
@@ -607,7 +608,14 @@ app.climatetimeseries = (function() {
         $('.bec-unit-variables').change(function(){
             el.focal_name = $('.bec-focal-selector :selected').text();
             el.comparison_name = $('.bec-comparison-selector :selected').text();
+            plotTimeSeries2();
         })
+    }
+
+    function toggleTimeSeriesChartOptions(){
+        $('.timeseries-options-expander').click(function(){
+            $('.timeseries-options').toggleClass('active');
+        });
     }
 
 
@@ -620,6 +628,7 @@ app.climatetimeseries = (function() {
         addComparisonPin();
         clearComparisonPins();
         updatedFCDropdown();
+        toggleTimeSeriesChartOptions();
     };
 
     return {
