@@ -68,9 +68,10 @@ app.main = (function() {
 
 // call app.map.init() once the DOM is loaded
 window.addEventListener('DOMContentLoaded', function() {
-    app.getTemporalColumns.init();
+    app.fillSelectorDropdowns.init();
 	app.mapcolors.init();
     app.mapapp.init();
+    app.sidebarix.init();
     app.mapui.init();
     app.scatterplot.init();
     app.climatetimeseries.init();
