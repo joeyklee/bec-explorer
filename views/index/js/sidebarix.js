@@ -37,6 +37,9 @@ app.sidebarix = (function(){
 	function initializePage(){
 	    $('.sidebar-expander').click();
 	    $('.sidebar-display-map').click();
+
+	    // initial modal
+	     $('.modal-trigger').leanModal();
 	}
 
 	function init(){
