@@ -4,126 +4,11 @@ app.climatetimeseries = (function() {
     var el = null;
 
 
-    var plotTimeSeries = function() {
-        console.log("init timeseries");
-        el.tschart_div = document.getElementById('timeseries-chart'); // weird issue with jquery selector, use vanilla js - https://plot.ly/javascript/hover-events/
-
-        var tsvar = $(".climate-variables-map option:selected").val();
-        var msuffix = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
-        var ssuffix = ['at', 'wt', 'sp', 'sm'];
-
-        // check if it is annual, seasonal, or monthly
-        if (msuffix.indexOf(tsvar.slice(-2)) >= 1) {
-            el.ts_ySelector = [];
-            msuffix.forEach(function(d, i) {
-                var output = tsvar.substring(0, tsvar.length - 2) + d;
-                el.ts_ySelector.push(output);
-            })
-            el.ts_xName = "Monthly (Jan-Dec)";
-            el.ts_yName = tsvar.substring(0, tsvar.length - 2);
-        } else if (ssuffix.indexOf(tsvar.slice(-2)) >= 1) {
-            el.ts_ySelector = [];
-            ssuffix.forEach(function(d, i) {
-                var output = tsvar.substring(0, tsvar.length - 2) + d;
-                el.ts_ySelector.push(output);
-            })
-            el.ts_xName = "seasonal (autumn, winter, spring, summer)";
-            el.ts_yName = tsvar.substring(0, tsvar.length - 3); // -3 to remove the underscore
-        } else {
-            el.ts_ySelector = [tsvar];
-            el.ts_xName = "Annual (By Year)";
-        }
-
-        var query = "SELECT DISTINCT id2, year," + el.ts_ySelector.join(", ") + " FROM " + el.climateNormals_1901_2014 + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year >= " + el.timeRange_from + " AND year <= " + el.timeRange_to;
-        $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
-
-            data.rows.sort(function(a, b) {
-                return parseFloat(a.year) - parseFloat(b.year);
-            });
-
-            var xdat1 = [],
-                ydat1 = [],
-                xdat2 = [],
-                ydat2 = [];
-
-            data.rows.forEach(function(d) {
-                if (d.id2 == el.focal_name) {
-                    el.ts_ySelector.forEach(function(j, i) {
-                        ydat1.push(d[j]);
-
-                        if (el.ts_ySelector.length == 1) {
-                            xdat1.push(d.year);
-                        } else if (el.ts_ySelector.length == 4) {
-                            xdat1.push(d.year + "-0" + i * 3); // *3 to evenly space across seasons
-                        } else {
-                            xdat1.push(d.year + "-" + i);
-                        }
-                    });
-                } else if (d.id2 == el.comparison_name) {
-                    el.ts_ySelector.forEach(function(j, i) {
-                        ydat2.push(d[j]);
-
-                        if (el.ts_ySelector.length == 1) {
-                            xdat2.push(d.year);
-                        } else if (el.ts_ySelector.length == 4) {
-                            xdat2.push(d.year + "-0" + i * 3); // *3 to evenly space across seasons
-                        } else {
-                            xdat2.push(d.year + "-" + i);
-                        }
-                    });
-                }
-
-            })
-
-            var ts1 = {
-                x: xdat1,
-                y: ydat1,
-                text: el.focal_name,
-                type: "scatter",
-                name: el.focal_name
-            }
-
-            var ts2 = {
-                x: xdat2,
-                y: ydat2,
-                text: el.comparison_name,
-                type: "scatter",
-                name: el.comparison_name
-            }
-
-            var ts = [ts1, ts2];
-
-            var layout = {
-                yaxis: { title: el.ts_yName, type: 'linear' },
-                height: 300,
-                width: 500,
-                margin: {
-                    l: 60,
-                    r: 40,
-                    b: 60,
-                    t: 10,
-                    pad: 2
-                },
-                hovermode: 'closest'
-            };
-
-            Plotly.newPlot("timeseries-chart", ts, layout, { staticPlot: false, displayModeBar: false });
-
-            var update = {
-                width: 500, // or any new width
-                height: 300
-            };
-
-            Plotly.relayout('timeseries-chart', update);
-        });
-
-    }
-
     function plotTimeSeries2() {
         console.log("init timeseries");
         el.tschart_div = document.getElementById('timeseries-chart'); // weird issue with jquery selector, use vanilla js - https://plot.ly/javascript/hover-events/
 
-        var tsvar = $(".climate-variables-map option:selected").val();
+        var tsvar = $(".climate-variables-chart option:selected").val();
 
         var query = null;
         var query_45 = null
@@ -147,8 +32,16 @@ app.climatetimeseries = (function() {
         //  data
         var xdat1 = [],
             ydat1 = [],
+            xdat1_45 = [],
+            ydat1_45 = [],
+            xdat1_85 = [],
+            ydat1_85 = [],
             xdat2 = [],
-            ydat2 = [];
+            ydat2 = [],
+            xdat2_45 = [],
+            ydat2_45 = []
+            xdat2_85 = [],
+            ydat2_85 = [];
 
         // data models
         var ts1, 
@@ -344,16 +237,16 @@ app.climatetimeseries = (function() {
                     ts1.x = xdat1;
                     ts1.y = ydat1;
                     ts1_45.x = xdat1_45;
-                    ts1_45.x = xdat1_45;
-                    ts1_85.y = ydat1_85;
+                    ts1_45.y = ydat1_45;
+                    ts1_85.x = xdat1_85;
                     ts1_85.y = ydat1_85;
 
                     ts2.x = xdat2;
                     ts2.y = ydat2;
                     ts2_45.x = xdat2_45;
-                    ts2_45.x = xdat2_45;
+                    ts2_45.y = ydat2_45;
                     ts2_85.y = ydat2_85;
-                    ts2_85.y = ydat2_85;
+                    ts2_85.x = xdat2_85;
 
 
                     var ts = [ts1, ts2, ts1_45, ts2_45, ts1_85, ts2_85];
@@ -367,8 +260,11 @@ app.climatetimeseries = (function() {
     }
 
     function replot() {
-        $(".bec-focal-selector, .bec-comparison-selector, .climate-variables-map, .timerange-select").change(function(e) {
-            plotTimeSeries2()
+        $(".bec-focal-selector, .bec-unit-variables, .climate-variables, .timescale-selector, .bec-comparison-selector, .climate-variables-map, .timerange-select").change(function(e) {
+            // el.focal_name = $(".bec-focal-selector select").val();
+            // el.comparison_name = $(".bec-comparison-selector select").val();
+            
+            plotTimeSeries2();
         });
     }
 
@@ -438,8 +334,6 @@ app.climatetimeseries = (function() {
         var lng = location.lng;
         
         var query = 'SELECT * from bgcv10beta_200m_wgs84 WHERE ST_Intersects( ST_SetSRID(ST_Point(' + lng + ',' + lat + '),4326), bgcv10beta_200m_wgs84.the_geom)'
-
-
         var sql = new cartodb.SQL({ user: el.username, format: "geojson" });
         sql.execute(query).done(function(data) {
             polyobj.addData(data);
@@ -459,6 +353,7 @@ app.climatetimeseries = (function() {
         console.log(selectedUnit);
         $(".bec-focal-selector select").val(selectedUnit);
         el.focal_name = selectedUnit;
+        plotTimeSeries2();
         $('select').material_select();
     }
 
@@ -466,11 +361,12 @@ app.climatetimeseries = (function() {
         console.log(selectedUnit);
         $(".bec-comparison-selector select").val(selectedUnit);
         el.comparison_name = selectedUnit;
+        plotTimeSeries2();
         $('select').material_select();
     }
 
     function updatedFCDropdown(){
-        $('.bec-unit-variables').change(function(){
+        $('.bec-unit-variables, .timescale-selector').change(function(){
             el.focal_name = $('.bec-focal-selector :selected').text();
             el.comparison_name = $('.bec-comparison-selector :selected').text();
             plotTimeSeries2();
@@ -608,4 +504,117 @@ app.climatetimeseries = (function() {
 //     Plotly.relayout('timeseries-chart', update);
 
 // });
-// });
+// });var plotTimeSeries = function() {
+    //     console.log("init timeseries");
+    //     el.tschart_div = document.getElementById('timeseries-chart'); // weird issue with jquery selector, use vanilla js - https://plot.ly/javascript/hover-events/
+
+    //     var tsvar = $(".climate-variables-map option:selected").val();
+    //     var msuffix = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+    //     var ssuffix = ['at', 'wt', 'sp', 'sm'];
+
+    //     // check if it is annual, seasonal, or monthly
+    //     if (msuffix.indexOf(tsvar.slice(-2)) >= 1) {
+    //         el.ts_ySelector = [];
+    //         msuffix.forEach(function(d, i) {
+    //             var output = tsvar.substring(0, tsvar.length - 2) + d;
+    //             el.ts_ySelector.push(output);
+    //         })
+    //         el.ts_xName = "Monthly (Jan-Dec)";
+    //         el.ts_yName = tsvar.substring(0, tsvar.length - 2);
+    //     } else if (ssuffix.indexOf(tsvar.slice(-2)) >= 1) {
+    //         el.ts_ySelector = [];
+    //         ssuffix.forEach(function(d, i) {
+    //             var output = tsvar.substring(0, tsvar.length - 2) + d;
+    //             el.ts_ySelector.push(output);
+    //         })
+    //         el.ts_xName = "seasonal (autumn, winter, spring, summer)";
+    //         el.ts_yName = tsvar.substring(0, tsvar.length - 3); // -3 to remove the underscore
+    //     } else {
+    //         el.ts_ySelector = [tsvar];
+    //         el.ts_xName = "Annual (By Year)";
+    //     }
+
+    //     var query = "SELECT DISTINCT id2, year," + el.ts_ySelector.join(", ") + " FROM " + el.climateNormals_1901_2014 + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year >= " + el.timeRange_from + " AND year <= " + el.timeRange_to;
+    //     $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
+
+    //         data.rows.sort(function(a, b) {
+    //             return parseFloat(a.year) - parseFloat(b.year);
+    //         });
+
+    //         var xdat1 = [],
+    //             ydat1 = [],
+    //             xdat2 = [],
+    //             ydat2 = [];
+
+    //         data.rows.forEach(function(d) {
+    //             if (d.id2 == el.focal_name) {
+    //                 el.ts_ySelector.forEach(function(j, i) {
+    //                     ydat1.push(d[j]);
+
+    //                     if (el.ts_ySelector.length == 1) {
+    //                         xdat1.push(d.year);
+    //                     } else if (el.ts_ySelector.length == 4) {
+    //                         xdat1.push(d.year + "-0" + i * 3); // *3 to evenly space across seasons
+    //                     } else {
+    //                         xdat1.push(d.year + "-" + i);
+    //                     }
+    //                 });
+    //             } else if (d.id2 == el.comparison_name) {
+    //                 el.ts_ySelector.forEach(function(j, i) {
+    //                     ydat2.push(d[j]);
+
+    //                     if (el.ts_ySelector.length == 1) {
+    //                         xdat2.push(d.year);
+    //                     } else if (el.ts_ySelector.length == 4) {
+    //                         xdat2.push(d.year + "-0" + i * 3); // *3 to evenly space across seasons
+    //                     } else {
+    //                         xdat2.push(d.year + "-" + i);
+    //                     }
+    //                 });
+    //             }
+
+    //         })
+
+    //         var ts1 = {
+    //             x: xdat1,
+    //             y: ydat1,
+    //             text: el.focal_name,
+    //             type: "scatter",
+    //             name: el.focal_name
+    //         }
+
+    //         var ts2 = {
+    //             x: xdat2,
+    //             y: ydat2,
+    //             text: el.comparison_name,
+    //             type: "scatter",
+    //             name: el.comparison_name
+    //         }
+
+    //         var ts = [ts1, ts2];
+
+    //         var layout = {
+    //             yaxis: { title: el.ts_yName, type: 'linear' },
+    //             height: 300,
+    //             width: 500,
+    //             margin: {
+    //                 l: 60,
+    //                 r: 40,
+    //                 b: 60,
+    //                 t: 10,
+    //                 pad: 2
+    //             },
+    //             hovermode: 'closest'
+    //         };
+
+    //         Plotly.newPlot("timeseries-chart", ts, layout, { staticPlot: false, displayModeBar: false });
+
+    //         var update = {
+    //             width: 500, // or any new width
+    //             height: 300
+    //         };
+
+    //         Plotly.relayout('timeseries-chart', update);
+    //     });
+
+    // }
