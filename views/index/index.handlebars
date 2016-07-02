@@ -1,11 +1,11 @@
 <link rel="stylesheet" type="text/css" href="index/style/style-ui-refactor.css">
-<link rel="stylesheet" type="text/css" href="index/style/nouislider.css">
+{{!-- <link rel="stylesheet" type="text/css" href="index/style/nouislider.css"> --}}
 
 
 <div id="mapid"></div>
 <div class="row">
-    <div class="sidebar-expander active z-depth-1"></div>
-    <div class="sidebar col l5 m5 s5 active z-depth-2 active">
+    <div class="sidebar-expander z-depth-1"></div>
+    <div class="sidebar col l5 m5 s5 z-depth-2">
         <div class="sidebar-main">
             <div class="chart-selector-row">
                 <div class="row">
@@ -13,16 +13,16 @@
                         <label>Select</label>
                     </div> --}}
                     <div class="col l12 m12 s12">
-                        <div class="col l4 m12 s12 sidebar-display-buttons sidebar-display-map">
-                            <a class="waves-effect waves-light btn-floating purple darken-3 sidebar-display-buttons"><i class="material-icons">explore</i></a> Map Controls</div>
-                        <div class="col l4 m12 s12 sidebar-display-buttons sidebar-display-timeseries">
-                            <a class="waves-effect waves-light btn-floating disabled purple darken-3 sidebar-display-buttons"><i class="material-icons">timeline</i></a> Time Series</div>
-                        <div class="col l4 m12 s12 sidebar-display-buttons sidebar-display-scatterplot">
-                            <a class="waves-effect waves-light btn-floating disabled purple darken-3 sidebar-display-buttons"><i class="material-icons">grain</i></a> Climate Normals</div>
+                        <div class="col l4 m12 s12 sidebar-display-map">
+                            <a class="waves-effect waves-light btn-floating purple darken-3 sidebar-display-buttons sidebar-display-map disabled"><i class="material-icons">explore</i></a> Map Controls</div>
+                        <div class="col l4 m12 s12 sidebar-display-timeseries">
+                            <a class="waves-effect waves-light btn-floating disabled purple darken-3 sidebar-display-buttons sidebar-display-timeseries"><i class="material-icons">timeline</i></a> Time Series</div>
+                        <div class="col l4 m12 s12 sidebar-display-scatterplot">
+                            <a class="waves-effect waves-light btn-floating disabled purple darken-3 sidebar-display-buttons sidebar-display-scatterplot"><i class="material-icons">grain</i></a> Climate Normals</div>
                     </div>
                 </div>
             </div>
-            <div class="map-selection-row active">
+            <div class="map-selection-row">
                 <div class="welcome-map-outer">
                     <div class="row welcome-map-inner">
                         <div class="col l12 m12 s12">
@@ -250,9 +250,6 @@
 </div>
 
 
-{{!--  <div class="col l3 m12 s12 map-display-buttons"><a><i class="material-icons climate-tool-button">arrow_drop_down_circle</i></a></div> --}}
-
-
 <!-- Modal Trigger -->
 <a class="waves-effect waves-light btn-floating modal-trigger purple darken-3" href="#modal1">  <i class="material-icons">info_outline</i></a>
 <!-- Modal Structure -->
@@ -272,38 +269,12 @@
 
 
 
-<script type="text/javascript">
-$('.sidebar-expander').click(function(){
-    $('.sidebar, .sidebar-expander').toggleClass('active');
-});
-
-$('.modal-trigger').leanModal();
-
-$('.timeseries-options-expander').click(function(){
-    $('.timeseries-options').toggleClass('active');
-});
-
-
-$('.sidebar-display-map').click(function(){
-    $('.map-selection-row').toggleClass('active');
-})
-
-$('.sidebar-display-timeseries').click(function(){
-    $('.timeseries-row').toggleClass('active');
-});
-
-$('.sidebar-display-scatterplot').click(function(){
-    $('.scatterplot-row').toggleClass('active');
-});
-
-</script>
-
-
 {{!-- <script type="text/javascript" src="index/js/nouislider.js"></script> --}}
 <script type="text/javascript" src="index/js/index.js"></script>
-<script type="text/javascript" src="index/js/getTemporalColumns.js"></script>
+<script type="text/javascript" src="index/js/fillSelectorDropdowns.js"></script>
 <script type="text/javascript" src="index/js/mapcolors.js"></script>
 <script type="text/javascript" src="index/js/mapapp.js"></script>
+<script type="text/javascript" src="index/js/sidebarix.js"></script>
 <script type="text/javascript" src="index/js/mapui.js"></script>
 <script type="text/javascript" src="index/js/colorbrewer.min.js"></script>
 <script type="text/javascript" src="index/js/climatescatterplot.js"></script>
