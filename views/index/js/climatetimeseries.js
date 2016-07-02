@@ -130,7 +130,8 @@ app.climatetimeseries = (function() {
         }
 
         var layout = {
-            yaxis: { title: el.ts_yName, type: 'linear' },
+            xaxis: { title: "year" },
+            yaxis: { title: tsvar, type: 'linear' },
             width: 500,
             height:300,
             margin: {
