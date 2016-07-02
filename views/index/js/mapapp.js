@@ -128,6 +128,10 @@ app.mapapp = (function() {
         // console.log(el.selected_unit);
     };
 
+    function changeBaseMap(){
+        // 
+    }
+
 
 
     var init = function() {
