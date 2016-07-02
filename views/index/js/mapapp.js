@@ -128,15 +128,16 @@ app.mapapp = (function() {
         // console.log(el.selected_unit);
     };
 
+    // strip the blank spaces and match that way
     var changeMapDisplay = function() {
         $('.map-display-buttons').click(function() {
-            var sel = $(this).text().toUpperCase()
+            var sel = $(this).text().toUpperCase().trim();
             if (sel == "CLIMATE") {
                 console.log("climate button clicked");
                 el.data_layer.setCartoCSS(el.bec_cartocss[el.selected_unit]);
-            } else if (sel == "BEC UNITS") {
+            } else if (sel == "BEC UNIT") {
                 el.data_layer.setCartoCSS(el.bec_cartocss.unit);
-            } else if (sel == "ZONES") {
+            } else if (sel == "BEC ZONE") {
                 el.data_layer.setCartoCSS(el.bec_cartocss.zone);
             };
         });

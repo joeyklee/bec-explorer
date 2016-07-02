@@ -75,10 +75,10 @@ app.mapui = (function() {
 
     function activateMapDisplayButtons() {
         $('.map-display-buttons').click(function() {
-            console.log($(this).text());
+            console.log($(this).text().toUpperCase().trim());
             $('.map-display-buttons').addClass("disabled");
             $(this).toggleClass("disabled");
-            if ($(this).text().toUpperCase() == "CLIMATE") {
+            if ($(this).text().toUpperCase().trim() == "CLIMATE") {
                 $('.climate-tools, .climate-tool-button').addClass("active");
             } else {
                 $('.climate-tools, .climate-tool-button').addClass("active");
@@ -118,7 +118,9 @@ app.mapui = (function() {
 
     
     function setClimateSelected(){
-        el.climate_selected = $('.climate-variables-map :selected').text();
+        el.climate_selected = $('.climate-variables-map :selected:first').val();
+        console.log(el.climate_selected);
+
         console.log("setClimateSelected - mapui is:", el.climate_selected);
         $("select").material_select();
     }
