@@ -94,7 +94,8 @@ app.climatetimeseries = (function() {
 
             var layout = {
                 yaxis: { title: el.ts_yName, type: 'linear' },
-                width: 400,
+                height: 300,
+                width: 500,
                 margin: {
                     l: 60,
                     r: 40,
@@ -108,7 +109,8 @@ app.climatetimeseries = (function() {
             Plotly.newPlot("timeseries-chart", ts, layout, { staticPlot: false, displayModeBar: false });
 
             var update = {
-                width: 400, // or any new width
+                width: 500, // or any new width
+                height: 300
             };
 
             Plotly.relayout('timeseries-chart', update);
@@ -182,7 +184,8 @@ app.climatetimeseries = (function() {
 
             var layout = {
                 yaxis: { title: el.ts_yName, type: 'linear' },
-                width: 400,
+                width: 500,
+                height:300,
                 margin: {
                     l: 60,
                     r: 40,
@@ -192,13 +195,14 @@ app.climatetimeseries = (function() {
                 },
                 hovermode: 'closest',
                 showlegend: true,
-                legend: { "orientation": "h" }
+                legend: { "orientation": "v" }
             };
 
             Plotly.newPlot("timeseries-chart", ts, layout, { staticPlot: false, displayModeBar: false });
 
             var update = {
-                width: 400, // or any new width
+                width: 500,
+                height:300
             };
 
             Plotly.relayout('timeseries-chart', update);
@@ -357,7 +361,8 @@ app.climatetimeseries = (function() {
 
                     var layout = {
                         yaxis: { title: el.ts_yName, type: 'linear' },
-                        width: 400,
+                        width: 500,
+                        height:300,
                         margin: {
                             l: 60,
                             r: 40,
@@ -367,13 +372,14 @@ app.climatetimeseries = (function() {
                         },
                         hovermode: 'closest',
                         showlegend: true,
-                        legend: { "orientation": "h" }
+                        legend: { "orientation": "v" }
                     };
 
                     Plotly.newPlot("timeseries-chart", ts, layout, { staticPlot: false, displayModeBar: false });
 
                     var update = {
-                        width: 400, // or any new width
+                        width: 500,
+                        height:300
                     };
 
                     Plotly.relayout('timeseries-chart', update);
