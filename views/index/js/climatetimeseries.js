@@ -3,6 +3,7 @@ var app = app || {};
 app.climatetimeseries = (function() {
     var el = null;
 
+
     var plotTimeSeries = function() {
         console.log("init timeseries");
         el.tschart_div = document.getElementById('timeseries-chart'); // weird issue with jquery selector, use vanilla js - https://plot.ly/javascript/hover-events/
@@ -135,6 +136,7 @@ app.climatetimeseries = (function() {
             query = "SELECT DISTINCT id2, year," + tsvar + " FROM " + el.climateNormals_1901_2014 + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year >= " + el.timeRange_from + " AND year <= " + 2014;
             //45
             query_45 = "SELECT DISTINCT id2, year," + tsvar + " FROM " + 'bec10centroid_access1_0_rcp45_2011_2100msyt' + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year > " + 2014 + " AND year <= " + el.timeRange_to;
+            // 85
             query_85 = "SELECT DISTINCT id2, year," + tsvar + " FROM " + 'bec10centroid_access1_0_rcp85_2011_2100msyt' + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year > " + 2014 + " AND year <= " + el.timeRange_to;
             $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
                 normalsPlusModeled(data);
@@ -142,15 +144,124 @@ app.climatetimeseries = (function() {
         }
 
 
+        //  data
+        var xdat1 = [],
+            ydat1 = [],
+            xdat2 = [],
+            ydat2 = [];
+
+        // data models
+        var ts1, 
+            ts2, 
+            ts1_45, 
+            ts2_45,
+            ts1_85, 
+            ts2_85;
+
+        ts1 = {
+            x: null,
+            y: null,
+            text: el.focal_name,
+            type: "scatter",
+            line: {
+                color: '#00e6ac',
+                width: 3,
+                opacity: 1
+            },
+            name: el.focal_name
+        }
+
+        ts2 = {
+            x: null,
+            y: null,
+            text: el.comparison_name,
+            type: "scatter",
+            line: {
+                color: '#6699ff',
+                width: 3,
+                opacity: 1
+            },
+            name: el.comparison_name
+        }
+
+        ts1_45 = {
+            x: null,
+            y: null,
+            text: el.focal_name + " RCP 4.5",
+            type: "scatter",
+            line: {
+                color: 'rgba(0, 204, 153, 0.5)',
+                width: 2,
+                opacity: 0.25
+            },
+            name: el.focal_name + " RCP 4.5"
+        }
+
+        ts2_45 = {
+            x: null,
+            y: null,
+            text: el.comparison_name + " RCP 4.5",
+            type: "scatter",
+            line: {
+                color: 'rgb(51, 119, 255, 0.5)',
+                width: 2,
+                opacity: 0.25
+            },
+            name: el.comparison_name + " RCP 4.5"
+        }
+
+        ts1_85 = {
+            x: null,
+            y: null,
+            text: el.focal_name + " RCP 8.5",
+            type: "scatter",
+            line: {
+                color: 'rgb(0, 128, 96, 0.5)',
+                width: 2,
+                opacity: 0.25
+            },
+            name: el.focal_name + " RCP 8.5"
+        }
+
+        ts2_85 = {
+            x: null,
+            y: null,
+            text: el.comparison_name + " RCP 8.5",
+            type: "scatter",
+            line: {
+                color: 'rgb(0, 77, 230, 0.5)',
+                width: 2,
+                opacity: 0.25
+            },
+            name: el.comparison_name + " RCP 8.5"
+        }
+
+        var layout = {
+            yaxis: { title: el.ts_yName, type: 'linear' },
+            width: 500,
+            height:300,
+            margin: {
+                l: 60,
+                r: 40,
+                b: 60,
+                t: 10,
+                pad: 2
+            },
+            hovermode: 'closest',
+            showlegend: true,
+            legend: { "orientation": "v" }
+        };
+
+        var update = {
+            width: 500,
+            height:300
+        };
+
 
         function climateNormals(data) {
             data.rows.sort(function(a, b) {
                 return parseFloat(a.year) - parseFloat(b.year);
             });
-            var xdat1 = [],
-                ydat1 = [],
-                xdat2 = [],
-                ydat2 = [];
 
             data.rows.forEach(function(d) {
 
@@ -164,47 +275,15 @@ app.climatetimeseries = (function() {
                 }
             });
 
-            var ts1 = {
-                x: xdat1,
-                y: ydat1,
-                text: el.focal_name,
-                type: "scatter",
-                name: el.focal_name
-            }
+            ts1.x = xdat1;
+            ts1.y = ydat1;
 
-            var ts2 = {
-                x: xdat2,
-                y: ydat2,
-                text: el.comparison_name,
-                type: "scatter",
-                name: el.comparison_name
-            }
+            ts2.x = xdat2;
+            ts2.y = ydat2;
 
             var ts = [ts1, ts2];
 
-            var layout = {
-                yaxis: { title: el.ts_yName, type: 'linear' },
-                width: 500,
-                height:300,
-                margin: {
-                    l: 60,
-                    r: 40,
-                    b: 60,
-                    t: 10,
-                    pad: 2
-                },
-                hovermode: 'closest',
-                showlegend: true,
-                legend: { "orientation": "v" }
-            };
-
             Plotly.newPlot("timeseries-chart", ts, layout, { staticPlot: false, displayModeBar: false });
-
-            var update = {
-                width: 500,
-                height:300
-            };
-
             Plotly.relayout('timeseries-chart', update);
         }
 
@@ -224,20 +303,6 @@ app.climatetimeseries = (function() {
                     });
 
                     console.log(data_45.rows)
-
-                    var xdat1 = [],
-                        ydat1 = [],
-                        xdat1_45 = [],
-                        ydat1_45 = [],
-                        xdat1_85 = [],
-                        ydat1_85 = [],
-                        xdat2 = [],
-                        ydat2 = [],
-                        xdat2_45 = [],
-                        ydat2_45 = [],
-                        xdat2_85 = [],
-                        ydat2_85 = [];
-
 
 
                     data.rows.forEach(function(d) {
@@ -276,233 +341,33 @@ app.climatetimeseries = (function() {
                         }
                     });
 
-                    var ts1 = {
-                        x: xdat1,
-                        y: ydat1,
-                        text: el.focal_name,
-                        type: "scatter",
-                        line: {
-                            color: '#00e6ac',
-                            width: 3,
-                            opacity: 1
-                        },
-                        name: el.focal_name
-                    }
+                    ts1.x = xdat1;
+                    ts1.y = ydat1;
+                    ts1_45.x = xdat1_45;
+                    ts1_45.x = xdat1_45;
+                    ts1_85.y = ydat1_85;
+                    ts1_85.y = ydat1_85;
 
-                    var ts2 = {
-                        x: xdat2,
-                        y: ydat2,
-                        text: el.comparison_name,
-                        type: "scatter",
-                        line: {
-                            color: '#6699ff',
-                            width: 3,
-                            opacity: 1
-                        },
-                        name: el.comparison_name
-                    }
+                    ts2.x = xdat2;
+                    ts2.y = ydat2;
+                    ts2_45.x = xdat2_45;
+                    ts2_45.x = xdat2_45;
+                    ts2_85.y = ydat2_85;
+                    ts2_85.y = ydat2_85;
 
-                    var ts1_45 = {
-                        x: xdat1_45,
-                        y: ydat1_45,
-                        text: el.focal_name + " RCP 4.5",
-                        type: "scatter",
-                        line: {
-                            color: 'rgba(0, 204, 153, 0.5)',
-                            width: 2,
-                            opacity: 0.25
-                        },
-                        name: el.focal_name + " RCP 4.5"
-                    }
-
-                    var ts2_45 = {
-                        x: xdat2_45,
-                        y: ydat2_45,
-                        text: el.comparison_name + " RCP 4.5",
-                        type: "scatter",
-                        line: {
-                            color: 'rgb(51, 119, 255, 0.5)',
-                            width: 2,
-                            opacity: 0.25
-                        },
-                        name: el.comparison_name + " RCP 4.5"
-                    }
-
-                    var ts1_85 = {
-                        x: xdat1_85,
-                        y: ydat1_85,
-                        text: el.focal_name + " RCP 8.5",
-                        type: "scatter",
-                        line: {
-                            color: 'rgb(0, 128, 96, 0.5)',
-                            width: 2,
-                            opacity: 0.25
-                        },
-                        name: el.focal_name + " RCP 8.5"
-                    }
-
-                    var ts2_85 = {
-                        x: xdat2_85,
-                        y: ydat2_85,
-                        text: el.comparison_name + " RCP 8.5",
-                        type: "scatter",
-                        line: {
-                            color: 'rgb(0, 77, 230, 0.5)',
-                            width: 2,
-                            opacity: 0.25
-                        },
-                        name: el.comparison_name + " RCP 8.5"
-                    }
 
                     var ts = [ts1, ts2, ts1_45, ts2_45, ts1_85, ts2_85];
-                    // var ts = [ts1, ts2];
-
-                    console.log(ts);
-
-                    var layout = {
-                        yaxis: { title: el.ts_yName, type: 'linear' },
-                        width: 500,
-                        height:300,
-                        margin: {
-                            l: 60,
-                            r: 40,
-                            b: 60,
-                            t: 10,
-                            pad: 2
-                        },
-                        hovermode: 'closest',
-                        showlegend: true,
-                        legend: { "orientation": "v" }
-                    };
 
                     Plotly.newPlot("timeseries-chart", ts, layout, { staticPlot: false, displayModeBar: false });
-
-                    var update = {
-                        width: 500,
-                        height:300
-                    };
-
                     Plotly.relayout('timeseries-chart', update);
 
                 });
             });
         }
-
-
-
-
-        // // var query = "SELECT DISTINCT id2, year," + tsvar + " FROM " + el.climateNormals_1901_2014 + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year >= " + el.timeRange_from + " AND year <= " + el.timeRange_to;
-        // $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
-
-        //     // $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query_45, function(data_45) {
-        //     data.rows.sort(function(a, b) {
-        //         return parseFloat(a.year) - parseFloat(b.year);
-        //     });
-
-        //     // data_45.rows.sort(function(a, b) {
-        //     //     return parseFloat(a.year) - parseFloat(b.year);
-        //     // });
-
-        //     var xdat1 = [],
-        //         ydat1 = [],
-        //         xdat1_45 = [],
-        //         ydat1_45 = [],
-        //         xdat2 = [],
-        //         ydat2 = [],
-        //         xdat2_45 = [],
-        //         ydat2_45 = [];
-
-
-
-        //     data.rows.forEach(function(d) {
-
-        //         if (d.id2 == el.focal_name) {
-        //             ydat1.push(d[tsvar]);
-        //             xdat1.push(d.year);
-
-        //         } else if (d.id2 == el.comparison_name) {
-        //             ydat2.push(d[tsvar]);
-        //             xdat2.push(d.year);
-        //         }
-        //     });
-
-        //     // data_45.rows.forEach(function(d) {
-
-        //     //     if (d.id2 == el.focal_name) {
-        //     //         xdat1_45.push(d[tsvar]);
-        //     //         ydat1_45.push(d.year);
-
-        //     //     } else if (d.id2 == el.comparison_name) {
-        //     //         xdat2_45.push(d[tsvar]);
-        //     //         ydat2_45.push(d.year);
-        //     //     }
-        //     // });
-
-        //     var ts1 = {
-        //         x: xdat1,
-        //         y: ydat1,
-        //         text: el.focal_name,
-        //         type: "scatter",
-        //         name: el.focal_name
-        //     }
-
-        //     var ts2 = {
-        //         x: xdat2,
-        //         y: ydat2,
-        //         text: el.comparison_name,
-        //         type: "scatter",
-        //         name: el.comparison_name
-        //     }
-
-        //     // var ts1_45 =  {
-        //     //     x: xdat1_45,
-        //     //     y: ydat1_45,
-        //     //     text: el.focal_name + " RCP 4.5",
-        //     //     type: "scatter",
-        //     //     name: el.focal_name + " RCP 4.5"
-        //     // }
-
-        //     // var ts2_45 = {
-        //     //     x: xdat2_45,
-        //     //     y: ydat2_45,
-        //     //     text: el.comparison_name + " RCP 4.5",
-        //     //     type: "scatter",
-        //     //     name: el.comparison_name + " RCP 4.5"
-        //     // }
-
-        //     // var ts = [ts1, ts2, ts1_45, ts2_45];
-        //     var ts = [ts1, ts2];
-
-        //     var layout = {
-        //         yaxis: { title: el.ts_yName, type: 'linear' },
-        //         width: 400,
-        //         margin: {
-        //             l: 60,
-        //             r: 40,
-        //             b: 60,
-        //             t: 10,
-        //             pad: 2
-        //         },
-        //         hovermode: 'closest'
-        //     };
-
-        //     Plotly.newPlot("timeseries-chart", ts, layout, { staticPlot: false, displayModeBar: false });
-
-        //     var update = {
-        //         width: 400, // or any new width
-        //     };
-
-        //     Plotly.relayout('timeseries-chart', update);
-
-        // });
-        // });
-
     }
 
     function replot() {
         $(".bec-focal-selector, .bec-comparison-selector, .climate-variables-map, .timerange-select").change(function(e) {
-            // el.xData = 
-            // plotTimeSeries();
             plotTimeSeries2()
         });
     }
@@ -636,3 +501,111 @@ app.climatetimeseries = (function() {
     }
 
 })();
+
+
+
+// // var query = "SELECT DISTINCT id2, year," + tsvar + " FROM " + el.climateNormals_1901_2014 + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year >= " + el.timeRange_from + " AND year <= " + el.timeRange_to;
+// $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
+
+//     // $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query_45, function(data_45) {
+//     data.rows.sort(function(a, b) {
+//         return parseFloat(a.year) - parseFloat(b.year);
+//     });
+
+//     // data_45.rows.sort(function(a, b) {
+//     //     return parseFloat(a.year) - parseFloat(b.year);
+//     // });
+
+//     var xdat1 = [],
+//         ydat1 = [],
+//         xdat1_45 = [],
+//         ydat1_45 = [],
+//         xdat2 = [],
+//         ydat2 = [],
+//         xdat2_45 = [],
+//         ydat2_45 = [];
+
+
+
+//     data.rows.forEach(function(d) {
+
+//         if (d.id2 == el.focal_name) {
+//             ydat1.push(d[tsvar]);
+//             xdat1.push(d.year);
+
+//         } else if (d.id2 == el.comparison_name) {
+//             ydat2.push(d[tsvar]);
+//             xdat2.push(d.year);
+//         }
+//     });
+
+//     // data_45.rows.forEach(function(d) {
+
+//     //     if (d.id2 == el.focal_name) {
+//     //         xdat1_45.push(d[tsvar]);
+//     //         ydat1_45.push(d.year);
+
+//     //     } else if (d.id2 == el.comparison_name) {
+//     //         xdat2_45.push(d[tsvar]);
+//     //         ydat2_45.push(d.year);
+//     //     }
+//     // });
+
+//     var ts1 = {
+//         x: xdat1,
+//         y: ydat1,
+//         text: el.focal_name,
+//         type: "scatter",
+//         name: el.focal_name
+//     }
+
+//     var ts2 = {
+//         x: xdat2,
+//         y: ydat2,
+//         text: el.comparison_name,
+//         type: "scatter",
+//         name: el.comparison_name
+//     }
+
+//     // var ts1_45 =  {
+//     //     x: xdat1_45,
+//     //     y: ydat1_45,
+//     //     text: el.focal_name + " RCP 4.5",
+//     //     type: "scatter",
+//     //     name: el.focal_name + " RCP 4.5"
+//     // }
+
+//     // var ts2_45 = {
+//     //     x: xdat2_45,
+//     //     y: ydat2_45,
+//     //     text: el.comparison_name + " RCP 4.5",
+//     //     type: "scatter",
+//     //     name: el.comparison_name + " RCP 4.5"
+//     // }
+
+//     // var ts = [ts1, ts2, ts1_45, ts2_45];
+//     var ts = [ts1, ts2];
+
+//     var layout = {
+//         yaxis: { title: el.ts_yName, type: 'linear' },
+//         width: 400,
+//         margin: {
+//             l: 60,
+//             r: 40,
+//             b: 60,
+//             t: 10,
+//             pad: 2
+//         },
+//         hovermode: 'closest'
+//     };
+
+//     Plotly.newPlot("timeseries-chart", ts, layout, { staticPlot: false, displayModeBar: false });
+
+//     var update = {
+//         width: 400, // or any new width
+//     };
+
+//     Plotly.relayout('timeseries-chart', update);
+
+// });
+// });
