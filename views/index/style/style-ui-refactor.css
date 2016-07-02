@@ -1,0 +1,141 @@
+
+body {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    overflow:hidden;
+}
+
+
+#mapid {
+    position: absolute;
+    top: 50px;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -100;
+}
+
+/* ---- sidebar ---- */
+.sidebar.active{
+	position: absolute;
+	height:100%;
+	background-color: white;
+	padding:0px;
+	left:0px;
+	display: block;
+	z-index: 1000;
+	overflow-y:auto;
+}
+.sidebar{
+	display: none;
+}
+
+
+
+.sidebar-expander.active{
+    width:23px;
+    height:48px;
+    margin-top: 10px;
+    z-index:500;
+    left:41.71%;
+    position: absolute;
+    background:rgba(255,255,255,0.9) url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAUCAQAAAAXDMSnAAAAi0lEQVR4AX3JQcqBURQG4O/+9WNG30D3vOfSDTuQsgcZyBakZANSzMVMBme3zsBI5/VMn4ZKLP5ki1E4tYejWpilxVUtzOEUD68odYmXR5BJNp/4zllXD2phllYvamHmirsayUkfJ5ruHzueTldC08kcT5YOY9xYujqQM03XKXuaLmEtNF1e1Nz89gbL+0do6OEwRwAAAABJRU5ErkJggg==) 7px center/7px 10px no-repeat;
+    transform: scaleX(1);   
+    cursor: pointer;
+}
+.sidebar-expander{
+	width:23px;
+	height:48px;
+	margin-top: 10px;
+	z-index: 500;
+	left:0%;
+	background:rgba(255,255,255,0.9) url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAUCAQAAAAXDMSnAAAAi0lEQVR4AX3JQcqBURQG4O/+9WNG30D3vOfSDTuQsgcZyBakZANSzMVMBme3zsBI5/VMn4ZKLP5ki1E4tYejWpilxVUtzOEUD68odYmXR5BJNp/4zllXD2phllYvamHmirsayUkfJ5ruHzueTldC08kcT5YOY9xYujqQM03XKXuaLmEtNF1e1Nz89gbL+0do6OEwRwAAAABJRU5ErkJggg==) 7px center/7px 10px no-repeat;
+	transform: scaleX(-1);
+	margin-top: 10px;
+	cursor: pointer;
+	position: absolute;
+
+}
+
+/*.sidebar-main{
+	padding-left:5px;
+	padding-right:5px;
+	padding-top:10px;
+}*/
+
+
+.chart-selector-row{
+	padding: 10px 5px 5px 5px;
+	background-color: #eceff1;
+}
+
+.welcome-map-outer{
+	background-color: #f3e5f5;
+}
+.welcome-map-inner{
+	padding: 10px 5px 5px 5px;
+}
+
+.map-selection-row{
+	/*padding: 10px 5px 10px 5px;*/
+	display:none;
+}
+.map-selection-row.active{
+	display:block;
+}
+.map-controls{
+
+}
+
+.timeseries-row{
+	padding: 10px 5px 5px 5px;
+	display:none;
+}
+.timeseries-row.active{
+	padding: 10px 5px 5px 5px;
+	display:block;
+}
+
+
+.modal-trigger{
+	position: absolute;
+	right:10px;
+	top:68px;
+}
+
+/* --- sidebar display buttons --- */
+.sidebar-display-buttons{
+	margin-top:5px;
+}
+
+/* --- map display buttons --- */
+
+.map-display-buttons{
+	margin-top:5px;
+}
+
+
+/* --- time series chart --- */
+
+#timeseries-chart{
+	width: 100%;
+}
+
+.timeseries-options.active{
+	display:block;
+}
+.timeseries-options{
+	display:none;
+}
+
+/* --- scatterplot chart ---- */
+
+.scatterplot-row.active{
+	padding: 10px 5px 5px 5px;
+	display: block;
+}
+.scatterplot-row{
+	display: none;
+}
