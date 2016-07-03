@@ -80,7 +80,8 @@ app.mapui = (function() {
                 d3.select("#legend-child").remove();
                 var svg = d3.select("#climate-legend").append('div')
                     .attr('id', "legend-child").append('svg')
-                    .attr('height', 200);
+                    .attr('height', 200)
+                    .attr('width', 200);
 
                 svg.append("g")
                   .attr("class", "legendQuant")

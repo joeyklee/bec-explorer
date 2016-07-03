@@ -28,6 +28,14 @@ app.mapapp = (function() {
             ext: 'png'
         }).addTo(el.map);
 
+        var MapQuestOpen_Aerial = L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/{type}/{z}/{x}/{y}.{ext}', {
+                type: 'sat',
+                ext: 'jpg',
+                attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency',
+                subdomains: '1234'
+            })
+        // .addTo(el.map).bringToBack();
+
         Stamen_TonerLines = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-lines/{z}/{x}/{y}.{ext}', {
             attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
             subdomains: 'abcd',
@@ -129,7 +137,28 @@ app.mapapp = (function() {
     };
 
     function changeBaseMap(){
-        // 
+        $('.aerial-imagery-button').click(function(){
+            console.log('aerialimagery');
+
+            var MapQuestOpen_Aerial = L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/{type}/{z}/{x}/{y}.{ext}', {
+                type: 'sat',
+                ext: 'jpg',
+                attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency',
+                subdomains: '1234'
+            })
+
+            // el.map.remove(el.baselayer);
+            el.baselayer = null;
+
+            var Esri_WorldImagery = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+            })
+
+            el.baselayer = Esri_WorldImagery;
+
+            el.baselayer.addTo(el.map).setZIndex(1);
+
+        })
     }
 
 
@@ -137,7 +166,8 @@ app.mapapp = (function() {
     var init = function() {
         el = app.main.el;
         initMap();
-        initCarto();      
+        initCarto();   
+        changeBaseMap();   
     };
 
     return {
