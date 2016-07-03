@@ -146,6 +146,24 @@ app.climatetimeseries = (function() {
             legend: { "orientation": "v" }
         };
 
+        var layout_responsive = {
+             // autosize: true,
+            xaxis: { title: "year" },
+            yaxis: { title: tsvar, type: 'linear' },
+            // width: 500,
+            // height:300,
+            margin: {
+                l: 60,
+                r: 40,
+                b: 60,
+                t: 10,
+                pad: 2
+            },
+            hovermode: 'closest',
+            showlegend: true,
+            legend: { "orientation": "h" }
+        };
+
         var update = {
             width: 500,
             height:300
@@ -177,8 +195,29 @@ app.climatetimeseries = (function() {
 
             var ts = [ts1, ts2];
 
-            Plotly.newPlot("timeseries-chart", ts, layout, { staticPlot: false, displayModeBar: false });
-            Plotly.relayout('timeseries-chart', update);
+            var d3 = Plotly.d3;
+            
+            // var WIDTH_IN_PERCENT_OF_PARENT = 1,
+            //     HEIGHT_IN_PERCENT_OF_PARENT = 10;
+            d3.select("#ts-child").remove();
+            var gd3 = d3.select("#timeseries-chart").append('div').attr('id', 'ts-child')
+                .style({
+                    width: 550 + 'px',
+                    'margin-left': 10 + 'px',
+                    height: 400+ 'px'
+                    // 'margin-top': (100 - HEIGHT_IN_PERCENT_OF_PARENT) / 2 + 'vh'
+                });
+
+            var ts_chart = gd3.node();
+            Plotly.plot(ts_chart, ts, layout_responsive, { staticPlot: false, displayModeBar: false });
+            // window.onresize = function() { Plotly.Plots.resize( Green_Line_E ); };
+            window.addEventListener('resize', function() { Plotly.Plots.resize('ts_chart'); });
+
+            // Plotly.newPlot("timeseries-chart", ts, layout, { staticPlot: false, displayModeBar: false });
+            // Plotly.relayout('timeseries-chart', update);
+            // $( window ).resize(function() {
+            //     Plotly.relayout('timeseries-chart', update);
+            // });
         }
 
         function normalsPlusModeled(data) {
@@ -252,8 +291,22 @@ app.climatetimeseries = (function() {
 
                     var ts = [ts1, ts2, ts1_45, ts2_45, ts1_85, ts2_85];
 
-                    Plotly.newPlot("timeseries-chart", ts, layout, { staticPlot: false, displayModeBar: false });
-                    Plotly.relayout('timeseries-chart', update);
+                    var d3 = Plotly.d3;
+                    d3.select("#ts-child").remove();
+                    var gd3 = d3.select("#timeseries-chart").append('div')
+                    .attr('id', 'ts-child')
+                        .style({
+                            width: 550 + 'px',
+                            'margin-left': 10 + 'px',
+                            height: 400+ 'px'
+                            // 'margin-top': (100 - HEIGHT_IN_PERCENT_OF_PARENT) / 2 + 'vh'
+                        });
+
+                    var ts_chart = gd3.node();
+                    Plotly.plot(ts_chart, ts, layout_responsive, { staticPlot: false, displayModeBar: false });
+                    // window.onresize = function() { Plotly.Plots.resize( Green_Line_E ); };
+                    window.addEventListener('resize', function() { Plotly.Plots.resize('ts_chart'); });
+
 
                 });
             });
