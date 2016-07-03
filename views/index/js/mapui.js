@@ -65,27 +65,51 @@ app.mapui = (function() {
 
                 var quantize = d3.scale.quantize()
                   .domain([min, max])
-                  .range([min, max]);
+                  .range(colorbrewer.GnBu[9]);
               
-                var color = d3.scale.quantize()
+                var color = d3.scale.quantile()
                     .domain([min, max])
                     .range(colorbrewer.GnBu[9]);
 
-                var dom = color.domain(),
-                    l = (dom[1] - dom[0])/color.range().length,
-                    breaks = d3.range(0, color.range().length).map(function(i) { return i * l; });
-                    breaks = breaks.reverse();
-                    // console.log(breaks);
+                // var dom = color.domain(),
+                //     l = (dom[1] - dom[0])/color.range().length,
+                //     breaks = d3.range(0, color.range().length).map(function(i) { return i * l; });
+                //     breaks = breaks.reverse();
+                
+
+                d3.select("#legend-child").remove();
+                var svg = d3.select("#climate-legend").append('div')
+                    .attr('id', "legend-child").append('svg')
+                    .attr('height', 200);
+
+                svg.append("g")
+                  .attr("class", "legendQuant")
+                  .attr("transform", "translate(20,20)");
+
+                var legend = d3.legend.color()
+                  .labelFormat(d3.format(".2f"))
+                  .useClass(false)
+                  .ascending(false)
+                  .orient('vertical')
+                  .scale(color);
+
+                svg.select(".legendQuant")
+                  .call(legend);
 
                  var styleArray = [];
-
+                 var breaks = color.quantiles();
+                 breaks = breaks.reverse();
                  breaks.forEach(function(d, i){
+                  
                     var output;
-                    output = '#' + el.dataset_selected + '['+ el.climate_selected + ' <= ' + d + ']{polygon-fill:' + color(d) + '}';
+                    if(i == 0){
+                        // output = '#' + el.dataset_selected + '['+ el.climate_selected + ' <= ' + d + ']'+'['+ el.climate_selected + ' > ' + d + ']'+'{polygon-fill:' + quantize(d) + '}';
+                        output = '#' + el.dataset_selected + '['+ el.climate_selected + ' <= ' + max + ']'+'{polygon-fill:' + quantize(d) + '}';
+                    } else{
+                        output = '#' + el.dataset_selected + '['+ el.climate_selected + ' <= ' + d + ']{polygon-fill:' + quantize(d) + '}';
+                    }
                     styleArray.push(output)
                  })
-                 styleArray.unshift('#' + el.dataset_selected + '['+ el.climate_selected + ' < ' + max+ ']{polygon-fill:' + color(max) + '}');
-    
                 // set the color
                 el.bec_cartocss[el.climate_selected] = null;
                 el.bec_cartocss[el.climate_selected] = styleArray.join("\n");
@@ -109,6 +133,8 @@ app.mapui = (function() {
         $('.climate-variables :selected').val('rh_wt');
         $("select").material_select();   
     }
+
+
     
     
 
