@@ -26,13 +26,13 @@ app.main = (function() {
             fillOpacity: 0
         },
         focal_style: {
-            color: "#00e6ac",
+            color: "#d32f2f", // red darken-2
             weight: 2,
             opacity: 0.85,
             fillOpacity: 0.15
         },
         comparison_style: {
-            color: "#6699ff",
+            color: "#303f9f", //indigo darken-2
             weight: 2,
             opacity: 0.85,
             fillOpacity: 0.15

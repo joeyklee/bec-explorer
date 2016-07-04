@@ -146,11 +146,11 @@ body {
 }
 
 i.add-focal-pin{
-  color:#00e6ac;
+  color:#d32f2f;
   cursor: pointer;
 }
 i.add-comparison-pin{
-  color:#6699ff;
+  color:#303f9f;
   cursor: pointer;
 }
 
@@ -167,3 +167,6 @@ i.add-comparison-pin{
 .scatterplot-row{
 	display: none;
 }
+
+/* --- lever --- */
+

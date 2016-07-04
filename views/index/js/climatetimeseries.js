@@ -57,7 +57,7 @@ app.climatetimeseries = (function() {
             text: el.focal_name,
             type: "scatter",
             line: {
-                color: '#00e6ac',
+                color: '#d32f2f',
                 width: 3,
                 opacity: 1
             },
@@ -70,7 +70,7 @@ app.climatetimeseries = (function() {
             text: el.comparison_name,
             type: "scatter",
             line: {
-                color: '#6699ff',
+                color: '#303f9f',
                 width: 3,
                 opacity: 1
             },
@@ -83,7 +83,7 @@ app.climatetimeseries = (function() {
             text: el.focal_name + " RCP 4.5",
             type: "scatter",
             line: {
-                color: 'rgba(0, 204, 153, 0.5)',
+                color: 'rgba(228, 129, 129, 0.5)',
                 width: 2,
                 opacity: 0.25
             },
@@ -96,7 +96,7 @@ app.climatetimeseries = (function() {
             text: el.comparison_name + " RCP 4.5",
             type: "scatter",
             line: {
-                color: 'rgb(51, 119, 255, 0.5)',
+                color: 'rgb(98, 113, 208, 0.5)',
                 width: 2,
                 opacity: 0.25
             },
@@ -109,7 +109,7 @@ app.climatetimeseries = (function() {
             text: el.focal_name + " RCP 8.5",
             type: "scatter",
             line: {
-                color: 'rgb(0, 128, 96, 0.5)',
+                color: 'rgb(126, 27, 27, 0.5)',
                 width: 2,
                 opacity: 0.25
             },
@@ -122,7 +122,7 @@ app.climatetimeseries = (function() {
             text: el.comparison_name + " RCP 8.5",
             type: "scatter",
             line: {
-                color: 'rgb(0, 77, 230, 0.5)',
+                color: 'rgb(23, 31, 79, 0.5)',
                 width: 2,
                 opacity: 0.25
             },
