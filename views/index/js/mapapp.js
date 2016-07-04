@@ -11,8 +11,10 @@ app.mapapp = (function() {
             params;
         // map paramaters to pass to Leaflet
         params = {
-            center: [50.536104, -120.947768],
-            zoom: 9,
+            // center: [50.536104, -120.947768],
+            center: [53.706998, -131.601530],
+            // zoom: 9,
+            zoom: 6,
             zoomControl: false,
             attributionControl: false
         };

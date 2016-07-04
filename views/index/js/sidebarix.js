@@ -15,18 +15,18 @@ app.sidebarix = (function(){
 	function activateSidebarDisplayOptions() {
 	    $('.sidebar-display-buttons').click(function() {
 	        var selected = $(this);
-	        console.log("icon selected:", selected.text());
+	        console.log("icon selected:", selected.text().toUpperCase().trim());
 	        // disable all the buttons
 	        $('.sidebar-display-buttons').addClass("disabled");
 	        $('.map-selection-row, .timeseries-row, .scatterplot-row').removeClass('active');
 	        // then toggle the selected disabled class
 	        selected.toggleClass("disabled");
 	        // use the name of the icon to trigger sidebar
-	        if (selected.text() == "explore") {
+	        if (selected.text().toUpperCase().trim() == "MAP CONTROLS") {
 	            $('.map-selection-row').toggleClass('active');
-	        } else if (selected.text() == "timeline") {
+	        } else if (selected.text().toUpperCase().trim() == "TIME SERIES") {
 	            $('.timeseries-row').toggleClass('active');
-	        } else if (selected.text() == "grain"){
+	        } else if (selected.text().toUpperCase().trim() == "CLIMATE NORMALS"){
 	            $('.scatterplot-row').toggleClass('active');
 	        }
 	    });

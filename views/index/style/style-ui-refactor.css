@@ -65,8 +65,11 @@ body {
 
 
 .chart-selector-row{
-	padding: 10px 5px 5px 5px;
+	/*padding: 10px 5px 5px 5px;*/
 	background-color: #eceff1;
+}
+.chart-selector-row.row{
+	margin-bottom:0px;
 }
 
 .welcome-map-outer{
@@ -103,15 +106,16 @@ body {
 }
 
 /* --- sidebar display buttons --- */
-.sidebar-display-buttons{
-	margin-top:5px;
+.sidebar-display-buttons.btn-flat{
+	color:white;
 }
 
 /* --- map display buttons --- */
 
-.map-display-buttons{
+/*.map-display-buttons{
 	margin-top:5px;
-}
+	height:100%;
+}*/
 
 
 /* --- time series chart --- */
