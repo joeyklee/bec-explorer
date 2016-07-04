@@ -136,7 +136,28 @@ body {
 .timeseries-options{
 	display:none;
 }
+.timeseries-options-expander:hover{
+	cursor:pointer;
+	color:#7b1fa2;
+}
 
+.add-pin-div{
+	margin-top:45px;
+}
+
+i.add-focal-pin{
+  color:#00e6ac;
+  cursor: pointer;
+}
+i.add-comparison-pin{
+  color:#6699ff;
+  cursor: pointer;
+}
+
+.reset-comparison-pins:hover{
+	cursor:pointer;
+	color:#7b1fa2;
+}
 /* --- scatterplot chart ---- */
 
 .scatterplot-row.active{

@@ -30,7 +30,7 @@
                 </div>
                 <div class="map-controls">
                     <div class="row">
-                        <div class="row col l12 m12 s12">
+                        <div class="col l12 m12 s12">
                             <label>Map By</label>
                         </div>
                         <div class="col l12 m12 s12">
@@ -40,51 +40,41 @@
                                 <a class="waves-effect waves-light btn-floating map-display-buttons purple darken-3"></a> BEC Zone</div>
                             <div class="col l4 m12 s12 map-display-buttons">
                                 <a class="waves-effect waves-light btn-floating disabled map-display-buttons climate-variables-button purple darken-3"><i class="material-icons"></i></a> Climate</div> --}}
-
                             <div class="col l4 m12 s12 waves-effect waves-light  map-display-buttons btn btn-flat disabled purple lighten-3">BEC Unit</div>
                             <div class="col l4 m12 s12 waves-effect waves-light map-display-buttons btn btn-flat purple lighten-3">BEC Zone</div>
                             <div class="col l4 m12 s12 waves-effect waves-light  map-display-buttons btn btn-flat disabled climate-variables-button purple lighten-3">Climate</div>
                         </div>
                     </div>
-                    
                     <div class="row">
-                        <div class="col l12 m12 s12">
-                            <div class="col l6 m12 s12">
-                                <label>Variables From</label>
-                                <div class="input-field timescale-selector">
-                                    <select>
-                                        <option value="all" selected>All Time Scales</option>
-                                        <option value="annual">Annual</option>
-                                        <option value="seasonal">Seasonal</option>
-                                        <option value="monthly">Monthly</option>
-                                    </select>
-                                </div>
+                        <div class="col l6 m12 s12">
+                            <label>Variables From</label>
+                            <div class="input-field timescale-selector">
+                                <select>
+                                    <option value="all" selected>All Time Scales</option>
+                                    <option value="annual">Annual</option>
+                                    <option value="seasonal">Seasonal</option>
+                                    <option value="monthly">Monthly</option>
+                                </select>
                             </div>
-                            <div class="col l6 m12 s12">
-                                <label>Climate Variable</label>
-                                <div class="input-field climate-variables climate-variables-map">
-                                    <select>
-                                        <option value="map" selected>map</option>
-                                        <option value="ahm">Annual Heat Moisture Index</option>
-                                        <option value="elevation">Elevation</option>
-                                    </select>
-                                </div>
+                        </div>
+                        <div class="col l6 m12 s12">
+                            <label>Climate Variable</label>
+                            <div class="input-field climate-variables climate-variables-map">
+                                <select>
+                                    <option value="map" selected>map</option>
+                                    <option value="ahm">Annual Heat Moisture Index</option>
+                                    <option value="elevation">Elevation</option>
+                                </select>
                             </div>
-                            <div class="row">
-                                <div class="col l6 m12 s12">
-                                    <label>Choose basemap</label> <br>
-                                    {{!-- <div class=" row col l12 m12 s12"> 
-                                        <a class="waves-effect waves-light btn-floating purple lighten-1"></a> Stamen Toner Lite
-                                    </div>
-                                    <div class=" row col l12 m12 s12"> 
-                                        <a class="waves-effect waves-light btn-floating purple lighten-1 disabled baselayer-toggle aerial-imagery-button"></a>  Aerial Imagery
-                                    </div> --}}
-                                </div>
-                                <div class="col l6 m12 s12">
-                                    <label>Legend</label>
-                                    <div id="climate-legend"></div>
-                                </div>
-                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col l6 m12 s12">
+                            <label>Choose basemap</label>
+                        </div>
+                        <div class="col l6 m12 s12">
+                            <label>Legend</label>
+                            <div id="climate-legend"></div>
                         </div>
                     </div>
                 </div>
@@ -104,7 +94,7 @@
                             <div id="timeseries-chart"></div>
                         </div>
                     </div>
-                    <div class="col l12 m12 s12">
+                    {{!-- <div class="col l12 m12 s12"> --}}
                         <div class="row">
                             <div class="time-aggregation-climate-variables">
                                 <div class="col l12 m12 s12">
@@ -140,7 +130,7 @@
                                 <div class="comparison-dropdowns">
                                     <div class="col l6 m12 s12">
                                         <div class="col s10">
-                                            <label>Compare:</label>
+                                        <label>Compare:</label>
                                             <div class="input-field bec-unit-variables bec-focal-selector">
                                                 <select>
                                                     <option value="1" selected>BEC Unit 1</option>
@@ -154,7 +144,7 @@
                                     </div>
                                     <div class="col l6 m12 s12">
                                         <div class="col s10">
-                                            <label>To:</label>
+                                        <label>To:</label>
                                             <div class="input-field bec-unit-variables bec-comparison-selector">
                                                 <select>
                                                     <option value="1" selected>BEC Unit 1</option>
@@ -195,7 +185,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    {{!-- </div> --}}
                 </div>
             </div>
             <div class="scatterplot-row">
