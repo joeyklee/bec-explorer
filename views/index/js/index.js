@@ -26,13 +26,13 @@ app.main = (function() {
             fillOpacity: 0
         },
         focal_style: {
-            color: "#00e6ac",
+            color: "#d32f2f", // red darken-2
             weight: 2,
             opacity: 0.85,
             fillOpacity: 0.15
         },
         comparison_style: {
-            color: "#6699ff",
+            color: "#303f9f", //indigo darken-2
             weight: 2,
             opacity: 0.85,
             fillOpacity: 0.15
@@ -54,7 +54,7 @@ app.main = (function() {
         comparison_poly: null,
         ts_yName: null,
         ts_xName: null,
-        timeRange_from: 2011, // initialize to 2011
+        timeRange_from: 2000, // initialize to 2011
         timeRange_to: 2013, // init to 2013
 
     };
@@ -68,9 +68,10 @@ app.main = (function() {
 
 // call app.map.init() once the DOM is loaded
 window.addEventListener('DOMContentLoaded', function() {
-    app.getTemporalColumns.init();
+    app.fillSelectorDropdowns.init();
 	app.mapcolors.init();
     app.mapapp.init();
+    app.sidebarix.init();
     app.mapui.init();
     app.scatterplot.init();
     app.climatetimeseries.init();

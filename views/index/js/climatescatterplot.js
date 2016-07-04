@@ -6,7 +6,7 @@ app.scatterplot = (function() {
 
     var plotScatter = function() {
         console.log("initscatter");
-        el.chart_div = document.getElementById('scatter-chart'); // weird issue with jquery selector, use vanilla js - https://plot.ly/javascript/hover-events/
+        
         el.xSelector = $(".scatter-x select option:selected").val();
         el.ySelector = $(".scatter-y select option:selected").val();
         console.log(el.xSelector, el.ySelector);
@@ -48,15 +48,49 @@ app.scatterplot = (function() {
 
             };
 
-            var traces = [trace];
-            Plotly.newPlot("scatter-chart", traces, layout, { staticPlot: false, displayModeBar: false });
-
-            var update = {
-                width: 400, // or any new width
-                // height: 500  // " "
+            var layout_responsive = {
+                xaxis: { title: el.xSelector, type: el.xSelector_axis },
+                yaxis: { title: el.ySelector, type: el.ySelector_axis },
+                margin: {
+                    l: 60,
+                    r: 40,
+                    b: 60,
+                    t: 10,
+                    pad: 2
+                },
+                hovermode: 'closest',
+                showlegend: true,
+                legend: { "orientation": "h" }
             };
 
-            Plotly.relayout('scatter-chart', update);
+            var traces = [trace];
+            // Plotly.newPlot("scatter-chart", traces, layout, { staticPlot: false, displayModeBar: false });
+
+            // var update = {
+            //     width: 400, // or any new width
+            //     // height: 500  // " "
+            // };
+
+            // Plotly.relayout('scatter-chart', update);
+            var d3 = Plotly.d3;
+            
+            // var WIDTH_IN_PERCENT_OF_PARENT = 1,
+            //     HEIGHT_IN_PERCENT_OF_PARENT = 10;
+            d3.select("#scatter-child").remove();
+            var gd3 = d3.select("#scatter-chart").append('div').attr('id', 'scatter-child')
+                .style({
+                    width: 550 + 'px',
+                    'margin-left': 10 + 'px',
+                    height: 400+ 'px'
+                    // 'margin-top': (100 - HEIGHT_IN_PERCENT_OF_PARENT) / 2 + 'vh'
+                });
+            el.chart_div = document.getElementById('scatter-child'); // weird issue with jquery selector, use vanilla js - https://plot.ly/javascript/hover-events/
+
+            var scatter_chart = gd3.node();
+            Plotly.plot(scatter_chart, traces, layout_responsive, { staticPlot: false, displayModeBar: false });
+            // window.onresize = function() { Plotly.Plots.resize( Green_Line_E ); };
+            window.addEventListener('resize', function() { Plotly.Plots.resize('scatter_chart'); });
+
             highlightUnit();
         });
 

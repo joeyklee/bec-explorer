@@ -4,61 +4,31 @@ app.mapui = (function() {
 
     var el = null;
 
-    function initCollapsible() {
-        $('.collapsible').collapsible({
-            accordion: true // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+    // change the map display based on the selecte button
+    function changeMapDisplay(){
+        $('.map-display-buttons').click(function() {
+            // disable the selected button color
+            // $('.map-display-buttons a').addClass('disabled');
+            $('.map-display-buttons').addClass('disabled');
+            // get the name of the selected feature
+            var sel = $(this).text().toUpperCase().trim();
+            // turn on the selected button color
+            // $('a', this).toggleClass('disabled');
+            $(this).toggleClass('disabled');
+            console.log("the map option selected: ", sel);
+            // change the map based on the button selected
+            if (sel == "CLIMATE") {
+                el.data_layer.setCartoCSS(el.bec_cartocss[el.selected_unit]);
+            } else if (sel == "BEC UNIT") {
+                el.data_layer.setCartoCSS(el.bec_cartocss.unit);
+            } else if (sel == "BEC ZONE") {
+                el.data_layer.setCartoCSS(el.bec_cartocss.zone);
+            };
         });
     };
 
-    function initSideNav() {
-        $(".button-collapse").sideNav({
-            menuWidth: 300, // Default is 240
-            edge: 'right', // Choose the horizontal origin
-            closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
-        });
-    }
 
-    function initDropDown() {
-        $('.dropdown-button').dropdown({
-            inDuration: 300,
-            outDuration: 225,
-            constrain_width: true, // Does not change width of dropdown to that of the activator
-            hover: false, // Activate on hover
-            gutter: 0, // Spacing from edge
-            belowOrigin: true, // Displays dropdown below the button
-            alignment: 'left' // Displays dropdown with edge aligned to the left of button
-        });
-    };
-
-    function initExpander() {
-        $('.expander').click(function() {
-            $('.sidebar').toggleClass('active');
-            $('.expander').toggleClass('active');
-        });
-    };
-
-    function initClimateToolsNavigation() {
-        $('.climate-tool-button').click(function() {
-            $('.climate-tools, .climate-tool-button').toggleClass("active");
-        });
-    }
-
-    function initMaterialDesignSelection() {
-        // init the materialize selection
-        $('select').material_select();
-    }
-
-    function initWithMapDescription() {
-        // init the materialize selection
-        $('.map-description').click();
-        // $('.scatter-panel').click();
-    }
-
-    function initWithToolbox(){
-        $('.climate-tool-button').click();
-    }
-
-
+    // NOT CURRENTLY USED IN APP
     function initSlider() {
         // range slider
         var slider = document.getElementById('range-input');
@@ -73,52 +43,9 @@ app.mapui = (function() {
         });
     }
 
-    function activateMapDisplayButtons() {
-        $('.map-display-buttons').click(function() {
-            console.log($(this).text());
-            $('.map-display-buttons').addClass("disabled");
-            $(this).toggleClass("disabled");
-            if ($(this).text().toUpperCase() == "CLIMATE") {
-                $('.climate-tools, .climate-tool-button').addClass("active");
-            } else {
-                $('.climate-tools, .climate-tool-button').addClass("active");
-            };
-        });
-    }
-
-    function populate(selector, objlist) {
-        objlist.forEach(function(d, i) {
-            if (i == 0) {
-                $(selector)
-                    .append('<option value="' + d + '" selected>' + d + '</option>')
-            } else {
-                $(selector)
-                    .append('<option value="' + d + '">' + d + '</option>')
-            }
-        })
-    }
-
-    function feedBecUnitSelector(){
-        var query = "SELECT DISTINCT map_label FROM " + el.dataset_selected + " WHERE map_label IS NOT NULL";
-        $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
-            data.rows.forEach(function(d){
-                el.bec_names.push(d.map_label);
-            })
-            $('.bec-unit-variables select').children().remove().end();
-            populate('.bec-unit-variables select', el.bec_names);
-
-             // console.log($('.bec-focal-selector :selected').text());
-            el.focal_name =  $('.bec-focal-selector :selected').text();
-            el.comparison_name =  $('.bec-comparison-selector :selected').text();
-            // make sure that the material select is called to update the dropdown
-            $("select").material_select();
-        });
-        
-    }
-
-    
+    // set the climate variable to the first feature
     function setClimateSelected(){
-        el.climate_selected = $('.climate-variables-map :selected').text();
+        el.climate_selected = $('.climate-variables-map :selected:first').val();
         console.log("setClimateSelected - mapui is:", el.climate_selected);
         $("select").material_select();
     }
@@ -140,27 +67,52 @@ app.mapui = (function() {
 
                 var quantize = d3.scale.quantize()
                   .domain([min, max])
-                  .range([min, max]);
+                  .range(colorbrewer.GnBu[9]);
               
-                var color = d3.scale.quantize()
+                var color = d3.scale.quantile()
                     .domain([min, max])
                     .range(colorbrewer.GnBu[9]);
 
-                var dom = color.domain(),
-                    l = (dom[1] - dom[0])/color.range().length,
-                    breaks = d3.range(0, color.range().length).map(function(i) { return i * l; });
-                    breaks = breaks.reverse();
-                    // console.log(breaks);
+                // var dom = color.domain(),
+                //     l = (dom[1] - dom[0])/color.range().length,
+                //     breaks = d3.range(0, color.range().length).map(function(i) { return i * l; });
+                //     breaks = breaks.reverse();
+                
+
+                d3.select("#legend-child").remove();
+                var svg = d3.select("#climate-legend").append('div')
+                    .attr('id', "legend-child").append('svg')
+                    .attr('height', 200)
+                    .attr('width', 200);
+
+                svg.append("g")
+                  .attr("class", "legendQuant")
+                  .attr("transform", "translate(20,20)");
+
+                var legend = d3.legend.color()
+                  .labelFormat(d3.format(".2f"))
+                  .useClass(false)
+                  .ascending(false)
+                  .orient('vertical')
+                  .scale(color);
+
+                svg.select(".legendQuant")
+                  .call(legend);
 
                  var styleArray = [];
-
+                 var breaks = color.quantiles();
+                 breaks = breaks.reverse();
                  breaks.forEach(function(d, i){
+                  
                     var output;
-                    output = '#' + el.dataset_selected + '['+ el.climate_selected + ' <= ' + d + ']{polygon-fill:' + color(d) + '}';
+                    if(i == 0){
+                        // output = '#' + el.dataset_selected + '['+ el.climate_selected + ' <= ' + d + ']'+'['+ el.climate_selected + ' > ' + d + ']'+'{polygon-fill:' + quantize(d) + '}';
+                        output = '#' + el.dataset_selected + '['+ el.climate_selected + ' <= ' + max + ']'+'{polygon-fill:' + quantize(d) + '}';
+                    } else{
+                        output = '#' + el.dataset_selected + '['+ el.climate_selected + ' <= ' + d + ']{polygon-fill:' + quantize(d) + '}';
+                    }
                     styleArray.push(output)
                  })
-                 styleArray.unshift('#' + el.dataset_selected + '['+ el.climate_selected + ' < ' + max+ ']{polygon-fill:' + color(max) + '}');
-    
                 // set the color
                 el.bec_cartocss[el.climate_selected] = null;
                 el.bec_cartocss[el.climate_selected] = styleArray.join("\n");
@@ -178,57 +130,34 @@ app.mapui = (function() {
         });
     }
 
-
-
-    function updateTimeScaleSelected(){
-        $('.timescale-selector select').change(function(){
-            el.timescale_selected = $(".timescale-selector select").val();
-
-                if (el.timescale_selected == "all"){
-                    $('.climate-variables select').children().remove().end();
-                    populate('.climate-variables select', el.column_names);
-                } else if (el.timescale_selected == "monthly"){
-                    $('.climate-variables select').children().remove().end();
-                    populate('.climate-variables select', el.monthly_columns);
-                } else if (el.timescale_selected == "seasonal"){
-                    $('.climate-variables select').children().remove().end();
-                    populate('.climate-variables select', el.seasonal_columns);
-                } else if (el.timescale_selected == "annual"){
-                    $('.climate-variables select').children().remove().end();
-                    populate('.climate-variables select', el.annual_columns);
-                }
-
-            $('select').material_select();
-        });
-    }
-
     // this is a temporary fix!!! on page load make sure the variables shown are same as what is loaded async
     // with the cliamte variables
     function setInitalClimateVariable() {
         $('.climate-variables :selected').val('rh_wt');
         $("select").material_select();   
     }
+
+    function screenSizePrompt(){
+        if($(window).width() < 750) {
+            alert("Hi there, mobile phones are great, but the BC Climate Explorer is best experienced on a screen size larger than 900 px.")
+        }
+    }
+
+    function addMaterializeTooltipped(){
+        $('.tooltipped').tooltip({delay: 50});
+    }
     
     
 
     var init = function() {
         el = app.main.el;
-        initCollapsible();
-        initDropDown();
-        initExpander();
-        initClimateToolsNavigation();
-        initWithMapDescription();
-        // initSlider();
-        activateMapDisplayButtons();
-        feedBecUnitSelector();
+        changeMapDisplay();
         colorMapByClimate();
         updateClimateMap();
-        updateTimeScaleSelected();
-        initWithToolbox();
-         setInitalClimateVariable();
-        // initMaterialDesignSelection(); // need to call this after getAllClimateVariables to update the form
-
-        // initSideNav(); // this is done in the main layout
+        setInitalClimateVariable();
+        screenSizePrompt();
+        addMaterializeTooltipped();
+        // initSlider();
     };
 
     return {

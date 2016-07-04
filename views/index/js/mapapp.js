@@ -11,8 +11,10 @@ app.mapapp = (function() {
             params;
         // map paramaters to pass to Leaflet
         params = {
-            center: [50.536104, -120.947768],
-            zoom: 9,
+            // center: [50.536104, -120.947768],
+            center: [53.706998, -131.601530],
+            // zoom: 9,
+            zoom: 6,
             zoomControl: false,
             attributionControl: false
         };
@@ -27,6 +29,14 @@ app.mapapp = (function() {
             maxZoom: 20,
             ext: 'png'
         }).addTo(el.map);
+
+        var MapQuestOpen_Aerial = L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/{type}/{z}/{x}/{y}.{ext}', {
+                type: 'sat',
+                ext: 'jpg',
+                attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency',
+                subdomains: '1234'
+            })
+        // .addTo(el.map).bringToBack();
 
         Stamen_TonerLines = L.tileLayer('http://stamen-tiles-{s}.a.ssl.fastly.net/toner-lines/{z}/{x}/{y}.{ext}', {
             attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -128,135 +138,38 @@ app.mapapp = (function() {
         // console.log(el.selected_unit);
     };
 
-    var changeMapDisplay = function() {
-        $('.map-display-buttons').click(function() {
-            var sel = $(this).text().toUpperCase()
-            if (sel == "CLIMATE") {
-                console.log("climate button clicked");
-                el.data_layer.setCartoCSS(el.bec_cartocss[el.selected_unit]);
-            } else if (sel == "BEC UNITS") {
-                el.data_layer.setCartoCSS(el.bec_cartocss.unit);
-            } else if (sel == "ZONES") {
-                el.data_layer.setCartoCSS(el.bec_cartocss.zone);
-            };
-        });
-    };
+    function changeBaseMap(){
+        $('.aerial-imagery-button').click(function(){
+            console.log('aerialimagery');
 
+            var MapQuestOpen_Aerial = L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/{type}/{z}/{x}/{y}.{ext}', {
+                type: 'sat',
+                ext: 'jpg',
+                attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency',
+                subdomains: '1234'
+            })
 
-    function addFocalPin() {
-        $('.add-focal-pin').click(function() {
-            if (el.focal_pin == null) {
-                var location = el.map.getCenter();
-                el.focal_pin = new L.marker(location, {
-                    draggable: true
-                }).addTo(el.map);
+            // el.map.remove(el.baselayer);
+            el.baselayer = null;
 
-                var marker;
-                var position;
-                el.focal_pin.on("drag", function(e) {
-                    marker = e.target;
-                    position = marker.getLatLng();
-                    el.focal_poly.clearLayers();
-                }).on("dragend", function(e) {
-                    showComparisonUnit(position, el.focal_poly, "focal");
-                });
-            } else {
-                console.log("focal pin already added");
-            }
-        });
-    }
+            var Esri_WorldImagery = L.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+            })
 
-    function addComparisonPin() {
-        $('.add-comparison-pin').click(function() {
-            if (el.comparison_pin == null) {
-                var location = el.map.getCenter();
-                el.comparison_pin = new L.marker(location, {
-                    draggable: true
-                }).addTo(el.map);
+            el.baselayer = Esri_WorldImagery;
 
-                var marker;
-                var position;
-                el.comparison_pin.on("drag", function(e) {
-                    marker = e.target;
-                    position = marker.getLatLng();
-                    el.comparison_poly.clearLayers();
-                }).on("dragend", function(e) {
-                    showComparisonUnit(position, el.comparison_poly, "comparison");
-                });
-            } else {
-                console.log("comparison pin already added");
-            }
-        });
-    }
+            el.baselayer.addTo(el.map).setZIndex(1);
 
-    function clearComparisonPins() {
-        $('.reset-comparison-pins').click(function() {
-            console.log('reset clicked');
-            el.map.removeLayer(el.focal_pin);
-            el.map.removeLayer(el.comparison_pin);
-            el.focal_pin = null;
-            el.comparison_pin = null;
-            el.focal_poly.clearLayers();
-            el.comparison_poly.clearLayers();
         })
     }
-
-    function showComparisonUnit(location, polyobj, selectDropdown) {
-        var lat = location.lat;
-        var lng = location.lng;
-        
-        var query = 'SELECT * from bgcv10beta_200m_wgs84 WHERE ST_Intersects( ST_SetSRID(ST_Point(' + lng + ',' + lat + '),4326), bgcv10beta_200m_wgs84.the_geom)'
-
-
-        var sql = new cartodb.SQL({ user: el.username, format: "geojson" });
-        sql.execute(query).done(function(data) {
-            polyobj.addData(data);
-
-            if (selectDropdown == "focal") {
-                console.log('focal');
-                updateSelectedFocalDropdown(data.features[0].properties.map_label);
-            } else {
-                console.log('comparison');
-                updateSelectedComparisonDropdown(data.features[0].properties.map_label);
-            }
-        });
-    }
-
-    function updateSelectedFocalDropdown(selectedUnit) {
-        console.log(selectedUnit);
-        $(".bec-focal-selector select").val(selectedUnit);
-        el.focal_name = selectedUnit;
-        $('select').material_select();
-    }
-
-    function updateSelectedComparisonDropdown(selectedUnit) {
-        console.log(selectedUnit);
-        $(".bec-comparison-selector select").val(selectedUnit);
-        el.comparison_name = selectedUnit;
-        $('select').material_select();
-    }
-
-    function updatedFCDropdown(){
-        $('.bec-unit-variables').change(function(){
-            el.focal_name = $('.bec-focal-selector :selected').text();
-            el.comparison_name = $('.bec-comparison-selector :selected').text();
-        })
-    }
-
 
 
 
     var init = function() {
         el = app.main.el;
         initMap();
-        initCarto();
-        changeMapDisplay();
-        addFocalPin();
-        addComparisonPin();
-        clearComparisonPins();
-        // updateClimateMap();
-        updatedFCDropdown();
-      
+        initCarto();   
+        changeBaseMap();   
     };
 
     return {
