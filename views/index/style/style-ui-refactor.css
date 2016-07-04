@@ -17,6 +17,7 @@ body {
     z-index: -100;
 }
 
+
 /* ---- sidebar ---- */
 .sidebar.active{
 	position: absolute;
@@ -112,10 +113,13 @@ body {
 
 /* --- map display buttons --- */
 
-/*.map-display-buttons{
-	margin-top:5px;
-	height:100%;
-}*/
+.map-display-buttons.btn-flat{
+	color:white;
+}
+
+.map-display-buttons.btn.disabled{
+	background-color:white !important;
+}
 
 
 /* --- time series chart --- */

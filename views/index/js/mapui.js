@@ -8,11 +8,13 @@ app.mapui = (function() {
     function changeMapDisplay(){
         $('.map-display-buttons').click(function() {
             // disable the selected button color
-            $('.map-display-buttons a').addClass('disabled');
+            // $('.map-display-buttons a').addClass('disabled');
+            $('.map-display-buttons').addClass('disabled');
             // get the name of the selected feature
             var sel = $(this).text().toUpperCase().trim();
             // turn on the selected button color
-            $('a', this).toggleClass('disabled');
+            // $('a', this).toggleClass('disabled');
+            $(this).toggleClass('disabled');
             console.log("the map option selected: ", sel);
             // change the map based on the button selected
             if (sel == "CLIMATE") {
