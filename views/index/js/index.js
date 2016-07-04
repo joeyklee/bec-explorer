@@ -54,7 +54,7 @@ app.main = (function() {
         comparison_poly: null,
         ts_yName: null,
         ts_xName: null,
-        timeRange_from: 2011, // initialize to 2011
+        timeRange_from: 2000, // initialize to 2011
         timeRange_to: 2013, // init to 2013
 
     };

@@ -104,7 +104,8 @@ app.fillSelectorDropdowns = (function() {
 
     function updateTimeScaleSelected(){
         $('.timescale-selector select').change(function(){
-            el.timescale_selected = $(".timescale-selector select").val();
+            el.timescale_selected = $(this).val();
+            console.log("timescale-selector changed!: ", el.timescale_selected);
                 if (el.timescale_selected == "all"){
                     $('.climate-variables select').children().remove().end();
                     populate('.climate-variables select', el.column_names);
@@ -130,6 +131,7 @@ app.fillSelectorDropdowns = (function() {
         setTimeRangeSelected();
         feedBecUnitSelector();
         updateTimeScaleSelected();
+        // setTimeSelected();
 
     }
 
