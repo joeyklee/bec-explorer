@@ -8,7 +8,7 @@ app.fillSelectorDropdowns = (function() {
         sql.execute("SELECT * FROM " + el.dataset_selected + " WHERE cartodb_id = 1").done(function(data) {
 
             sql.execute("SELECT * FROM variables_climatebc").done(function(variables_data) {
-                console.log("the number of variable names: ", variables_data.features);
+                // console.log("the number of variable names: ", variables_data.features);
 
                 // var variableNames = [];    
                 // variables_data.features.forEach(function(d){
@@ -27,7 +27,7 @@ app.fillSelectorDropdowns = (function() {
 
                 })
 
-                console.log(el.annual_columns);
+                // console.log(el.annual_columns);
 
                 // Object.keys(data.features[0].properties).forEach(function(d) {
                 //     variables_data.features.forEach(function(j) {
