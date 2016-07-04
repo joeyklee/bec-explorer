@@ -8,9 +8,9 @@
     <div class="sidebar col l5 m5 s5 z-depth-2">
         <div class="sidebar-main">
             <div class="chart-selector-row row">
-                    <div class="col l4 m12 s12 sidebar-display-buttons waves-effect waves-light btn-flat btn-large purple darken-3 sidebar-display-map disabled">Map Controls</div>
-                    <div class="col l4 m12 s12 sidebar-display-buttons waves-effect waves-light btn-flat btn-large purple darken-3  sidebar-display-timeseries disabled">Time Series</div>
-                    <div class="col l4 m12 s12 sidebar-display-buttons waves-effect waves-light btn-flat btn-large purple darken-3 sidebar-display-scatterplot disabled">Climate Normals</div>
+                    <div class="col l4 m12 s12 sidebar-display-buttons waves-effect waves-light btn-flat btn-large purple darken-3 sidebar-display-map disabled tooltipped" data-position="bottom" data-delay="50" data-tooltip="Change what's displayed on the map">Map Controls</div>
+                    <div class="col l4 m12 s12 sidebar-display-buttons waves-effect waves-light btn-flat btn-large purple darken-3  sidebar-display-timeseries disabled tooltipped" data-position="bottom" data-delay="50" data-tooltip="Explore historical and future BEC climate data">Time Series</div>
+                    <div class="col l4 m12 s12 sidebar-display-buttons waves-effect waves-light btn-flat btn-large purple darken-3 sidebar-display-scatterplot disabled tooltipped" data-position="bottom" data-delay="50" data-tooltip="Examine climatological relationships">Climate Normals</div>
             </div>
             <div class="map-selection-row">
                 <div class="welcome-map-outer">
@@ -40,9 +40,9 @@
                                 <a class="waves-effect waves-light btn-floating map-display-buttons purple darken-3"></a> BEC Zone</div>
                             <div class="col l4 m12 s12 map-display-buttons">
                                 <a class="waves-effect waves-light btn-floating disabled map-display-buttons climate-variables-button purple darken-3"><i class="material-icons"></i></a> Climate</div> --}}
-                            <div class="col l4 m12 s12 waves-effect waves-light  map-display-buttons btn btn-flat disabled purple lighten-3">BEC Unit</div>
-                            <div class="col l4 m12 s12 waves-effect waves-light map-display-buttons btn btn-flat purple lighten-3">BEC Zone</div>
-                            <div class="col l4 m12 s12 waves-effect waves-light  map-display-buttons btn btn-flat disabled climate-variables-button purple lighten-3">Climate</div>
+                            <div class="col l4 m12 s12 waves-effect waves-light  map-display-buttons btn btn-flat disabled purple lighten-3 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Includes subzones and variants">BEC Unit</div>
+                            <div class="col l4 m12 s12 waves-effect waves-light map-display-buttons btn btn-flat purple lighten-3 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Aggregates BEC subzones and variants">BEC Zone</div>
+                            <div class="col l4 m12 s12 waves-effect waves-light  map-display-buttons btn btn-flat disabled climate-variables-button purple lighten-3 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Climate variables at the BEC unit level">Climate</div>
                         </div>
                     </div>
                     <div class="row">
@@ -257,7 +257,7 @@
 
 
 <!-- Modal Trigger -->
-<a class="waves-effect waves-light btn-floating modal-trigger purple darken-3" href="#modal1">  <i class="material-icons">info_outline</i></a>
+<a class="waves-effect waves-light btn-floating modal-trigger purple darken-3 tooltipped" href="#modal1" data-position="bottom" data-delay="50" data-tooltip="Help?">  <i class="material-icons">info_outline</i></a>
 <!-- Modal Structure -->
 <div id="modal1" class="modal modal-fixed-footer">
   <div class="modal-content">

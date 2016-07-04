@@ -137,7 +137,15 @@ app.mapui = (function() {
         $("select").material_select();   
     }
 
+    function screenSizePrompt(){
+        if($(window).width() < 750) {
+            alert("Hi there, mobile phones are great, but the BC Climate Explorer is best experienced on a screen size larger than 900 px.")
+        }
+    }
 
+    function addMaterializeTooltipped(){
+        $('.tooltipped').tooltip({delay: 50});
+    }
     
     
 
@@ -147,6 +155,8 @@ app.mapui = (function() {
         colorMapByClimate();
         updateClimateMap();
         setInitalClimateVariable();
+        screenSizePrompt();
+        addMaterializeTooltipped();
         // initSlider();
     };
 
