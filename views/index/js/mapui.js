@@ -50,9 +50,28 @@ app.mapui = (function() {
         $("select").material_select();
     }
 
+    function setClimateSelected2(){
+        var timeagg = $('.timescale-selector select').val();
+        var climateSelected = $('.climate-variables-map :selected:first').val();
+        // el.climate_selected
+        if (timeagg == 'annual'){
+            if(climateSelected == "tave"){
+                el.climate_selected = 'mat'
+            } else{
+                el.climate_selected = climateSelected;
+            }
+        } else if ( ['wt','at','sm','sp'].indexOf(timeagg) > -1 == true) {
+            el.climate_selected = climateSelected + '_' + timeagg; // for seasonal variables
+        } else{
+            el.climate_selected = climateSelected + timeagg; // for jan - dec
+        }
+
+        console.log("***the climate selected is: ", el.climate_selected);
+    }
+
     function colorMapByClimate(){
         $('.climate-variables-button, .update-climate-map').click(function(){
-            setClimateSelected();
+            setClimateSelected2();
             var query = 'SELECT ' + el.climate_selected + ', cartodb_id FROM ' + el.dataset_selected;
 
             // NEEED TO FIND A GOOD WAY TO CALCULATE BREAKS
@@ -66,11 +85,11 @@ app.mapui = (function() {
                 })
 
                 var quantize = d3.scale.quantize()
-                  .domain([min, max])
+                  .domain([ min, max])
                   .range(colorbrewer.GnBu[9]);
               
                 var color = d3.scale.quantile()
-                    .domain([min, max])
+                    .domain([ min, max])
                     .range(colorbrewer.GnBu[9]);
 
                 // var dom = color.domain(),
@@ -92,7 +111,7 @@ app.mapui = (function() {
                 var legend = d3.legend.color()
                   .labelFormat(d3.format(".2f"))
                   .useClass(false)
-                  .ascending(false)
+                  .ascending(true)
                   .orient('vertical')
                   .scale(color);
 
@@ -125,7 +144,7 @@ app.mapui = (function() {
     // refactoring the colorMapByClimate() function - but in the end it kind of works nicely
     // since it fires the "climate" button and updates the map at the same time.
     function updateClimateMap(){
-        $('.climate-variables-map').change(function(){
+        $('.climate-variables-map, .timescale-selector-map').change(function(){
             $('.climate-variables-button').click();
         });
     }

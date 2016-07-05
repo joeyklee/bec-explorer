@@ -41,10 +41,8 @@ app.main = (function() {
         xSelector_axis: 'log',
         ySelector_axis: 'log',
         ySelector: null,
-        column_names:[], // all columns
-        monthly_columns:[], // monthly columns
         annual_columns: [], // annual columns
-        seasonal_columns: [], // seasonal columns
+        nonannual_columns: [], // seasonal columns
         bec_names:[],
         focal_pin:null,
         focal_name: 'ESSFdv2',

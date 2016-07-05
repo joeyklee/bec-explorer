@@ -7,8 +7,9 @@ app.climatetimeseries = (function() {
     function plotTimeSeries2() {
         console.log("init timeseries");
         el.tschart_div = document.getElementById('timeseries-chart'); // weird issue with jquery selector, use vanilla js - https://plot.ly/javascript/hover-events/
-
-        var tsvar = $(".climate-variables-chart option:selected").val();
+        
+        var tsvar = getSelectedClimate('.climate-variables-chart option:selected', '.timescale-selector-timeseries select')
+        console.log(tsvar);
 
         var query = null;
         var query_45 = null
@@ -311,6 +312,38 @@ app.climatetimeseries = (function() {
                 });
             });
         }
+    }
+
+    // function getSelectedClimate(selector){
+    //     var climateSelected = $(selector).val();
+    //     var timeagg = $('.timescale-selector-timeseries select').val();
+
+    //     if (timeagg == 'annual'){
+    //          el.climate_selected = climateSelected;
+    //     } else if ( ['wt','at','sm','sp'].indexOf(timeagg) > -1 == true) {
+    //         el.climate_selected = climateSelected + '_' + timeagg; // for seasonal variables
+    //     } else{
+    //         el.climate_selected = climateSelected + timeagg; // for jan - dec
+    //     }
+
+    //     return el.climate_selected;
+    // }
+
+    function getSelectedClimate(climateSelector, timeaggSelector){
+        var climateSelected = $(climateSelector).val();
+        var timeagg = $(timeaggSelector).val();
+
+        var climate_selected = null;
+
+        if (timeagg == 'annual'){
+             climate_selected = climateSelected;
+        } else if ( ['wt','at','sm','sp'].indexOf(timeagg) > -1 == true) {
+            climate_selected = climateSelected + '_' + timeagg; // for seasonal variables
+        } else{
+            climate_selected = climateSelected + timeagg; // for jan - dec
+        }
+
+        return climate_selected;
     }
 
     function replot() {

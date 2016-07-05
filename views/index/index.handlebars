@@ -48,7 +48,7 @@
                     <div class="row">
                         <div class="col l6 m12 s12">
                             <label>Variables From</label>
-                            <div class="input-field timescale-selector">
+                            <div class="input-field timescale-selector timescale-selector-map">
                                 <select>
                                     <option value="all" selected>All Time Scales</option>
                                     <option value="annual">Annual</option>
@@ -100,7 +100,7 @@
                                 <div class="col l12 m12 s12">
                                     <div class="col l6 m12 s12">
                                         <label>Variables From</label>
-                                        <div class="input-field timescale-selector">
+                                        <div class="input-field timescale-selector timescale-selector-timeseries">
                                             <select>
                                                 <option value="all" selected>All Time Scales</option>
                                                 <option value="annual">Annual</option>
@@ -202,9 +202,9 @@
                     </div>
                     <div class="row scatter-control-panel">
                         <div class="col s12">
-                            <div class="col s12">
-                                <label>Variables From</label>
-                                <div class="input-field timescale-selector">
+                            <div class="col s6">
+                                <label>Time Aggregations: X Variable</label>
+                                <div class="input-field timescale-selector timescale-selector-scatterx">
                                     <select>
                                         <option value="all" selected>All Time Scales</option>
                                         <option value="annual">Annual</option>
@@ -212,9 +212,7 @@
                                         <option value="monthly">Monthly</option>
                                     </select>
                                 </div>
-                            </div>
-                            <div class="col s6">
-                                <label>x</label>
+                                <label>X Axis: Climate Variable</label>
                                 <div class="input-field scatter-x climate-variables">
                                     <select>
                                         <option value="map" selected>map</option>
@@ -226,12 +224,21 @@
                                     <label>
                                         Log: Off
                                         <input type="checkbox">
-                                        <span class="lever deep-purple darken-1"></span> On
+                                        <span class="lever deep-purple lighten-5"></span> On
                                     </label>
                                 </div>
                             </div>
                             <div class="col s6">
-                                <label>y</label>
+                                <label>Time Aggregations: Y Variable</label>
+                                <div class="input-field timescale-selector timescale-selector-scattery">
+                                    <select>
+                                        <option value="all" selected>All Time Scales</option>
+                                        <option value="annual">Annual</option>
+                                        <option value="seasonal">Seasonal</option>
+                                        <option value="monthly">Monthly</option>
+                                    </select>
+                                </div>
+                                <label>Y Axis: Climate Variable</label>
                                 <div class="input-field scatter-y climate-variables">
                                     <select>
                                         <option value="map" selected>map</option>
@@ -243,7 +250,7 @@
                                     <label>
                                         Log: Off
                                         <input type="checkbox">
-                                        <span class="lever deep-purple darken-1"></span> On
+                                        <span class="lever deep-purple lighten-5"></span> On
                                     </label>
                                 </div>
                             </div>

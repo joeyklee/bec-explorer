@@ -4,12 +4,29 @@ app.scatterplot = (function() {
 
     var el = null;
 
+    function getSelectedClimate(climateSelector, timeaggSelector){
+        var climateSelected = $(climateSelector).val();
+        var timeagg = $(timeaggSelector).val();
+
+        var climate_selected = null;
+
+        if (timeagg == 'annual'){
+             climate_selected = climateSelected;
+        } else if ( ['wt','at','sm','sp'].indexOf(timeagg) > -1 == true) {
+            climate_selected = climateSelected + '_' + timeagg; // for seasonal variables
+        } else{
+            climate_selected = climateSelected + timeagg; // for jan - dec
+        }
+
+        return climate_selected;
+    }
+
     var plotScatter = function() {
         console.log("initscatter");
         
-        el.xSelector = $(".scatter-x select option:selected").val();
-        el.ySelector = $(".scatter-y select option:selected").val();
-        console.log(el.xSelector, el.ySelector);
+        el.xSelector = getSelectedClimate('.scatter-x select option:selected', '.timescale-selector-scatterx select') //$(".scatter-x select option:selected").val();
+        el.ySelector = getSelectedClimate('.scatter-y select option:selected', '.timescale-selector-scattery select') //$(".scatter-y select option:selected").val();
+        console.log("the x and y selectors are: ", el.xSelector, el.ySelector);
 
         var query = "SELECT DISTINCT map_label, " + el.xSelector + ", + " + el.ySelector + " FROM  " + el.dataset_selected + " WHERE map_label IS NOT NULL AND " + el.xSelector + " IS NOT NULL AND " + el.ySelector + " IS NOT NULL";
         // var query = "SELECT DISTINCT * FROM  " + el.dataset_selected + " WHERE map_label IS NOT NULL";
@@ -141,8 +158,7 @@ app.scatterplot = (function() {
     }
 
     function replot() {
-        $(".scatter-x, .scatter-y, .climate-variables-map, .timescale-selector").change(function(e) {
-            // el.xData = 
+        $(".scatter-x select, .scatter-y select, .timescale-selector-scatterx select, .timescale-selector-scattery select").change(function(e) {
             plotScatter();
         });
     }
@@ -184,6 +200,7 @@ app.scatterplot = (function() {
         });
     }
 
+    
 
 
 
