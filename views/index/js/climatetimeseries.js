@@ -289,7 +289,7 @@ app.climatetimeseries = (function() {
                     ts2_85.x = xdat2_85;
 
 
-                    var ts = [ts1, ts2, ts1_45, ts2_45, ts1_85, ts2_85];
+                    var ts = [ts1, ts1_45, ts1_85, ts2, ts2_45, ts2_85];
 
                     var d3 = Plotly.d3;
                     d3.select("#ts-child").remove();
