@@ -30,7 +30,8 @@ app.scatterplot = (function() {
                 text: el.scatter_labels,
                 mode: 'markers',
                 type: 'scatter',
-                title: 'PLOTS PLOTS PLOTS'
+                title: 'PLOTS PLOTS PLOTS',
+                 marker: { size: 12, color: 'rgba(49, 27, 146, 0.75)'}
             };
 
             var layout = {

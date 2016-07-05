@@ -169,4 +169,6 @@ i.add-comparison-pin{
 }
 
 /* --- lever --- */
-
+.switch label input[type="checkbox"]:checked + .lever::after {
+	background-color: #5e35b1;
+}
