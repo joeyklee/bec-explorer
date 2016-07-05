@@ -161,7 +161,7 @@ app.climatetimeseries = (function() {
             },
             hovermode: 'closest',
             showlegend: true,
-            legend: { "orientation": "h" }
+            legend: { "orientation": "v" }
         };
 
         var update = {
@@ -202,7 +202,7 @@ app.climatetimeseries = (function() {
             d3.select("#ts-child").remove();
             var gd3 = d3.select("#timeseries-chart").append('div').attr('id', 'ts-child')
                 .style({
-                    width: 550 + 'px',
+                    width: 650 + 'px',
                     'margin-left': 10 + 'px',
                     height: 400+ 'px'
                     // 'margin-top': (100 - HEIGHT_IN_PERCENT_OF_PARENT) / 2 + 'vh'
@@ -296,7 +296,7 @@ app.climatetimeseries = (function() {
                     var gd3 = d3.select("#timeseries-chart").append('div')
                     .attr('id', 'ts-child')
                         .style({
-                            width: 550 + 'px',
+                            width: 650 + 'px',
                             'margin-left': 10 + 'px',
                             height: 400+ 'px'
                             // 'margin-top': (100 - HEIGHT_IN_PERCENT_OF_PARENT) / 2 + 'vh'
