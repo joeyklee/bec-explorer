@@ -74,7 +74,7 @@ body {
 }
 
 .welcome-map-outer{
-	background-color: #f3e5f5;
+	background-color: #f5f5f5; /*#f3e5f5;*/
 }
 .welcome-map-inner{
 	padding: 10px 5px 5px 5px;
@@ -118,7 +118,7 @@ body {
 }
 
 .map-display-buttons.btn.disabled{
-	background-color:white !important;
+	background-color:#f5f5f5 !important;
 }
 
 
@@ -170,5 +170,5 @@ i.add-comparison-pin{
 
 /* --- lever --- */
 .switch label input[type="checkbox"]:checked + .lever::after {
-	background-color: #5e35b1;
+	background-color:#5e35b1;
 }
