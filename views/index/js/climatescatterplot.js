@@ -164,7 +164,7 @@ app.scatterplot = (function() {
                     scatterClimateNormals = {
                         x: xdat,
                         y: ydat,
-                        text: "Climate Normals)",
+                        text: "Climate Normals 1980-2014",
                         mode: 'markers',
                         type: 'scatter',
                         title: 'PLOTS PLOTS PLOTS',
@@ -174,6 +174,7 @@ app.scatterplot = (function() {
                     scatterFocal = {
                         x: focal_x,
                         y: focal_y,
+                        text: el.focal_name,
                         mode: 'markers',
                         type: 'scatter',
                         marker: { size: 12, color: '#d32f2f'},
@@ -184,6 +185,7 @@ app.scatterplot = (function() {
                         x: focal_x_45,
                         y: focal_y_45,
                         mode: 'lines',
+                        text: el.focal_name + " RCP 4.5",
                         line: {
                             color: 'rgba(228, 129, 129, 0.5)',
                             width: 4,
@@ -209,6 +211,7 @@ app.scatterplot = (function() {
                     scatterComparison = {
                         x: comparison_x,
                         y: comparison_y,
+                        text: el.comparison_name,
                         mode: 'markers',
                         type: 'scatter',
                         marker: { size: 12, color: '#303f9f'},
@@ -218,6 +221,7 @@ app.scatterplot = (function() {
                     scatterComparison_45 = {
                         x: comparison_x_45,
                         y: comparison_y_45,
+                        text: el.comparison_name + " RCP 4.5",
                         mode: 'lines',
                         line: {
                             color: 'rgb(98, 113, 208, 0.5)',
