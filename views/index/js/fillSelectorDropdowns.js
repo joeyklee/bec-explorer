@@ -129,8 +129,9 @@ app.fillSelectorDropdowns = (function() {
             
             populate('.bec-unit-variables select', el.bec_names);
 
-            el.focal_name = $('.bec-focal-selector :selected').text();
-            el.comparison_name = $('.bec-comparison-selector :selected').text();
+            // set the bec focal and comparison selector to the first one that is found
+            el.focal_name = $('.bec-focal-selector :selected:first').text();
+            el.comparison_name = $('.bec-comparison-selector :selected:first').text();
         });
 
     }
@@ -200,6 +201,7 @@ app.fillSelectorDropdowns = (function() {
     }
 
 
+    
 
 
     var init = function() {

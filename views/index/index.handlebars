@@ -131,7 +131,7 @@
                                     <div class="col l6 m12 s12">
                                         <div class="col s10">
                                         <label>Compare:</label>
-                                            <div class="input-field bec-unit-variables bec-focal-selector">
+                                            <div class="input-field bec-unit-variables bec-focal-selector bec-focal-selector-timeseries">
                                                 <select>
                                                     <option value="1" selected>BEC Unit 1</option>
                                                     <option value="2">BEC Unit 2</option>
@@ -145,7 +145,7 @@
                                     <div class="col l6 m12 s12">
                                         <div class="col s10">
                                         <label>To:</label>
-                                            <div class="input-field bec-unit-variables bec-comparison-selector">
+                                            <div class="input-field bec-unit-variables bec-comparison-selector bec-comparison-selector-timeseries">
                                                 <select>
                                                     <option value="1" selected>BEC Unit 1</option>
                                                     <option value="2">BEC Unit 2</option>
@@ -254,6 +254,39 @@
                                     </label>
                                 </div>
                             </div>
+                        </div>
+                        <div class="comparison-dropdowns">
+                            <div class="col l6 m12 s12">
+                                <div class="col s10">
+                                <label>Compare:</label>
+                                    <div class="input-field bec-unit-variables bec-focal-selector bec-focal-selector-scatter">
+                                        <select>
+                                            <option value="1" selected>BEC Unit 1</option>
+                                            <option value="2">BEC Unit 2</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col s2 add-pin-div">
+                                    <a class="add-focal-pin"><i class="material-icons add-focal-pin">location_on</i></a>
+                                </div>
+                            </div>
+                            <div class="col l6 m12 s12">
+                                <div class="col s10">
+                                <label>To:</label>
+                                    <div class="input-field bec-unit-variables bec-comparison-selector bec-comparison-selector-scatter">
+                                        <select>
+                                            <option value="1" selected>BEC Unit 1</option>
+                                            <option value="2">BEC Unit 2</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col s2 add-pin-div">
+                                    <a class="add-comparison-pin"><i class="material-icons add-comparison-pin">location_on</i></a>
+                                </div>
+                            </div>
+                            <a class="col s12">
+                                <label class="reset-comparison-pins right">Reset Pins</label>
+                            </a>
                         </div>
                     </div>
                 </div>

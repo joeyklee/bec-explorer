@@ -12,7 +12,8 @@ app.climatetimeseries = (function() {
         console.log(tsvar);
 
         var query = null;
-        var query_45 = null
+        var query_45 = null;
+        var query_85 = null;
         if (el.timeRange_to < 2014) {
             query = "SELECT DISTINCT id2, year," + tsvar + " FROM " + el.climateNormals_1901_2014 + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year >= " + el.timeRange_from + " AND year <= " + el.timeRange_to;
             $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
@@ -438,7 +439,7 @@ app.climatetimeseries = (function() {
 
     function updateSelectedFocalDropdown(selectedUnit) {
         console.log(selectedUnit);
-        $(".bec-focal-selector select").val(selectedUnit);
+        $(".bec-focal-selector-timeseries select, .bec-focal-selector-scatter select").val(selectedUnit);
         el.focal_name = selectedUnit;
         plotTimeSeries2();
         $('select').material_select();
@@ -446,19 +447,13 @@ app.climatetimeseries = (function() {
 
     function updateSelectedComparisonDropdown(selectedUnit) {
         console.log(selectedUnit);
-        $(".bec-comparison-selector select").val(selectedUnit);
+        $(".bec-comparison-selector-timeseries select, .bec-comparison-selector-scatter select").val(selectedUnit);
         el.comparison_name = selectedUnit;
         plotTimeSeries2();
         $('select').material_select();
     }
 
-    function updatedFCDropdown(){
-        $('.bec-unit-variables, .timescale-selector').change(function(){
-            el.focal_name = $('.bec-focal-selector :selected').text();
-            el.comparison_name = $('.bec-comparison-selector :selected').text();
-            plotTimeSeries2();
-        })
-    }
+    
 
     function toggleTimeSeriesChartOptions(){
         $('.timeseries-options-expander').click(function(){
@@ -466,6 +461,24 @@ app.climatetimeseries = (function() {
         });
     }
 
+    function updatedFCDropdown(){
+        $('.bec-unit-variables, .timescale-selector').change(function(){
+            
+            if($(this).hasClass('bec-comparison-selector-scatter') || $(this).hasClass('bec-focal-selector-scatter')){
+                el.focal_name = $('.bec-focal-selector-scatter :selected').text();
+                el.comparison_name = $('.bec-comparison-selector-scatter :selected').text();
+                console.log(el.focal_name, el.comparison_name);
+            } else {
+                el.focal_name = $('.bec-focal-selector-timeseries :selected').text();
+                el.comparison_name = $('.bec-comparison-selector-timeseries :selected').text();
+                console.log(el.focal_name, el.comparison_name);
+            }
+            $(".bec-focal-selector-timeseries select, .bec-focal-selector-scatter select").val(el.focal_name);
+            $(".bec-comparison-selector-timeseries select, .bec-comparison-selector-scatter select").val(el.comparison_name);
+            $('select').material_select();
+            plotTimeSeries2();
+        })
+    }
 
 
     var init = function() {
