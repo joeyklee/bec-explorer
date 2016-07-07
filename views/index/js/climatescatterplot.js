@@ -117,6 +117,7 @@ app.scatterplot = (function() {
 
     function plotScatter2(){
 
+
         el.xSelector = getSelectedClimate('.scatter-x select option:selected', '.timescale-selector-scatterx select') //$(".scatter-x select option:selected").val();
         el.ySelector = getSelectedClimate('.scatter-y select option:selected', '.timescale-selector-scattery select') //$(".scatter-y select option:selected").val();
 
@@ -137,6 +138,10 @@ app.scatterplot = (function() {
 
                     // console.log(data_45);
                     // console.log(data_85);
+                    // get back the scatter labels 
+                    el.scatter_labels = data.rows.map(function(obj) {
+                        return obj.map_label;
+                    });
 
                     var xdat = [],
                         ydat = [],
@@ -164,7 +169,7 @@ app.scatterplot = (function() {
                     scatterClimateNormals = {
                         x: xdat,
                         y: ydat,
-                        text: "Climate Normals 1980-2014",
+                        text: el.scatter_labels,
                         mode: 'markers',
                         type: 'scatter',
                         title: 'PLOTS PLOTS PLOTS',
@@ -339,7 +344,7 @@ app.scatterplot = (function() {
                     // window.onresize = function() { Plotly.Plots.resize( Green_Line_E ); };
                     window.addEventListener('resize', function() { Plotly.Plots.resize('scatter_chart'); });
 
-                    // highlightUnit();
+                    highlightUnit();
 
                 });
             });
@@ -417,7 +422,7 @@ app.scatterplot = (function() {
 
     function toggleLogLinearAxes() {
         $('.scatter-x-axis input').change(function() {
-            console.log("x switch toggled");
+            // console.log("x switch toggled");
             if (el.xSelector_axis == 'log') {
                 el.xSelector_axis = "linear";
             } else {
@@ -426,7 +431,7 @@ app.scatterplot = (function() {
         });
 
         $('.scatter-y-axis input').change(function() {
-            console.log("y switch toggled");
+            // console.log("y switch toggled");
             // if y selector is log
             if (el.ySelector_axis == 'log') {
                 el.ySelector_axis = "linear";
