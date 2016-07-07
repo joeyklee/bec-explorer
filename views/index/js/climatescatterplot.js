@@ -139,9 +139,7 @@ app.scatterplot = (function() {
                     // console.log(data_45);
                     // console.log(data_85);
                     // get back the scatter labels 
-                    el.scatter_labels = data.rows.map(function(obj) {
-                        return obj.map_label;
-                    });
+                     
 
                     var xdat = [],
                         ydat = [],
@@ -251,8 +249,9 @@ app.scatterplot = (function() {
 
 
                     data.rows.forEach(function(obj){
-                        xdat.push(obj[el.xSelector])
-                        ydat.push(obj[el.ySelector])
+                        xdat.push(obj[el.xSelector]);
+                        ydat.push(obj[el.ySelector]);
+                        el.scatter_labels.push(obj.map_label);
 
                         if(obj.map_label == el.focal_name){
                             console.log('focal true');
@@ -341,7 +340,7 @@ app.scatterplot = (function() {
                     // window.onresize = function() { Plotly.Plots.resize( Green_Line_E ); };
                     window.addEventListener('resize', function() { Plotly.Plots.resize('scatter_chart'); });
 
-                    highlightUnit();
+                    // highlightUnit();
 
                 });
             });
@@ -357,16 +356,19 @@ app.scatterplot = (function() {
 
                 el.hover_poly = L.geoJson(null, el.hover_style).addTo(el.map);
                 var pointNumber = data.points[0].pointNumber;
-                // console.log(el.scatter_labels[pointNumber]);
+
+                
                 var selected_label = el.scatter_labels[pointNumber];
                 // set the selected unit as the selected label
                 el.selected_unit = selected_label;
-                // console.log(selected_label);
+                console.log(pointNumber);
+                console.log(selected_label);
+                console.log(el.scatter_labels[pointNumber]);
+
                 var sql = new cartodb.SQL({ user: 'becexplorer', format: 'geojson' });
-                sql.execute("SELECT cartodb_id, the_geom FROM " + el.dataset_selected + " WHERE map_label LIKE '{{unit}}'", { unit: selected_label })
-                    .done(function(data) {
-                        // console.log(data);
-                        el.hover_poly.addData(data);
+                sql.execute("SELECT map_label, the_geom FROM " + el.dataset_selected + " WHERE map_label LIKE '{{unit}}'", { unit: selected_label })
+                    .done(function(geo_data) {
+                        el.hover_poly.addData(geo_data);
                     })
                     .error(function(errors) {
                         // errors contains a list of errors
