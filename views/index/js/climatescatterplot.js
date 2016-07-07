@@ -396,8 +396,21 @@ app.scatterplot = (function() {
 
     
     function replot() {
-        $(".scatter-x, .scatter-y, .timescale-selector-scatterx select, .timescale-selector-scattery select, .bec-comparison-selector-scatter, .bec-focal-selector-scatter, .bec-focal-selector-timeseries select, .bec-comparison-selector-timeseries select").change(function(e) {
+        $(".scatter-x, .scatter-y, .timescale-selector-scatterx select, .timescale-selector-scattery select, .bec-comparison-selector-scatter, .bec-focal-selector-scatter, .bec-focal-selector-timeseries, .bec-comparison-selector-timeseries").change(function(e) {
             plotScatter2();
+        });
+    }
+
+    function replotOnPinAdded(){
+        $('.add-focal-pin').click(function() {
+            el.focal_pin.on('dragend', function(){
+                plotScatter2();
+            })
+        });
+        $('.add-comparison-pin').click(function() {
+            el.comparison_pin.on('dragend', function(){
+                plotScatter2();
+            })
         });
     }
 
@@ -457,6 +470,7 @@ app.scatterplot = (function() {
         toggleLogLinearAxes();
         // plotScatter2();
         plotScatter2();
+        replotOnPinAdded();
 
     }
 
