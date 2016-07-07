@@ -7,7 +7,7 @@ app.climatetimeseries = (function() {
     function plotTimeSeries2() {
         console.log("init timeseries");
         el.tschart_div = document.getElementById('timeseries-chart'); // weird issue with jquery selector, use vanilla js - https://plot.ly/javascript/hover-events/
-        
+
         var tsvar = getSelectedClimate('.climate-variables-chart option:selected', '.timescale-selector-timeseries select')
         console.log(tsvar);
 
@@ -42,15 +42,15 @@ app.climatetimeseries = (function() {
             ydat2 = [],
             xdat2_45 = [],
             ydat2_45 = []
-            xdat2_85 = [],
+        xdat2_85 = [],
             ydat2_85 = [];
 
         // data models
-        var ts1, 
-            ts2, 
-            ts1_45, 
+        var ts1,
+            ts2,
+            ts1_45,
             ts2_45,
-            ts1_85, 
+            ts1_85,
             ts2_85;
 
         ts1 = {
@@ -135,7 +135,7 @@ app.climatetimeseries = (function() {
             xaxis: { title: "year" },
             yaxis: { title: tsvar, type: 'linear' },
             width: 500,
-            height:300,
+            height: 300,
             margin: {
                 l: 60,
                 r: 40,
@@ -149,7 +149,7 @@ app.climatetimeseries = (function() {
         };
 
         var layout_responsive = {
-             // autosize: true,
+            // autosize: true,
             xaxis: { title: "year" },
             yaxis: { title: tsvar, type: 'linear' },
             // width: 500,
@@ -168,7 +168,7 @@ app.climatetimeseries = (function() {
 
         var update = {
             width: 500,
-            height:300
+            height: 300
         };
 
 
@@ -198,7 +198,7 @@ app.climatetimeseries = (function() {
             var ts = [ts1, ts2];
 
             var d3 = Plotly.d3;
-            
+
             // var WIDTH_IN_PERCENT_OF_PARENT = 1,
             //     HEIGHT_IN_PERCENT_OF_PARENT = 10;
             d3.select("#ts-child").remove();
@@ -206,8 +206,8 @@ app.climatetimeseries = (function() {
                 .style({
                     width: 650 + 'px',
                     'margin-left': 10 + 'px',
-                    height: 400+ 'px'
-                    // 'margin-top': (100 - HEIGHT_IN_PERCENT_OF_PARENT) / 2 + 'vh'
+                    height: 400 + 'px'
+                        // 'margin-top': (100 - HEIGHT_IN_PERCENT_OF_PARENT) / 2 + 'vh'
                 });
 
             var ts_chart = gd3.node();
@@ -296,12 +296,12 @@ app.climatetimeseries = (function() {
                     var d3 = Plotly.d3;
                     d3.select("#ts-child").remove();
                     var gd3 = d3.select("#timeseries-chart").append('div')
-                    .attr('id', 'ts-child')
+                        .attr('id', 'ts-child')
                         .style({
                             width: 650 + 'px',
                             'margin-left': 10 + 'px',
-                            height: 400+ 'px'
-                            // 'margin-top': (100 - HEIGHT_IN_PERCENT_OF_PARENT) / 2 + 'vh'
+                            height: 400 + 'px'
+                                // 'margin-top': (100 - HEIGHT_IN_PERCENT_OF_PARENT) / 2 + 'vh'
                         });
 
                     var ts_chart = gd3.node();
@@ -330,17 +330,17 @@ app.climatetimeseries = (function() {
     //     return el.climate_selected;
     // }
 
-    function getSelectedClimate(climateSelector, timeaggSelector){
+    function getSelectedClimate(climateSelector, timeaggSelector) {
         var climateSelected = $(climateSelector).val();
         var timeagg = $(timeaggSelector).val();
 
         var climate_selected = null;
 
-        if (timeagg == 'annual'){
-             climate_selected = climateSelected;
-        } else if ( ['wt','at','sm','sp'].indexOf(timeagg) > -1 == true) {
+        if (timeagg == 'annual') {
+            climate_selected = climateSelected;
+        } else if (['wt', 'at', 'sm', 'sp'].indexOf(timeagg) > -1 == true) {
             climate_selected = climateSelected + '_' + timeagg; // for seasonal variables
-        } else{
+        } else {
             climate_selected = climateSelected + timeagg; // for jan - dec
         }
 
@@ -351,7 +351,7 @@ app.climatetimeseries = (function() {
         $(".bec-focal-selector, .bec-unit-variables, .climate-variables, .timescale-selector, .bec-comparison-selector, .climate-variables-map, .timerange-select").change(function(e) {
             // el.focal_name = $(".bec-focal-selector select").val();
             // el.comparison_name = $(".bec-comparison-selector select").val();
-            
+
             plotTimeSeries2();
         });
     }
@@ -420,20 +420,23 @@ app.climatetimeseries = (function() {
     function showComparisonUnit(location, polyobj, selectDropdown) {
         var lat = location.lat;
         var lng = location.lng;
-        
+
         var query = 'SELECT * from bgcv10beta_200m_wgs84 WHERE ST_Intersects( ST_SetSRID(ST_Point(' + lng + ',' + lat + '),4326), bgcv10beta_200m_wgs84.the_geom)'
         var sql = new cartodb.SQL({ user: el.username, format: "geojson" });
         sql.execute(query).done(function(data) {
-            polyobj.addData(data);
-            
-            
-            if (selectDropdown == "focal") {
-                console.log('focal');
-                updateSelectedFocalDropdown(data.features[0].properties.map_label);
-            } else {
-                console.log('comparison');
-                updateSelectedComparisonDropdown(data.features[0].properties.map_label);
-            }
+            var selectedBec = data.features[0].properties.map_label;
+            var query_whichPoly = "SELECT * from bgcv10beta_200m_wgs84 WHERE map_label LIKE '" + selectedBec + "'";
+            sql.execute(query_whichPoly).done(function(data_poly) {
+                polyobj.addData(data_poly);
+
+                if (selectDropdown == "focal") {
+                    console.log('focal');
+                    updateSelectedFocalDropdown(data.features[0].properties.map_label);
+                } else {
+                    console.log('comparison');
+                    updateSelectedComparisonDropdown(data.features[0].properties.map_label);
+                }
+            });
         });
     }
 
@@ -453,18 +456,18 @@ app.climatetimeseries = (function() {
         $('select').material_select();
     }
 
-    
 
-    function toggleTimeSeriesChartOptions(){
-        $('.timeseries-options-expander').click(function(){
+
+    function toggleTimeSeriesChartOptions() {
+        $('.timeseries-options-expander').click(function() {
             $('.timeseries-options').toggleClass('active');
         });
     }
 
-    function updatedFCDropdown(){
-        $('.bec-unit-variables, .timescale-selector').change(function(){
-            
-            if($(this).hasClass('bec-comparison-selector-scatter') || $(this).hasClass('bec-focal-selector-scatter')){
+    function updatedFCDropdown() {
+        $('.bec-unit-variables, .timescale-selector').change(function() {
+
+            if ($(this).hasClass('bec-comparison-selector-scatter') || $(this).hasClass('bec-focal-selector-scatter')) {
                 el.focal_name = $('.bec-focal-selector-scatter :selected').text();
                 el.comparison_name = $('.bec-comparison-selector-scatter :selected').text();
                 console.log(el.focal_name, el.comparison_name);
@@ -605,116 +608,116 @@ app.climatetimeseries = (function() {
 
 // });
 // });var plotTimeSeries = function() {
-    //     console.log("init timeseries");
-    //     el.tschart_div = document.getElementById('timeseries-chart'); // weird issue with jquery selector, use vanilla js - https://plot.ly/javascript/hover-events/
+//     console.log("init timeseries");
+//     el.tschart_div = document.getElementById('timeseries-chart'); // weird issue with jquery selector, use vanilla js - https://plot.ly/javascript/hover-events/
 
-    //     var tsvar = $(".climate-variables-map option:selected").val();
-    //     var msuffix = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
-    //     var ssuffix = ['at', 'wt', 'sp', 'sm'];
+//     var tsvar = $(".climate-variables-map option:selected").val();
+//     var msuffix = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
+//     var ssuffix = ['at', 'wt', 'sp', 'sm'];
 
-    //     // check if it is annual, seasonal, or monthly
-    //     if (msuffix.indexOf(tsvar.slice(-2)) >= 1) {
-    //         el.ts_ySelector = [];
-    //         msuffix.forEach(function(d, i) {
-    //             var output = tsvar.substring(0, tsvar.length - 2) + d;
-    //             el.ts_ySelector.push(output);
-    //         })
-    //         el.ts_xName = "Monthly (Jan-Dec)";
-    //         el.ts_yName = tsvar.substring(0, tsvar.length - 2);
-    //     } else if (ssuffix.indexOf(tsvar.slice(-2)) >= 1) {
-    //         el.ts_ySelector = [];
-    //         ssuffix.forEach(function(d, i) {
-    //             var output = tsvar.substring(0, tsvar.length - 2) + d;
-    //             el.ts_ySelector.push(output);
-    //         })
-    //         el.ts_xName = "seasonal (autumn, winter, spring, summer)";
-    //         el.ts_yName = tsvar.substring(0, tsvar.length - 3); // -3 to remove the underscore
-    //     } else {
-    //         el.ts_ySelector = [tsvar];
-    //         el.ts_xName = "Annual (By Year)";
-    //     }
+//     // check if it is annual, seasonal, or monthly
+//     if (msuffix.indexOf(tsvar.slice(-2)) >= 1) {
+//         el.ts_ySelector = [];
+//         msuffix.forEach(function(d, i) {
+//             var output = tsvar.substring(0, tsvar.length - 2) + d;
+//             el.ts_ySelector.push(output);
+//         })
+//         el.ts_xName = "Monthly (Jan-Dec)";
+//         el.ts_yName = tsvar.substring(0, tsvar.length - 2);
+//     } else if (ssuffix.indexOf(tsvar.slice(-2)) >= 1) {
+//         el.ts_ySelector = [];
+//         ssuffix.forEach(function(d, i) {
+//             var output = tsvar.substring(0, tsvar.length - 2) + d;
+//             el.ts_ySelector.push(output);
+//         })
+//         el.ts_xName = "seasonal (autumn, winter, spring, summer)";
+//         el.ts_yName = tsvar.substring(0, tsvar.length - 3); // -3 to remove the underscore
+//     } else {
+//         el.ts_ySelector = [tsvar];
+//         el.ts_xName = "Annual (By Year)";
+//     }
 
-    //     var query = "SELECT DISTINCT id2, year," + el.ts_ySelector.join(", ") + " FROM " + el.climateNormals_1901_2014 + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year >= " + el.timeRange_from + " AND year <= " + el.timeRange_to;
-    //     $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
+//     var query = "SELECT DISTINCT id2, year," + el.ts_ySelector.join(", ") + " FROM " + el.climateNormals_1901_2014 + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year >= " + el.timeRange_from + " AND year <= " + el.timeRange_to;
+//     $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
 
-    //         data.rows.sort(function(a, b) {
-    //             return parseFloat(a.year) - parseFloat(b.year);
-    //         });
+//         data.rows.sort(function(a, b) {
+//             return parseFloat(a.year) - parseFloat(b.year);
+//         });
 
-    //         var xdat1 = [],
-    //             ydat1 = [],
-    //             xdat2 = [],
-    //             ydat2 = [];
+//         var xdat1 = [],
+//             ydat1 = [],
+//             xdat2 = [],
+//             ydat2 = [];
 
-    //         data.rows.forEach(function(d) {
-    //             if (d.id2 == el.focal_name) {
-    //                 el.ts_ySelector.forEach(function(j, i) {
-    //                     ydat1.push(d[j]);
+//         data.rows.forEach(function(d) {
+//             if (d.id2 == el.focal_name) {
+//                 el.ts_ySelector.forEach(function(j, i) {
+//                     ydat1.push(d[j]);
 
-    //                     if (el.ts_ySelector.length == 1) {
-    //                         xdat1.push(d.year);
-    //                     } else if (el.ts_ySelector.length == 4) {
-    //                         xdat1.push(d.year + "-0" + i * 3); // *3 to evenly space across seasons
-    //                     } else {
-    //                         xdat1.push(d.year + "-" + i);
-    //                     }
-    //                 });
-    //             } else if (d.id2 == el.comparison_name) {
-    //                 el.ts_ySelector.forEach(function(j, i) {
-    //                     ydat2.push(d[j]);
+//                     if (el.ts_ySelector.length == 1) {
+//                         xdat1.push(d.year);
+//                     } else if (el.ts_ySelector.length == 4) {
+//                         xdat1.push(d.year + "-0" + i * 3); // *3 to evenly space across seasons
+//                     } else {
+//                         xdat1.push(d.year + "-" + i);
+//                     }
+//                 });
+//             } else if (d.id2 == el.comparison_name) {
+//                 el.ts_ySelector.forEach(function(j, i) {
+//                     ydat2.push(d[j]);
 
-    //                     if (el.ts_ySelector.length == 1) {
-    //                         xdat2.push(d.year);
-    //                     } else if (el.ts_ySelector.length == 4) {
-    //                         xdat2.push(d.year + "-0" + i * 3); // *3 to evenly space across seasons
-    //                     } else {
-    //                         xdat2.push(d.year + "-" + i);
-    //                     }
-    //                 });
-    //             }
+//                     if (el.ts_ySelector.length == 1) {
+//                         xdat2.push(d.year);
+//                     } else if (el.ts_ySelector.length == 4) {
+//                         xdat2.push(d.year + "-0" + i * 3); // *3 to evenly space across seasons
+//                     } else {
+//                         xdat2.push(d.year + "-" + i);
+//                     }
+//                 });
+//             }
 
-    //         })
+//         })
 
-    //         var ts1 = {
-    //             x: xdat1,
-    //             y: ydat1,
-    //             text: el.focal_name,
-    //             type: "scatter",
-    //             name: el.focal_name
-    //         }
+//         var ts1 = {
+//             x: xdat1,
+//             y: ydat1,
+//             text: el.focal_name,
+//             type: "scatter",
+//             name: el.focal_name
+//         }
 
-    //         var ts2 = {
-    //             x: xdat2,
-    //             y: ydat2,
-    //             text: el.comparison_name,
-    //             type: "scatter",
-    //             name: el.comparison_name
-    //         }
+//         var ts2 = {
+//             x: xdat2,
+//             y: ydat2,
+//             text: el.comparison_name,
+//             type: "scatter",
+//             name: el.comparison_name
+//         }
 
-    //         var ts = [ts1, ts2];
+//         var ts = [ts1, ts2];
 
-    //         var layout = {
-    //             yaxis: { title: el.ts_yName, type: 'linear' },
-    //             height: 300,
-    //             width: 500,
-    //             margin: {
-    //                 l: 60,
-    //                 r: 40,
-    //                 b: 60,
-    //                 t: 10,
-    //                 pad: 2
-    //             },
-    //             hovermode: 'closest'
-    //         };
+//         var layout = {
+//             yaxis: { title: el.ts_yName, type: 'linear' },
+//             height: 300,
+//             width: 500,
+//             margin: {
+//                 l: 60,
+//                 r: 40,
+//                 b: 60,
+//                 t: 10,
+//                 pad: 2
+//             },
+//             hovermode: 'closest'
+//         };
 
-    //         Plotly.newPlot("timeseries-chart", ts, layout, { staticPlot: false, displayModeBar: false });
+//         Plotly.newPlot("timeseries-chart", ts, layout, { staticPlot: false, displayModeBar: false });
 
-    //         var update = {
-    //             width: 500, // or any new width
-    //             height: 300
-    //         };
+//         var update = {
+//             width: 500, // or any new width
+//             height: 300
+//         };
 
-    //         Plotly.relayout('timeseries-chart', update);
-    //     });
+//         Plotly.relayout('timeseries-chart', update);
+//     });
 
-    // }
+// }
