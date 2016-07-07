@@ -38,8 +38,8 @@ app.main = (function() {
             fillOpacity: 0.15
         },
         xSelector: null,
-        xSelector_axis: 'log',
-        ySelector_axis: 'log',
+        xSelector_axis: 'linear',
+        ySelector_axis: 'linear',
         ySelector: null,
         annual_columns: [], // annual columns
         nonannual_columns: [], // seasonal columns
