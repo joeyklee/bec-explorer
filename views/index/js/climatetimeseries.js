@@ -9,7 +9,7 @@ app.climatetimeseries = (function() {
         el.tschart_div = document.getElementById('timeseries-chart'); // weird issue with jquery selector, use vanilla js - https://plot.ly/javascript/hover-events/
 
         var tsvar = getSelectedClimate('.climate-variables-chart option:selected', '.timescale-selector-timeseries select')
-        console.log(tsvar);
+        // console.log(tsvar);
 
         var query = null;
         var query_45 = null;

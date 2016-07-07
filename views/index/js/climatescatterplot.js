@@ -303,9 +303,6 @@ app.scatterplot = (function() {
                         }
                     });
 
-
-                    console.log('scatter comparison: ', scatterComparison_45);
-
                     var scatterData = [scatterClimateNormals, scatterFocal_45, scatterFocal_85, scatterComparison_45, scatterComparison_85, scatterFocal, scatterComparison];
 
                     var layout_responsive = {
