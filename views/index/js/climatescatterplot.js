@@ -386,9 +386,15 @@ app.scatterplot = (function() {
 
         el.chart_div.on('plotly_click', function(data) {
             var sql = new cartodb.SQL({ user: 'becexplorer', format: 'geojson' });
-            var pointNumber = data.points[0].pointNumber;
-            var selected_label = el.scatter_labels[pointNumber];
-            sql.execute("SELECT cartodb_id, the_geom FROM  " + el.dataset_selected + " WHERE map_label LIKE '{{unit}}'", { unit: selected_label })
+            if(Array.isArray(data.points[0].data.text) == true ){
+                var pointNumber = data.points[0].pointNumber;
+                var selected_label = el.scatter_labels[pointNumber];
+                // set the selected unit as the selected label
+                el.selected_unit = selected_label;
+            } else{
+                el.selected_unit = data.points[0].data.text;
+            }
+            sql.execute("SELECT cartodb_id, the_geom FROM  " + el.dataset_selected + " WHERE map_label LIKE '{{unit}}'", { unit: el.selected_unit })
                 .done(function(data) {
                     var geojsonLayer = L.geoJson(data);
                     el.map.fitBounds(geojsonLayer.getBounds());
