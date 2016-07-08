@@ -467,12 +467,14 @@ app.climatetimeseries = (function() {
         var lat = location.lat;
         var lng = location.lng;
 
-        var query = 'SELECT * from ' + el.dataset_selected + ' WHERE ST_Intersects( ST_SetSRID(ST_Point(' + lng + ',' + lat + '),4326), bgcv10beta_200m_wgs84.the_geom)'
+        var query = 'SELECT * FROM bgcv10beta_200m_wgs84 WHERE ST_Intersects( ST_SetSRID(ST_Point(' + lng + ',' + lat + '),4326), bgcv10beta_200m_wgs84.the_geom)'
         var sql = new cartodb.SQL({ user: el.username, format: "geojson" });
         sql.execute(query).done(function(data) {
             var selectedBec = data.features[0].properties.map_label;
+            console.log("selectedBEC: ", selectedBec);
             var query_whichPoly = "SELECT * from bgcv10beta_200m_wgs84 WHERE map_label LIKE '" + selectedBec + "'";
             sql.execute(query_whichPoly).done(function(data_poly) {
+                console.log("the data poly is: ", data_poly);
                 polyobj.addData(data_poly);
 
                 if (selectDropdown == "focal") {
