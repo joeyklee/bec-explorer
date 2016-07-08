@@ -16,24 +16,24 @@ app.main = (function() {
         chart_div: null,
         tschart_div: null,
         timescale_selected: 'all',
-        scatter_labels: null,
+        scatter_labels: [],
         hover_poly: null,
         climate_selected: null,
         hover_style: {
             color: "#ffffff",
-            weight: 2,
+            weight: 5,
             opacity: 0.85,
             fillOpacity: 0
         },
         focal_style: {
             color: "#d32f2f", // red darken-2
-            weight: 2,
+            weight: 5,
             opacity: 0.85,
             fillOpacity: 0.15
         },
         comparison_style: {
             color: "#303f9f", //indigo darken-2
-            weight: 2,
+            weight: 5,
             opacity: 0.85,
             fillOpacity: 0.15
         },
