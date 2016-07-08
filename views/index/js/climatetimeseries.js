@@ -7,129 +7,73 @@ app.climatetimeseries = (function() {
     function plotTimeSeries2() {
         console.log("init timeseries");
         el.tschart_div = document.getElementById('timeseries-chart'); // weird issue with jquery selector, use vanilla js - https://plot.ly/javascript/hover-events/
-
         var tsvar = getSelectedClimate('.climate-variables-chart option:selected', '.timescale-selector-timeseries select')
-        // console.log(tsvar);
 
-        var query = null;
-        var query_45 = null;
-        var query_85 = null;
-        if (el.timeRange_to < 2014) {
-            query = "SELECT DISTINCT id2, year," + tsvar + " FROM " + el.climateNormals_1901_2014 + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year >= " + el.timeRange_from + " AND year <= " + el.timeRange_to;
-            $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
-                climateNormals(data);
-            });
-        } else {
-            query = "SELECT DISTINCT id2, year," + tsvar + " FROM " + el.climateNormals_1901_2014 + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year >= " + el.timeRange_from + " AND year <= " + 2014;
-            //45
-            query_45 = "SELECT DISTINCT id2, year," + tsvar + " FROM " + 'bec10centroid_access1_0_rcp45_2011_2100msyt' + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year > " + 2014 + " AND year <= " + el.timeRange_to;
-            // 85
-            query_85 = "SELECT DISTINCT id2, year," + tsvar + " FROM " + 'bec10centroid_access1_0_rcp85_2011_2100msyt' + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year > " + 2014 + " AND year <= " + el.timeRange_to;
-            $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
-                normalsPlusModeled(data);
-            });
+        function makeTimeSeriesDataObject(hoverText, lineColor, lineWidth, lineOpacity, legendName) {
+            var output = {
+                x: [],
+                y: [],
+                text: hoverText, // e.g. el.focal_name
+                type: "scatter",
+                line: {
+                    color: lineColor, //'#d32f2f',
+                    width: lineWidth, //3,
+                    opacity: lineOpacity
+                },
+                name: hoverText + legendName // e.g el.focal_name
+            }
+            return output;
+        }
+
+        var tsObject = function() {
+            this.climateNormals = null;
+            this.access1_45 = null;
+            this.access1_85 = null;
+            this.canEsm2_45 = null;
+            this.canEsm2_85 = null;
+            this.ccsm4_45 = null;
+            this.ccsm4_85 = null;
+            this.cnrm_45 = null;
+            this.cnrm_85 = null;
+            this.csiro_45 = null;
+            this.csiro_85 = null;
+            this.inmcm4_45 = null;
+            this.inmcm4_85 = null;
         }
 
 
-        //  data
-        var xdat1 = [],
-            ydat1 = [],
-            xdat1_45 = [],
-            ydat1_45 = [],
-            xdat1_85 = [],
-            ydat1_85 = [],
-            xdat2 = [],
-            ydat2 = [],
-            xdat2_45 = [],
-            ydat2_45 = []
-            xdat2_85 = [],
-            ydat2_85 = [];
+        var focalSeries = new tsObject();
+        var comparisonSeries = new tsObject();
 
-        // data models
-        var ts1,
-            ts2,
-            ts1_45,
-            ts2_45,
-            ts1_85,
-            ts2_85;
+        focalSeries.climateNormals = makeTimeSeriesDataObject(el.focal_name, '#d32f2f', 3, 1, '');
+        focalSeries.access1_45 = makeTimeSeriesDataObject(el.focal_name, 'rgba(228, 129, 129, 0.5)', 1.5, 0.25, 'ACCESS 4.5');
+        focalSeries.access1_85 = makeTimeSeriesDataObject(el.focal_name, 'rgb(126, 27, 27, 0.5)', 1.5, 0.25, 'ACCESS 8.5');
+        focalSeries.canEsm2_45 = makeTimeSeriesDataObject(el.focal_name, 'rgba(228, 129, 129, 0.5)', 1.5, 0.25, ' canESM 4.5');
+        focalSeries.canEsm2_85 = makeTimeSeriesDataObject(el.focal_name, 'rgb(126, 27, 27, 0.5)', 1.5, 0.25, ' canESM 8.5');
+        focalSeries.ccsm4_45 = makeTimeSeriesDataObject(el.focal_name, 'rgba(228, 129, 129, 0.5)', 1.5, 0.25, ' ccsm 4.5');
+        focalSeries.ccsm4_85 = makeTimeSeriesDataObject(el.focal_name, 'rgb(126, 27, 27, 0.5)', 1.5, 0.25, ' ccsm 8.5');
+        focalSeries.cnrm_45 = makeTimeSeriesDataObject(el.focal_name, 'rgba(228, 129, 129, 0.5)', 1.5, 0.25, ' cnrm 4.5');
+        focalSeries.cnrm_85 = makeTimeSeriesDataObject(el.focal_name, 'rgb(126, 27, 27, 0.5)', 1.5, 0.25, ' cnrm 8.5');
+        focalSeries.csiro_45 = makeTimeSeriesDataObject(el.focal_name, 'rgba(228, 129, 129, 0.5)', 1.5, 0.25, ' Csiro 4.5');
+        focalSeries.csiro_85 = makeTimeSeriesDataObject(el.focal_name, 'rgb(126, 27, 27, 0.5)', 1.5, 0.25, ' Csiro 8.5');
+        focalSeries.inmcm4_45 = makeTimeSeriesDataObject(el.focal_name, 'rgba(228, 129, 129, 0.5)', 1.5, 0.25, ' Inm 4.5');
+        focalSeries.inmcm4_85 = makeTimeSeriesDataObject(el.focal_name, 'rgb(126, 27, 27, 0.5)', 1.5, 0.25, ' Inm 8.5');
 
-        ts1 = {
-            x: null,
-            y: null,
-            text: el.focal_name,
-            type: "scatter",
-            line: {
-                color: '#d32f2f',
-                width: 3,
-                opacity: 1
-            },
-            name: el.focal_name
-        }
+        comparisonSeries.climateNormals = makeTimeSeriesDataObject(el.comparison_name, '#303f9f', 3, 1, '');
+        comparisonSeries.access1_45 = makeTimeSeriesDataObject(el.comparison_name, 'rgb(98, 113, 208, 0.5)', 1.5, 0.25, ' ACCESS 4.5');
+        comparisonSeries.access1_85 = makeTimeSeriesDataObject(el.comparison_name, 'rgb(23, 31, 79, 0.5)', 1.5, 0.25, ' ACCESS 8.5');
+        comparisonSeries.canEsm2_45 = makeTimeSeriesDataObject(el.comparison_name, 'rgb(98, 113, 208, 0.5)', 1.5, 0.25, ' canESM 4.5');
+        comparisonSeries.canEsm2_85 = makeTimeSeriesDataObject(el.comparison_name, 'rgb(23, 31, 79, 0.5)', 1.5, 0.25, ' canESM 8.5');
+        comparisonSeries.ccsm4_45 = makeTimeSeriesDataObject(el.comparison_name, 'rgb(98, 113, 208, 0.5)', 1.5, 0.25, ' ccsm 4.5');
+        comparisonSeries.ccsm4_85 = makeTimeSeriesDataObject(el.comparison_name, 'rgb(23, 31, 79, 0.5)', 1.5, 0.25, ' ccsm 8.5');
+        comparisonSeries.cnrm_45 = makeTimeSeriesDataObject(el.comparison_name, 'rgb(98, 113, 208, 0.5)', 1.5, 0.25, ' cnrm 4.5');
+        comparisonSeries.cnrm_85 = makeTimeSeriesDataObject(el.comparison_name, 'rgb(23, 31, 79, 0.5)', 1.5, 0.25, ' cnrm 8.5');
+        comparisonSeries.csiro_45 = makeTimeSeriesDataObject(el.comparison_name, 'rgb(98, 113, 208, 0.5)', 1.5, 0.25, ' Csiro 4.5');
+        comparisonSeries.csiro_85 = makeTimeSeriesDataObject(el.comparison_name, 'rgb(23, 31, 79, 0.5)', 1.5, 0.25, ' Csiro 8.5');
+        comparisonSeries.inmcm4_45 = makeTimeSeriesDataObject(el.comparison_name, 'rgb(98, 113, 208, 0.5)', 1.5, 0.25, ' Inm 4.5');
+        comparisonSeries.inmcm4_85 = makeTimeSeriesDataObject(el.comparison_name, 'rgb(23, 31, 79, 0.5)', 1.5, 0.25, ' Inm 8.5');
 
-        ts2 = {
-            x: null,
-            y: null,
-            text: el.comparison_name,
-            type: "scatter",
-            line: {
-                color: '#303f9f',
-                width: 3,
-                opacity: 1
-            },
-            name: el.comparison_name
-        }
 
-        ts1_45 = {
-            x: null,
-            y: null,
-            text: el.focal_name + " RCP 4.5",
-            type: "scatter",
-            line: {
-                color: 'rgba(228, 129, 129, 0.5)',
-                width: 2,
-                opacity: 0.25
-            },
-            name: el.focal_name + " RCP 4.5"
-        }
-
-        ts2_45 = {
-            x: null,
-            y: null,
-            text: el.comparison_name + " RCP 4.5",
-            type: "scatter",
-            line: {
-                color: 'rgb(98, 113, 208, 0.5)',
-                width: 2,
-                opacity: 0.25
-            },
-            name: el.comparison_name + " RCP 4.5"
-        }
-
-        ts1_85 = {
-            x: null,
-            y: null,
-            text: el.focal_name + " RCP 8.5",
-            type: "scatter",
-            line: {
-                color: 'rgb(126, 27, 27, 0.5)',
-                width: 2,
-                opacity: 0.25
-            },
-            name: el.focal_name + " RCP 8.5"
-        }
-
-        ts2_85 = {
-            x: null,
-            y: null,
-            text: el.comparison_name + " RCP 8.5",
-            type: "scatter",
-            line: {
-                color: 'rgb(23, 31, 79, 0.5)',
-                width: 2,
-                opacity: 0.25
-            },
-            name: el.comparison_name + " RCP 8.5"
-        }
 
         var layout = {
             xaxis: { title: "year" },
@@ -172,37 +116,113 @@ app.climatetimeseries = (function() {
         };
 
 
-        function climateNormals(data) {
-            data.rows.sort(function(a, b) {
-                return parseFloat(a.year) - parseFloat(b.year);
+        if (el.timeRange_to < 2014) {
+            var query = "SELECT DISTINCT id2, year," + tsvar + " FROM " + el.climateNormals_1901_2014 + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year >= " + el.timeRange_from + " AND year <= " + el.timeRange_to;
+            $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
+                climateNormals(data);
             });
+        } else {
+            var modelProjectionsData = {
+                climateNormals: el.climateNormals_1901_2014,
+                access1_45: 'bec10centroid_access1_0_rcp45_2011_2100msyt',
+                access1_85: 'bec10centroid_access1_0_rcp85_2011_2100msyt',
+                canEsm2_45: 'bec10centroid_canesm2_rcp45_2011_2100msyt',
+                canEsm2_85: 'bec10centroid_canesm2_rcp85_2011_2100msyt',
+                ccsm4_45: 'bec10centroid_ccsm4_rcp45_2011_2100msyt',
+                ccsm4_85: 'bec10centroid_ccsm4_rcp85_2011_2100msyt',
+                cnrm_45: 'bec10centroid_cnrm_cm5_rcp45_2011_2100msyt',
+                cnrm_85: 'bec10centroid_cnrm_cm5_rcp85_2011_2100msyt',
+                // csiro_45: 'bec10centroid_csiro_mk3_6_0_rcp45_2011_2100msyt',
+                // csiro_85: 'bec10centroid_csiro_mk3_6_0_rcp85_2011_2100msyt',
+                // inmcm4_45: 'bec10centroid_inm_cm4_rcp45_2011_2100msyt',
+                // inmcm4_85: 'bec10centroid_inm_cm4_rcp85_2011_2100msyt',
+            }
 
-            data.rows.forEach(function(d) {
-
-                if (d.id2 == el.focal_name) {
-                    ydat1.push(d[tsvar]);
-                    xdat1.push(d.year);
-
-                } else if (d.id2 == el.comparison_name) {
-                    ydat2.push(d[tsvar]);
-                    xdat2.push(d.year);
+            Object.keys(modelProjectionsData).map(function(obj, i) {
+                if (i == 0){
+                    modelProjectionsData[obj] = "SELECT DISTINCT id2, year," + tsvar + " FROM " + modelProjectionsData[obj]+ " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year >= " + el.timeRange_from + " AND year <= " + 2014;
+                } else{
+                    modelProjectionsData[obj] = "SELECT DISTINCT id2, year," + tsvar + " FROM " + modelProjectionsData[obj] + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year > " + 2014 + " AND year <= " + el.timeRange_to;    
                 }
             });
 
-            ts1.x = xdat1;
-            ts1.y = ydat1;
 
-            ts2.x = xdat2;
-            ts2.y = ydat2;
+            function getData(id) {
+                // var thisI = d;
+                var url = 'https://becexplorer.cartodb.com/api/v2/sql?q=' + id
+                // console.log(url);
+                return $.getJSON(url);  // this returns a "promise"
+            }
 
-            var ts = [ts1, ts2];
+            var AJAX = [];
+            Object.keys(modelProjectionsData).forEach(function(d){
+                AJAX.push(getData(modelProjectionsData[d]));
+            });
+
+            $.when.apply($, AJAX).done(function(){
+                //  https://stackoverflow.com/questions/19916894/wait-for-multiple-getjson-calls-to-finish
+                // This callback will be called with multiple arguments,
+                // one for each AJAX call
+                // Each argument is an array with the following structure: [data, statusText, jqXHR]
+
+                // Let's map the arguments into an object, for ease of use
+                var obj = [];
+                for(var i = 0, len = arguments.length; i < len; i++){
+                    obj.push(arguments[i][0]);
+                }
+
+                graphAllModels(obj);
+
+            });
+        }
+
+       
+
+        function sortByYear(arr){
+            arr.rows.sort(function(a,b){
+                return parseFloat(a.year) - parseFloat(b.year);    
+            });
+        }
+
+        function sortByModelAndFocus(arr, id){
+            if (arr.id2 == el.focal_name) {
+                focalSeries[id].x.push(arr.year);
+                focalSeries[id].y.push(arr[tsvar]);
+            } else if (arr.id2 == el.comparison_name) {
+                comparisonSeries[id].x.push(arr.year);
+                comparisonSeries[id].y.push(arr[tsvar]);
+            }
+        }
+        
+
+
+
+        function graphAllModels(data){
+            // loop through the data and prepare it
+            
+            data.forEach(function(dat, i){
+                // sort by year
+                sortByYear(dat);
+                // then send the data to the appropriate focal or comparison unit and model
+                dat.rows.forEach(function(d){
+                    sortByModelAndFocus(d, Object.keys(modelProjectionsData)[i])
+                });
+            });
+
+            var ts = [];
+            Object.keys(focalSeries).forEach(function(d){
+                ts.push(focalSeries[d]);
+            })
+            Object.keys(comparisonSeries).forEach(function(d){
+                ts.push(comparisonSeries[d]);
+            })
+
+            console.log(ts);
 
             var d3 = Plotly.d3;
-
-            // var WIDTH_IN_PERCENT_OF_PARENT = 1,
-            //     HEIGHT_IN_PERCENT_OF_PARENT = 10;
             d3.select("#ts-child").remove();
-            var gd3 = d3.select("#timeseries-chart").append('div').attr('id', 'ts-child')
+            var gd3 = d3.select("#timeseries-chart").append('div')
+                .attr('id', 'ts-child')
                 .style({
                     width: 650 + 'px',
                     'margin-left': 10 + 'px',
@@ -214,12 +234,41 @@ app.climatetimeseries = (function() {
             Plotly.plot(ts_chart, ts, layout_responsive, { staticPlot: false, displayModeBar: false });
             // window.onresize = function() { Plotly.Plots.resize( Green_Line_E ); };
             window.addEventListener('resize', function() { Plotly.Plots.resize('ts_chart'); });
+        }
 
-            // Plotly.newPlot("timeseries-chart", ts, layout, { staticPlot: false, displayModeBar: false });
-            // Plotly.relayout('timeseries-chart', update);
-            // $( window ).resize(function() {
-            //     Plotly.relayout('timeseries-chart', update);
-            // });
+
+
+        function climateNormals(data) {
+            data.rows.sort(function(a, b) {
+                return parseFloat(a.year) - parseFloat(b.year);
+            });
+
+            data.rows.forEach(function(d) {
+                if (d.id2 == el.focal_name) {
+                    focalSeries.climateNormals.x.push(d.year);
+                    focalSeries.climateNormals.y.push(d[tsvar]);
+                } else if (d.id2 == el.comparison_name) {
+                    comparisonSeries.climateNormals.x.push(d.year);
+                    comparisonSeries.climateNormals.y.push(d[tsvar]);
+                }
+            });
+
+            var ts = [focalSeries.climateNormals, comparisonSeries.climateNormals];
+
+            var d3 = Plotly.d3;
+
+            d3.select("#ts-child").remove();
+            var gd3 = d3.select("#timeseries-chart").append('div').attr('id', 'ts-child')
+                .style({
+                    width: 650 + 'px',
+                    'margin-left': 10 + 'px',
+                    height: 400 + 'px'
+                        // 'margin-top': (100 - HEIGHT_IN_PERCENT_OF_PARENT) / 2 + 'vh'
+                });
+
+            var ts_chart = gd3.node();
+            Plotly.plot(ts_chart, ts, layout_responsive, { staticPlot: false, displayModeBar: false });
+            window.addEventListener('resize', function() { Plotly.Plots.resize('ts_chart'); });
         }
 
         function normalsPlusModeled(data) {
@@ -236,9 +285,6 @@ app.climatetimeseries = (function() {
                     data_85.rows.sort(function(a, b) {
                         return parseFloat(a.year) - parseFloat(b.year);
                     });
-
-                    console.log(data_45.rows)
-
 
                     data.rows.forEach(function(d) {
 
@@ -723,3 +769,166 @@ app.climatetimeseries = (function() {
 //     });
 
 // }
+
+
+
+// f_climateNormals = {
+//     x: null,
+//     y: null,
+//     text: el.focal_name,
+//     type: "scatter",
+//     line: {
+//         color: '#d32f2f',
+//         width: 3,
+//         opacity: 1
+//     },
+//     name: el.focal_name
+// }
+
+// f_access_45 = {
+//     x: null,
+//     y: null,
+//     text: el.focal_name + " RCP 4.5",
+//     type: "scatter",
+//     line: {
+//         color: 'rgba(228, 129, 129, 0.5)',
+//         width: 2,
+//         opacity: 0.25
+//     },
+//     name: el.focal_name + " ACCESS 1-0 RCP 4.5"
+// }
+
+// f_access_85 = {
+//     x: null,
+//     y: null,
+//     text: el.focal_name + " RCP 8.5",
+//     type: "scatter",
+//     line: {
+//         color: 'rgb(126, 27, 27, 0.5)',
+//         width: 2,
+//         opacity: 0.25
+//     },
+//     name: el.focal_name + " ACCESS 1-0 RCP 8.5"
+// }
+
+// f_canEsm_45 = {
+//     x: null,
+//     y: null,
+//     text: el.focal_name + " RCP 4.5",
+//     type: "scatter",
+//     line: {
+//         color: 'rgba(228, 129, 129, 0.5)',
+//         width: 2,
+//         opacity: 0.25
+//     },
+//     name: el.focal_name + " CanESM 2 RCP 4.5"
+// }
+
+// f_canEsm_85 = {
+//     x: null,
+//     y: null,
+//     text: el.focal_name + " RCP 8.5",
+//     type: "scatter",
+//     line: {
+//         color: 'rgb(126, 27, 27, 0.5)',
+//         width: 2,
+//         opacity: 0.25
+//     },
+//     name: el.focal_name + " CanESM 2 RCP 8.5"
+// }
+
+// f_canEsm_45 = {
+//     x: null,
+//     y: null,
+//     text: el.focal_name + " RCP 4.5",
+//     type: "scatter",
+//     line: {
+//         color: 'rgba(228, 129, 129, 0.5)',
+//         width: 2,
+//         opacity: 0.25
+//     },
+//     name: el.focal_name + " CanESM 2 RCP 4.5"
+// }
+
+// f_canEsm_85 = {
+//     x: null,
+//     y: null,
+//     text: el.focal_name + " RCP 8.5",
+//     type: "scatter",
+//     line: {
+//         color: 'rgb(126, 27, 27, 0.5)',
+//         width: 2,
+//         opacity: 0.25
+//     },
+//     name: el.focal_name + " CanESM 2 RCP 8.5"
+// }
+// c_climateNormals = {
+//     x: null,
+//     y: null,
+//     text: el.comparison_name,
+//     type: "scatter",
+//     line: {
+//         color: '#303f9f',
+//         width: 3,
+//         opacity: 1
+//     },
+//     name: el.comparison_name
+// }
+
+// c_canEsm_45 = {
+//     x: null,
+//     y: null,
+//     text: el.comparison_name + " RCP 4.5",
+//     type: "scatter",
+//     line: {
+//         color: 'rgb(98, 113, 208, 0.5)',
+//         width: 2,
+//         opacity: 0.25
+//     },
+//     name: el.comparison_name + " RCP 4.5"
+// }
+
+
+
+// ts2_85 = {
+//     x: null,
+//     y: null,
+//     text: el.comparison_name + " RCP 8.5",
+//     type: "scatter",
+//     line: {
+//         color: 'rgb(23, 31, 79, 0.5)',
+//         width: 2,
+//         opacity: 0.25
+//     },
+//     name: el.comparison_name + " RCP 8.5"
+// }
+
+
+
+            // var resultObject = {};
+
+            // var promises = Object.keys(modelProjectionsData).map(function(d) {
+
+            //         console.log('fetching data for', d)
+            //         return $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + modelProjectionsData[d], function(data) {
+            //             resultObject[d] = data;
+            //             console.log('fetched data for ', d);
+            //         });
+            // });
+
+            // $.when(promises).done(function(d){
+            //     console.log('finished getting data result: ', d[1]);
+            // })  
+
+            // var sql = new cartodb.SQL({ user: 'becexplorer' });
+
+            // var resultObject = {};
+            // Object.keys(modelProjectionsData).forEach(function(d){
+            //     sql.execute(modelProjectionsData[d]).done(function(data){
+            //         resultObject[d] = data;
+            //         console.log(resultObject[d]);
+            //     }).error(function(errors) {
+            //         // errors contains a list of errors
+            //         console.log("errors:" + errors);
+            //       })
+            // });

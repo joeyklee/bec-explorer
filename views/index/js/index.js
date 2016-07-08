@@ -53,7 +53,7 @@ app.main = (function() {
         ts_yName: null,
         ts_xName: null,
         timeRange_from: 1950, // initialize to 2011
-        timeRange_to: 2013, // init to 2013
+        timeRange_to: 2011, // init to 2013
 
     };
 
