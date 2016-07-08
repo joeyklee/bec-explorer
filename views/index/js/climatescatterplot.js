@@ -340,7 +340,7 @@ app.scatterplot = (function() {
                     // window.onresize = function() { Plotly.Plots.resize( Green_Line_E ); };
                     window.addEventListener('resize', function() { Plotly.Plots.resize('scatter_chart'); });
 
-                    // highlightUnit();
+                    highlightUnit();
 
                 });
             });
@@ -354,19 +354,23 @@ app.scatterplot = (function() {
         el.chart_div.on('plotly_hover', function(data) {
                 // add geojson polygon for hovered poly
 
-                el.hover_poly = L.geoJson(null, el.hover_style).addTo(el.map);
-                var pointNumber = data.points[0].pointNumber;
 
+                el.hover_poly = L.geoJson(null, el.hover_style).addTo(el.map);
                 
-                var selected_label = el.scatter_labels[pointNumber];
-                // set the selected unit as the selected label
-                el.selected_unit = selected_label;
-                console.log(pointNumber);
-                console.log(selected_label);
-                console.log(el.scatter_labels[pointNumber]);
+                
+                if(Array.isArray(data.points[0].data.text) == true ){
+                    var pointNumber = data.points[0].pointNumber;
+                    var selected_label = el.scatter_labels[pointNumber];
+                    // set the selected unit as the selected label
+                    el.selected_unit = selected_label;
+                } else{
+                    el.selected_unit = data.points[0].data.text;
+                }
+                
+                console.log(el.selected_unit);
 
                 var sql = new cartodb.SQL({ user: 'becexplorer', format: 'geojson' });
-                sql.execute("SELECT map_label, the_geom FROM " + el.dataset_selected + " WHERE map_label LIKE '{{unit}}'", { unit: selected_label })
+                sql.execute("SELECT map_label, the_geom FROM " + el.dataset_selected + " WHERE map_label LIKE '{{unit}}'", { unit: el.selected_unit })
                     .done(function(geo_data) {
                         el.hover_poly.addData(geo_data);
                     })
