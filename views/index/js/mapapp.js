@@ -73,7 +73,7 @@ app.mapapp = (function() {
 
     var initCarto = function() {
         // console.log("hello");
-        cartodb.createLayer(el.map, 'https://becexplorer.cartodb.com/api/v2/viz/f1dab0f4-29b3-11e6-9b74-0ef7f98ade21/viz.json')
+        cartodb.createLayer(el.map, 'https://becexplorer.carto.com/api/v2/viz/e38e9c50-452d-11e6-9ea4-0e3ebc282e83/viz.json')
             .addTo(el.map).done(function(layer) {
                 // create an empty sublayer to add interactivity and color
                 el.data_layer = layer.getSubLayer(0);

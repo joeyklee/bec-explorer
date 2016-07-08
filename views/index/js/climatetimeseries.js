@@ -42,7 +42,7 @@ app.climatetimeseries = (function() {
             ydat2 = [],
             xdat2_45 = [],
             ydat2_45 = []
-        xdat2_85 = [],
+            xdat2_85 = [],
             ydat2_85 = [];
 
         // data models
