@@ -436,6 +436,8 @@ app.climatetimeseries = (function() {
                     console.log('comparison');
                     updateSelectedComparisonDropdown(data.features[0].properties.map_label);
                 }
+                // plot the scatterplot()
+                app.scatterplot.plotScatter();
             });
         });
     }

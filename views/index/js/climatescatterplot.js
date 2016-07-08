@@ -115,7 +115,7 @@ app.scatterplot = (function() {
     // }
 
 
-    function plotScatter2(){
+    var plotScatter2 = function(){
 
 
         el.xSelector = getSelectedClimate('.scatter-x select option:selected', '.timescale-selector-scatterx select') //$(".scatter-x select option:selected").val();
@@ -413,18 +413,18 @@ app.scatterplot = (function() {
         });
     }
 
-    function replotOnPinAdded(){
-        $('.add-focal-pin').click(function() {
-            el.focal_pin.on('dragend', function(){
-                plotScatter2();
-            })
-        });
-        $('.add-comparison-pin').click(function() {
-            el.comparison_pin.on('dragend', function(){
-                plotScatter2();
-            })
-        });
-    }
+    // function replotOnPinAdded(){
+    //     $('.add-focal-pin').click(function() {
+    //         el.focal_pin.on('dragend', function(){
+    //             plotScatter2();
+    //         })
+    //     });
+    //     $('.add-comparison-pin').click(function() {
+    //         el.comparison_pin.on('dragend', function(){
+    //             plotScatter2();
+    //         })
+    //     });
+    // }
 
     function initAxesSwitch() {
         // if x selector is log
@@ -482,11 +482,12 @@ app.scatterplot = (function() {
         toggleLogLinearAxes();
         // plotScatter2();
         plotScatter2();
-        replotOnPinAdded();
+        // replotOnPinAdded();
 
     }
 
     return {
-        init: init
+        init: init,
+        plotScatter: plotScatter2
     }
 })();
