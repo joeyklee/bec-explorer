@@ -7,7 +7,8 @@ app.climatetimeseries = (function() {
     function plotTimeSeries2() {
         console.log("init timeseries");
         el.tschart_div = document.getElementById('timeseries-chart'); // weird issue with jquery selector, use vanilla js - https://plot.ly/javascript/hover-events/
-        var tsvar = getSelectedClimate('.climate-variables-chart option:selected', '.timescale-selector-timeseries select')
+        var tsvar = getSelectedClimate('.climate-variables-chart option:selected', '.timescale-selector-timeseries select').val
+        var tstext = getSelectedClimate('.climate-variables-chart option:selected', '.timescale-selector-timeseries select').text
 
         function makeTimeSeriesDataObject(hoverText, lineColor, lineWidth, lineOpacity, legendName) {
             var output = {
@@ -95,7 +96,7 @@ app.climatetimeseries = (function() {
         var layout_responsive = {
             // autosize: true,
             xaxis: { title: "year" },
-            yaxis: { title: tsvar, type: 'linear' },
+            yaxis: { title: tstext, type: 'linear' },
             // width: 500,
             // height:300,
             margin: {
@@ -376,21 +377,39 @@ app.climatetimeseries = (function() {
     //     return el.climate_selected;
     // }
 
-    function getSelectedClimate(climateSelector, timeaggSelector) {
+    // function getSelectedClimate(climateSelector, timeaggSelector) {
+    //     var climateSelected = $(climateSelector).val();
+    //     var timeagg = $(timeaggSelector).val();
+
+    //     var climate_selected = null;
+
+    //     if (timeagg == 'annual') {
+    //         climate_selected = climateSelected;
+    //     } else if (['wt', 'at', 'sm', 'sp'].indexOf(timeagg) > -1 == true) {
+    //         climate_selected = climateSelected + '_' + timeagg; // for seasonal variables
+    //     } else {
+    //         climate_selected = climateSelected + timeagg; // for jan - dec
+    //     }
+
+    //     return climate_selected;
+    // }
+
+    function getSelectedClimate(climateSelector, timeaggSelector){
         var climateSelected = $(climateSelector).val();
+        var climateText = $(climateSelector).text();
         var timeagg = $(timeaggSelector).val();
 
         var climate_selected = null;
 
-        if (timeagg == 'annual') {
-            climate_selected = climateSelected;
-        } else if (['wt', 'at', 'sm', 'sp'].indexOf(timeagg) > -1 == true) {
+        if (timeagg == 'annual'){
+             climate_selected = climateSelected;
+        } else if ( ['wt','at','sm','sp'].indexOf(timeagg) > -1 == true) {
             climate_selected = climateSelected + '_' + timeagg; // for seasonal variables
-        } else {
+        } else{
             climate_selected = climateSelected + timeagg; // for jan - dec
         }
 
-        return climate_selected;
+        return {val: climate_selected, text: climateText};
     }
 
     function replot() {

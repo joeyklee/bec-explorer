@@ -6,6 +6,7 @@ app.scatterplot = (function() {
 
     function getSelectedClimate(climateSelector, timeaggSelector){
         var climateSelected = $(climateSelector).val();
+        var climateText = $(climateSelector).text();
         var timeagg = $(timeaggSelector).val();
 
         var climate_selected = null;
@@ -18,7 +19,7 @@ app.scatterplot = (function() {
             climate_selected = climateSelected + timeagg; // for jan - dec
         }
 
-        return climate_selected;
+        return {val: climate_selected, text: climateText};
     }
 
     // var plotScatter = function() {
@@ -118,8 +119,11 @@ app.scatterplot = (function() {
     var plotScatter2 = function(){
 
 
-        el.xSelector = getSelectedClimate('.scatter-x select option:selected', '.timescale-selector-scatterx select') //$(".scatter-x select option:selected").val();
-        el.ySelector = getSelectedClimate('.scatter-y select option:selected', '.timescale-selector-scattery select') //$(".scatter-y select option:selected").val();
+        el.xSelector = getSelectedClimate('.scatter-x select option:selected', '.timescale-selector-scatterx select').val //$(".scatter-x select option:selected").val();
+        el.ySelector = getSelectedClimate('.scatter-y select option:selected', '.timescale-selector-scattery select').val //$(".scatter-y select option:selected").val();
+
+        var xText = getSelectedClimate('.scatter-x select option:selected', '.timescale-selector-scatterx select').text //$(".scatter-x select option:selected").val();
+        var yText = getSelectedClimate('.scatter-y select option:selected', '.timescale-selector-scattery select').text //$(".scatter-y select option:selected").val();
 
         // var focalUnit = $('.bec-focal-selector select').val();
         // var comparisonUnit = $('.bec-comparison-selector select').val();
@@ -143,6 +147,7 @@ app.scatterplot = (function() {
 
                     var xdat = [],
                         ydat = [],
+                        pointLabels = [],
                         focal_x = [],
                         focal_y = [],
                         focal_x_45 = [],
@@ -167,7 +172,7 @@ app.scatterplot = (function() {
                     scatterClimateNormals = {
                         x: xdat,
                         y: ydat,
-                        text: el.scatter_labels,
+                        text: pointLabels,
                         mode: 'markers',
                         type: 'scatter',
                         title: 'PLOTS PLOTS PLOTS',
@@ -251,7 +256,7 @@ app.scatterplot = (function() {
                     data.rows.forEach(function(obj){
                         xdat.push(obj[el.xSelector]);
                         ydat.push(obj[el.ySelector]);
-                        el.scatter_labels.push(obj.map_label);
+                        pointLabels.push(obj.map_label);
 
                         if(obj.map_label == el.focal_name){
                             console.log('focal true');
@@ -305,8 +310,8 @@ app.scatterplot = (function() {
                     var scatterData = [scatterClimateNormals, scatterFocal_45, scatterFocal_85, scatterComparison_45, scatterComparison_85, scatterFocal, scatterComparison];
 
                     var layout_responsive = {
-                                    xaxis: { title: el.xSelector, type: el.xSelector_axis },
-                                    yaxis: { title: el.ySelector, type: el.ySelector_axis },
+                                    xaxis: { title: xText, type: el.xSelector_axis },
+                                    yaxis: { title: yText, type: el.ySelector_axis },
                                     margin: {
                                         l: 60,
                                         r: 40,
@@ -340,6 +345,8 @@ app.scatterplot = (function() {
                     // window.onresize = function() { Plotly.Plots.resize( Green_Line_E ); };
                     window.addEventListener('resize', function() { Plotly.Plots.resize('scatter_chart'); });
 
+                    // set the scatter labels
+                    el.scatter_labels = pointLabels;
                     highlightUnit();
 
                 });
@@ -354,9 +361,8 @@ app.scatterplot = (function() {
         el.chart_div.on('plotly_hover', function(data) {
                 // add geojson polygon for hovered poly
 
-
+                // console.log(data.points);
                 el.hover_poly = L.geoJson(null, el.hover_style).addTo(el.map);
-                
                 
                 if(Array.isArray(data.points[0].data.text) == true ){
                     var pointNumber = data.points[0].pointNumber;
