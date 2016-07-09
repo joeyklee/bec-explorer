@@ -171,7 +171,7 @@ app.scatterplot = (function() {
                         mode: 'markers',
                         type: 'scatter',
                         title: 'PLOTS PLOTS PLOTS',
-                         marker: { size: 12, color: 'rgba(97, 97, 97, 0.75)'}
+                         marker: { size: 6, color: 'rgba(97, 97, 97, 0.75)'}
                     };
 
                     scatterFocal = {
