@@ -328,7 +328,7 @@ app.scatterplot = (function() {
                     d3.select("#scatter-child").remove();
                     var gd3 = d3.select("#scatter-chart").append('div').attr('id', 'scatter-child')
                         .style({
-                            width: 650 + 'px',
+                            width: 600 + 'px',
                             'margin-left': 10 + 'px',
                             height: 400+ 'px'
                             // 'margin-top': (100 - HEIGHT_IN_PERCENT_OF_PARENT) / 2 + 'vh'
