@@ -330,7 +330,7 @@ app.scatterplot = (function() {
                         .style({
                             width: 600 + 'px',
                             'margin-left': 10 + 'px',
-                            height: 400+ 'px'
+                            height: 450+ 'px'
                             // 'margin-top': (100 - HEIGHT_IN_PERCENT_OF_PARENT) / 2 + 'vh'
                         });
                     el.chart_div = document.getElementById('scatter-child'); // weird issue with jquery selector, use vanilla js - https://plot.ly/javascript/hover-events/
