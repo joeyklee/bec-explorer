@@ -131,11 +131,11 @@ app.scatterplot = (function() {
         
 
         var queryClimateNormals = "SELECT DISTINCT map_label, " + el.xSelector + ", + " + el.ySelector + " FROM  " + el.dataset_selected + " WHERE map_label IS NOT NULL AND " + el.xSelector + " IS NOT NULL AND " + el.ySelector + " IS NOT NULL";
-        var query_45 = "SELECT DISTINCT id2, year," + el.xSelector + ", + " + el.ySelector + " FROM " + 'bec10centroid_access1_0_rcp45_2011_2100msyt' + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year = " + 2070;
-        var query_85 = "SELECT DISTINCT id2, year," + el.xSelector + ", + " + el.ySelector + " FROM " + 'bec10centroid_access1_0_rcp85_2011_2100msyt' + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year = " + 2070;
+        var query_45 = "SELECT DISTINCT id2, year," + el.xSelector + ", + " + el.ySelector + " FROM " + 'bec10centroid_ensemblemean_rcp45_2011_2100msyt' + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND (year > " + 2070 + " AND year <=2100)";
+        var query_85 = "SELECT DISTINCT id2, year," + el.xSelector + ", + " + el.ySelector + " FROM " + 'bec10centroid_ensemblemean_rcp85_2011_2100msyt' + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND (year > " + 2070 + " AND year <=2100)";
         
 
-
+        var d3 = Plotly.d3;
         $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + queryClimateNormals, function(data) {
             $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query_45, function(data_45) {
                 $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query_85, function(data_85) {
@@ -287,27 +287,59 @@ app.scatterplot = (function() {
 
                     });
 
-                    data_45.rows.forEach(function(d){
-                        if(d.id2 == el.focal_name){
-                            focal_x_45.push(d[el.xSelector]);
-                            focal_y_45.push(d[el.ySelector]);
-                        } else{
-                            comparison_x_45.push(d[el.xSelector]);
-                            comparison_y_45.push(d[el.ySelector]);
-                        }
-                    });
+                    // data_45.rows.forEach(function(d){
+                    //     if(d.id2 == el.focal_name){
+                    //         focal_x_45.push(d[el.xSelector]);
+                    //         focal_y_45.push(d[el.ySelector]);
+                    //     } else{
+                    //         comparison_x_45.push(d[el.xSelector]);
+                    //         comparison_y_45.push(d[el.ySelector]);
+                    //     }
+                    // });
 
-                    data_85.rows.forEach(function(d){
-                        if(d.id2 == el.focal_name){
-                            focal_x_85.push(d[el.xSelector]);
-                            focal_y_85.push(d[el.ySelector]);
-                        } else{
-                            comparison_x_85.push(d[el.xSelector]);
-                            comparison_y_85.push(d[el.ySelector]);
-                        }
-                    });
+                    // data_85.rows.forEach(function(d){
+                    //     if(d.id2 == el.focal_name){
+                    //         focal_x_85.push(d[el.xSelector]);
+                    //         focal_y_85.push(d[el.ySelector]);
+                    //     } else{
+                    //         comparison_x_85.push(d[el.xSelector]);
+                    //         comparison_y_85.push(d[el.ySelector]);
+                    //     }
+                    // });
+
+                    function sendFocalMeans(xArrayHolder,yArrayHolder, dataArray){
+                        xArrayHolder.push(d3.mean(dataArray.rows, function(d){
+                            if(d.id2 == el.focal_name){
+                                return d[el.xSelector];
+                            }
+                        }));
+                        yArrayHolder.push(d3.mean(dataArray.rows, function(d){
+                            if(d.id2 == el.focal_name){
+                                return d[el.ySelector];
+                            }
+                        }));
+                    }
+                    function sendComparisonMeans(xArrayHolder,yArrayHolder, dataArray){
+                        xArrayHolder.push(d3.mean(dataArray.rows, function(d){
+                            if(d.id2 == el.comparison_name){
+                                return d[el.xSelector];
+                            }
+                        }));
+                        yArrayHolder.push(d3.mean(dataArray.rows, function(d){
+                            if(d.id2 == el.comparison_name){
+                                return d[el.ySelector];
+                            }
+                        }));
+                    }
+
+                    sendFocalMeans(focal_x_45, focal_y_45, data_45)
+                    sendFocalMeans(focal_x_85, focal_y_85, data_85)
+                    sendComparisonMeans(comparison_x_45, comparison_y_45, data_45)
+                    sendComparisonMeans(comparison_x_85, comparison_y_85, data_85)
+
 
                     var scatterData = [scatterClimateNormals, scatterFocal_45, scatterFocal_85, scatterComparison_45, scatterComparison_85, scatterFocal, scatterComparison];
+                    // var scatterData = [scatterClimateNormals, scatterFocal_45, scatterFocal, scatterComparison];
 
                     var layout_responsive = {
                                     xaxis: { title: xText, type: el.xSelector_axis },
@@ -326,7 +358,7 @@ app.scatterplot = (function() {
 
                     
                     // Plotly.relayout('scatter-chart', update);
-                    var d3 = Plotly.d3;
+                    // var d3 = Plotly.d3;
                     
                     // var WIDTH_IN_PERCENT_OF_PARENT = 1,
                     //     HEIGHT_IN_PERCENT_OF_PARENT = 10;
