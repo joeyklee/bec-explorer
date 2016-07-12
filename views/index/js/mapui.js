@@ -140,6 +140,19 @@ app.mapui = (function() {
         });
     }
 
+    function toggleWelcomeBanner(){
+        $('.climate-variables-button, .update-climate-map').click(function(){
+            if($('.welcome-map-inner').hasClass('active')){
+                $('.welcome-map-inner').removeClass('active'); // make the welcoming header go away    
+            }
+        });
+
+        $('.bec-unit-button, .bec-zone-button').click(function(){
+            d3.select('#legend-child').remove()
+            $('.welcome-map-inner').addClass('active'); // make the welcoming header come back 
+        });
+    }
+
     // super hacky way to recolor map - take care of this later by 
     // refactoring the colorMapByClimate() function - but in the end it kind of works nicely
     // since it fires the "climate" button and updates the map at the same time.
@@ -177,6 +190,7 @@ app.mapui = (function() {
         setInitalClimateVariable();
         screenSizePrompt();
         addMaterializeTooltipped();
+        toggleWelcomeBanner();
         // initSlider();
     };
 

@@ -81,7 +81,14 @@ body {
 }
 .welcome-map-inner{
 	padding: 10px 5px 5px 5px;
+	display: none;
 }
+
+.welcome-map-inner.active{
+	display:block;
+	padding: 10px 5px 5px 5px;
+}
+
 
 .map-selection-row{
 	display:none;
