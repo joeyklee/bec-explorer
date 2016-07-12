@@ -158,7 +158,8 @@ app.mapui = (function() {
 
     function screenSizePrompt(){
         if($(window).width() < 750) {
-            alert("Hi there, mobile phones are great, but the BC Climate Explorer is best experienced on a screen size larger than 900 px.")
+            // alert("Hi there! Sorry but the BC Climate Explorer is best experienced on a screen size larger than 750px. In the mean time, you're welcome to learn more <a href='http://www.bc-climate-explorer.org/about'>here</a>");
+            $('#toosmall').click();
         }
     }
 
