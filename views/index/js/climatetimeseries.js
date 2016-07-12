@@ -149,9 +149,9 @@ app.climatetimeseries = (function() {
 
             Object.keys(modelProjectionsData).map(function(obj, i) {
                 if (i == 0){
-                    modelProjectionsData[obj] = "SELECT DISTINCT id2, year," + tsvar + " FROM " + modelProjectionsData[obj]+ " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year >= " + el.timeRange_from + " AND year <= " + 2014;
+                    modelProjectionsData[obj] = "SELECT DISTINCT id2, year," + tsvar + " FROM " + modelProjectionsData[obj]+ " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year >= " + el.timeRange_from + " AND year <= " + 2010;
                 } else{
-                    modelProjectionsData[obj] = "SELECT DISTINCT id2, year," + tsvar + " FROM " + modelProjectionsData[obj] + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year > " + 2014 + " AND year <= " + el.timeRange_to;    
+                    modelProjectionsData[obj] = "SELECT DISTINCT id2, year," + tsvar + " FROM " + modelProjectionsData[obj] + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year > " + 2010 + " AND year <= " + el.timeRange_to;    
                 }
             });
 
