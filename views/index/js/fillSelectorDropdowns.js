@@ -77,6 +77,7 @@ app.fillSelectorDropdowns = (function() {
 
     function populateClimateVariable(selector, objlist) {
         $(selector).children().remove().end();
+
         objlist.forEach(function(d, i) {
             if (i == 0) {
                 $(selector)
@@ -107,6 +108,7 @@ app.fillSelectorDropdowns = (function() {
 
     function populate(selector, objlist) {
         $(selector).children().remove().end();
+
         objlist.forEach(function(d, i) {
             if (i == 0) {
                 $(selector)
@@ -123,15 +125,21 @@ app.fillSelectorDropdowns = (function() {
     function feedBecUnitSelector() {
         var query = "SELECT DISTINCT map_label FROM " + el.dataset_selected + " WHERE map_label IS NOT NULL";
         $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
+            // data.rows.sort(function(a, b){
+            //     return a.map_label - b.map_label;
+            // });
+
             data.rows.forEach(function(d) {
                 el.bec_names.push(d.map_label);
             })
+            el.bec_names.sort();
             
             populate('.bec-unit-variables select', el.bec_names);
 
             // set the bec focal and comparison selector to the first one that is found
             el.focal_name = $('.bec-focal-selector :selected:first').text();
             el.comparison_name = $('.bec-comparison-selector :selected:first').text();
+            console.log(el.focal_name, el.comparison_name);
         });
 
     }
