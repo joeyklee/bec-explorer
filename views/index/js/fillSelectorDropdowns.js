@@ -208,6 +208,15 @@ app.fillSelectorDropdowns = (function() {
         });
     }
 
+    function updateFocalAndComparisonVals(){
+        $(".bec-comparison-selector-scatter, .bec-comparison-selector-timeseries").change(function(){
+            el.focal_name = $('select', this).val();
+        })
+
+        $(".bec-focal-selector-scatter, .bec-focal-selector-timeseries").change(function(){
+            el.comparison_name = $('select', this).val();
+        })
+    }
 
     
 
@@ -221,6 +230,7 @@ app.fillSelectorDropdowns = (function() {
         feedBecUnitSelector();
         // updateTimeScaleSelected();
         updateTimeScaleSelected3();
+        updateFocalAndComparisonVals();
         // new climate variables fill:
         fillTimeAggregationDropdown();
         updateTimeScaleSelectedScatter();

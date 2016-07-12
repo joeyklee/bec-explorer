@@ -149,10 +149,10 @@ app.climatetimeseries = (function() {
             }
 
             Object.keys(modelProjectionsData).map(function(obj, i) {
-                if (i == 0){
-                    modelProjectionsData[obj] = "SELECT DISTINCT id2, year," + tsvar + " FROM " + modelProjectionsData[obj]+ " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year >= " + el.timeRange_from + " AND year <= " + 2010;
-                } else{
-                    modelProjectionsData[obj] = "SELECT DISTINCT id2, year," + tsvar + " FROM " + modelProjectionsData[obj] + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year > " + 2010 + " AND year <= " + el.timeRange_to;    
+                if (i == 0) {
+                    modelProjectionsData[obj] = "SELECT DISTINCT id2, year," + tsvar + " FROM " + modelProjectionsData[obj] + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year >= " + el.timeRange_from + " AND year <= " + 2010;
+                } else {
+                    modelProjectionsData[obj] = "SELECT DISTINCT id2, year," + tsvar + " FROM " + modelProjectionsData[obj] + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year > " + 2010 + " AND year <= " + el.timeRange_to;
                 }
             });
 
@@ -160,16 +160,16 @@ app.climatetimeseries = (function() {
             function getData(id) {
                 // var thisI = d;
                 var url = 'https://becexplorer.cartodb.com/api/v2/sql?q=' + id
-                // console.log(url);
-                return $.getJSON(url);  // this returns a "promise"
+                    // console.log(url);
+                return $.getJSON(url); // this returns a "promise"
             }
 
             var AJAX = [];
-            Object.keys(modelProjectionsData).forEach(function(d){
+            Object.keys(modelProjectionsData).forEach(function(d) {
                 AJAX.push(getData(modelProjectionsData[d]));
             });
 
-            $.when.apply($, AJAX).done(function(){
+            $.when.apply($, AJAX).done(function() {
                 //  https://stackoverflow.com/questions/19916894/wait-for-multiple-getjson-calls-to-finish
                 // This callback will be called with multiple arguments,
                 // one for each AJAX call
@@ -177,7 +177,7 @@ app.climatetimeseries = (function() {
 
                 // Let's map the arguments into an object, for ease of use
                 var obj = [];
-                for(var i = 0, len = arguments.length; i < len; i++){
+                for (var i = 0, len = arguments.length; i < len; i++) {
                     obj.push(arguments[i][0]);
                 }
 
@@ -186,15 +186,15 @@ app.climatetimeseries = (function() {
             });
         }
 
-       
 
-        function sortByYear(arr){
-            arr.rows.sort(function(a,b){
-                return parseFloat(a.year) - parseFloat(b.year);    
+
+        function sortByYear(arr) {
+            arr.rows.sort(function(a, b) {
+                return parseFloat(a.year) - parseFloat(b.year);
             });
         }
 
-        function sortByModelAndFocus(arr, id){
+        function sortByModelAndFocus(arr, id) {
             if (arr.id2 == el.focal_name) {
                 focalSeries[id].x.push(arr.year);
                 focalSeries[id].y.push(arr[tsvar]);
@@ -203,27 +203,27 @@ app.climatetimeseries = (function() {
                 comparisonSeries[id].y.push(arr[tsvar]);
             }
         }
-        
 
 
 
-        function graphAllModels(data){
+
+        function graphAllModels(data) {
             // loop through the data and prepare it
-            
-            data.forEach(function(dat, i){
+
+            data.forEach(function(dat, i) {
                 // sort by year
                 sortByYear(dat);
                 // then send the data to the appropriate focal or comparison unit and model
-                dat.rows.forEach(function(d){
+                dat.rows.forEach(function(d) {
                     sortByModelAndFocus(d, Object.keys(modelProjectionsData)[i])
                 });
             });
 
             var ts = [];
-            Object.keys(focalSeries).forEach(function(d){
+            Object.keys(focalSeries).forEach(function(d) {
                 ts.push(focalSeries[d]);
             })
-            Object.keys(comparisonSeries).forEach(function(d){
+            Object.keys(comparisonSeries).forEach(function(d) {
                 ts.push(comparisonSeries[d]);
             })
 
@@ -403,29 +403,26 @@ app.climatetimeseries = (function() {
     //     return climate_selected;
     // }
 
-    function getSelectedClimate(climateSelector, timeaggSelector){
+    function getSelectedClimate(climateSelector, timeaggSelector) {
         var climateSelected = $(climateSelector).val();
         var climateText = $(climateSelector).text();
         var timeagg = $(timeaggSelector).val();
 
         var climate_selected = null;
 
-        if (timeagg == 'annual'){
-             climate_selected = climateSelected;
-        } else if ( ['wt','at','sm','sp'].indexOf(timeagg) > -1 == true) {
+        if (timeagg == 'annual') {
+            climate_selected = climateSelected;
+        } else if (['wt', 'at', 'sm', 'sp'].indexOf(timeagg) > -1 == true) {
             climate_selected = climateSelected + '_' + timeagg; // for seasonal variables
-        } else{
+        } else {
             climate_selected = climateSelected + timeagg; // for jan - dec
         }
 
-        return {val: climate_selected, text: climateText};
+        return { val: climate_selected, text: climateText };
     }
 
     function replot() {
         $(".bec-focal-selector, .bec-unit-variables, .climate-variables, .timescale-selector, .bec-comparison-selector, .climate-variables-map, .timerange-select").change(function(e) {
-            // el.focal_name = $(".bec-focal-selector select").val();
-            // el.comparison_name = $(".bec-comparison-selector select").val();
-
             plotTimeSeries2();
         });
     }
@@ -435,49 +432,89 @@ app.climatetimeseries = (function() {
 
     function addFocalPin() {
         $('.add-focal-pin').click(function() {
-            if (el.focal_pin == null) {
-                var location = el.map.getCenter();
-                el.focal_pin = new L.marker(location, {
-                    draggable: true
-                }).addTo(el.map);
+            // el.focal_name = $(".bec-focal-selector select").val();
+            var query = "SELECT * FROM bec10centroid_normal_1981_2010msy WHERE id2 = '" + el.focal_name + "'";
 
-                var marker;
-                var position;
-                el.focal_pin.on("drag", function(e) {
-                    marker = e.target;
-                    position = marker.getLatLng();
-                    el.focal_poly.clearLayers();
-                }).on("dragend", function(e) {
-                    showComparisonUnit(position, el.focal_poly, "focal");
-                });
-            } else {
-                console.log("focal pin already added");
-            }
+            var redIcon = new L.Icon({
+              iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+              shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41]
+            });
+
+            $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
+                if (el.focal_pin == null) {
+                    console.log(data.rows)
+                    var location = [data.rows[0].latitude, data.rows[0].longitude];
+                    el.focal_pin = new L.marker(location, {
+                        draggable: true,
+                        icon: redIcon
+                    }).addTo(el.map);
+                    showComparisonUnit(el.focal_pin.getLatLng(), el.focal_poly, "focal");
+
+                    var marker;
+                    var position;
+                    el.focal_pin.on("drag", function(e) {
+                        marker = e.target;
+                        position = marker.getLatLng();
+                        el.focal_poly.clearLayers();
+                    }).on("dragend", function(e) {
+                        showComparisonUnit(position, el.focal_poly, "focal");
+                    });
+                } else {
+                    console.log("focal pin already added");
+                    // alert("you've already added a focal pin!")
+                }
+            });
+
+
         });
     }
 
     function addComparisonPin() {
-        $('.add-comparison-pin').click(function() {
-            if (el.comparison_pin == null) {
-                var location = el.map.getCenter();
-                el.comparison_pin = new L.marker(location, {
-                    draggable: true
-                }).addTo(el.map);
+        // el.comparison_name = $(".bec-comparison-selector select").val();
+        var query = "SELECT * FROM bec10centroid_normal_1981_2010msy WHERE id2 = '" + el.comparison_name + "'";
+        var violetIcon = new L.Icon({
+          iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png',
+          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41]
+        });
 
-                var marker;
-                var position;
-                el.comparison_pin.on("drag", function(e) {
-                    marker = e.target;
-                    position = marker.getLatLng();
-                    el.comparison_poly.clearLayers();
-                }).on("dragend", function(e) {
-                    showComparisonUnit(position, el.comparison_poly, "comparison");
-                });
-            } else {
-                console.log("comparison pin already added");
-            }
+        console.log(query);
+        $('.add-comparison-pin').click(function() {
+            $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
+                if (el.comparison_pin == null) {
+                    console.log(data.rows)
+                    var location = [data.rows[0].latitude, data.rows[0].longitude];
+                    el.comparison_pin = new L.marker(location, {
+                        draggable: true,
+                        icon: violetIcon
+                    }).addTo(el.map);
+                    showComparisonUnit(el.comparison_pin.getLatLng(), el.comparison_poly, "comparison");
+
+                    var marker;
+                    var position;
+                    el.comparison_pin.on("drag", function(e) {
+                        marker = e.target;
+                        position = marker.getLatLng();
+                        el.comparison_poly.clearLayers();
+                    }).on("dragend", function(e) {
+                        showComparisonUnit(position, el.comparison_poly, "comparison");
+                    });
+
+                } else {
+                    console.log("comparison pin already added");
+                }
+            });
         });
     }
+
+
 
     function clearComparisonPins() {
         $('.reset-comparison-pins').click(function() {
