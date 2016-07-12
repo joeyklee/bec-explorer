@@ -40,6 +40,8 @@ app.climatetimeseries = (function() {
             this.csiro_85 = null;
             this.inmcm4_45 = null;
             this.inmcm4_85 = null;
+            this.ensembleMean_45 = null;
+            this.ensembleMean_85 = null;
         }
 
 
@@ -59,6 +61,8 @@ app.climatetimeseries = (function() {
         focalSeries.csiro_85 = makeTimeSeriesDataObject(el.focal_name, 'rgb(126, 27, 27, 0.5)', 1.5, 0.25, ' Csiro 8.5');
         focalSeries.inmcm4_45 = makeTimeSeriesDataObject(el.focal_name, 'rgba(228, 129, 129, 0.5)', 1.5, 0.25, ' Inm 4.5');
         focalSeries.inmcm4_85 = makeTimeSeriesDataObject(el.focal_name, 'rgb(126, 27, 27, 0.5)', 1.5, 0.25, ' Inm 8.5');
+        focalSeries.ensembleMean_45 = makeTimeSeriesDataObject(el.focal_name, 'rgba(228, 129, 129, 0.5)', 1.5, 0.25, ' Ensemble Mean 4.5');
+        focalSeries.ensembleMean_85 = makeTimeSeriesDataObject(el.focal_name, 'rgb(126, 27, 27, 0.5)', 1.5, 0.25, ' Ensemble Mean 8.5');
 
         comparisonSeries.climateNormals = makeTimeSeriesDataObject(el.comparison_name, '#303f9f', 3, 1, '');
         comparisonSeries.access1_45 = makeTimeSeriesDataObject(el.comparison_name, 'rgb(98, 113, 208, 0.5)', 1.5, 0.25, ' ACCESS 4.5');
@@ -73,6 +77,8 @@ app.climatetimeseries = (function() {
         comparisonSeries.csiro_85 = makeTimeSeriesDataObject(el.comparison_name, 'rgb(23, 31, 79, 0.5)', 1.5, 0.25, ' Csiro 8.5');
         comparisonSeries.inmcm4_45 = makeTimeSeriesDataObject(el.comparison_name, 'rgb(98, 113, 208, 0.5)', 1.5, 0.25, ' Inm 4.5');
         comparisonSeries.inmcm4_85 = makeTimeSeriesDataObject(el.comparison_name, 'rgb(23, 31, 79, 0.5)', 1.5, 0.25, ' Inm 8.5');
+        comparisonSeries.ensembleMean_45 = makeTimeSeriesDataObject(el.comparison_name, 'rgb(98, 113, 208, 0.5)', 1.5, 0.25, ' Ensemble Mean 4.5');
+        comparisonSeries.ensembleMean_85 = makeTimeSeriesDataObject(el.comparison_name, 'rgb(23, 31, 79, 0.5)', 1.5, 0.25, ' Ensemble Mean 8.5');
 
 
 
@@ -125,18 +131,20 @@ app.climatetimeseries = (function() {
         } else {
             var modelProjectionsData = {
                 climateNormals: el.climateNormals_1901_2014,
-                access1_45: 'bec10centroid_access1_0_rcp45_2011_2100msyt',
-                access1_85: 'bec10centroid_access1_0_rcp85_2011_2100msyt',
-                canEsm2_45: 'bec10centroid_canesm2_rcp45_2011_2100msyt',
-                canEsm2_85: 'bec10centroid_canesm2_rcp85_2011_2100msyt',
-                ccsm4_45: 'bec10centroid_ccsm4_rcp45_2011_2100msyt',
-                ccsm4_85: 'bec10centroid_ccsm4_rcp85_2011_2100msyt',
-                cnrm_45: 'bec10centroid_cnrm_cm5_rcp45_2011_2100msyt',
-                cnrm_85: 'bec10centroid_cnrm_cm5_rcp85_2011_2100msyt',
-                csiro_45: 'bec10centroid_csiro_mk3_6_0_rcp45_2011_2100msyt',
-                csiro_85: 'bec10centroid_csiro_mk3_6_0_rcp85_2011_2100msyt',
-                inmcm4_45: 'bec10centroid_inm_cm4_rcp45_2011_2100msyt',
-                inmcm4_85: 'bec10centroid_inm_cm4_rcp85_2011_2100msyt',
+                // access1_45: 'bec10centroid_access1_0_rcp45_2011_2100msyt',
+                // access1_85: 'bec10centroid_access1_0_rcp85_2011_2100msyt',
+                // canEsm2_45: 'bec10centroid_canesm2_rcp45_2011_2100msyt',
+                // canEsm2_85: 'bec10centroid_canesm2_rcp85_2011_2100msyt',
+                // ccsm4_45: 'bec10centroid_ccsm4_rcp45_2011_2100msyt',
+                // ccsm4_85: 'bec10centroid_ccsm4_rcp85_2011_2100msyt',
+                // cnrm_45: 'bec10centroid_cnrm_cm5_rcp45_2011_2100msyt',
+                // cnrm_85: 'bec10centroid_cnrm_cm5_rcp85_2011_2100msyt',
+                // csiro_45: 'bec10centroid_csiro_mk3_6_0_rcp45_2011_2100msyt',
+                // csiro_85: 'bec10centroid_csiro_mk3_6_0_rcp85_2011_2100msyt',
+                // inmcm4_45: 'bec10centroid_inm_cm4_rcp45_2011_2100msyt',
+                // inmcm4_85: 'bec10centroid_inm_cm4_rcp85_2011_2100msyt',
+                ensembleMean_45: 'bec10centroid_ensemblemean_rcp45_2011_2100msyt',
+                ensembleMean_85: 'bec10centroid_ensemblemean_rcp85_2011_2100msyt',
             }
 
             Object.keys(modelProjectionsData).map(function(obj, i) {
