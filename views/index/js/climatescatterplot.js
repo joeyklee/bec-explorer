@@ -393,7 +393,7 @@ app.scatterplot = (function() {
     function highlightUnit() {
         el.chart_div.on('plotly_hover', function(data) {
                 // add geojson polygon for hovered poly
-
+                // el.hover_poly.clearLayers(); 
                 // console.log(data.points);
                 el.hover_poly = L.geoJson(null, el.hover_style).addTo(el.map);
                 
@@ -406,12 +406,12 @@ app.scatterplot = (function() {
                     el.selected_unit = data.points[0].data.text;
                 }
                 
-                console.log(el.selected_unit);
-
                 var sql = new cartodb.SQL({ user: 'becexplorer', format: 'geojson' });
                 sql.execute("SELECT map_label, the_geom FROM " + el.dataset_selected + " WHERE map_label LIKE '{{unit}}'", { unit: el.selected_unit })
                     .done(function(geo_data) {
+                        el.hover_poly.clearLayers(); 
                         el.hover_poly.addData(geo_data);
+                        console.log(el.hover_poly)
                     })
                     .error(function(errors) {
                         // errors contains a list of errors
@@ -421,6 +421,7 @@ app.scatterplot = (function() {
             })
             .on('plotly_unhover', function() {
                 el.map.removeLayer(el.hover_poly);
+                // el.hover_poly.clearLayers();
             });
 
         el.chart_div.on('plotly_click', function(data) {
@@ -437,12 +438,19 @@ app.scatterplot = (function() {
                 .done(function(data) {
                     var geojsonLayer = L.geoJson(data);
                     el.map.fitBounds(geojsonLayer.getBounds());
+
                 })
                 .error(function(errors) {
                     // errors contains a list of errors
                     console.log("errors:" + errors);
                 })
         });
+
+        $('#scatter-child').bind('plotly_relayout',
+            function(event,eventdata){
+                console.log('relayout!');
+                el.map.removeLayer(el.hover_poly);
+            });
     }
 
     
