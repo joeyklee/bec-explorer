@@ -473,20 +473,21 @@ app.climatetimeseries = (function() {
         });
     }
 
-    function addComparisonPin() {
-        // el.comparison_name = $(".bec-comparison-selector select").val();
-        var query = "SELECT * FROM bec10centroid_normal_1981_2010msy WHERE id2 = '" + el.comparison_name + "'";
-        var violetIcon = new L.Icon({
-          iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png',
-          shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-          iconSize: [25, 41],
-          iconAnchor: [12, 41],
-          popupAnchor: [1, -34],
-          shadowSize: [41, 41]
-        });
-
-        console.log(query);
+    function addComparisonPin() {    
         $('.add-comparison-pin').click(function() {
+            // el.comparison_name = $(".bec-comparison-selector select").val();
+            var query = "SELECT * FROM bec10centroid_normal_1981_2010msy WHERE id2 = '" + el.comparison_name + "'";
+            console.log("the comparison query is: ", query);
+
+            var violetIcon = new L.Icon({
+              iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-violet.png',
+              shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+              iconSize: [25, 41],
+              iconAnchor: [12, 41],
+              popupAnchor: [1, -34],
+              shadowSize: [41, 41]
+            });
+            
             $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
                 if (el.comparison_pin == null) {
                     console.log(data.rows)

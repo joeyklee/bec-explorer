@@ -214,16 +214,19 @@ app.fillSelectorDropdowns = (function() {
         });
     }
 
-    function updateFocalAndComparisonVals(){
+    function updateFocalVals(){
         $(".bec-focal-selector-scatter, .bec-focal-selector-timeseries").change(function(){
             el.focal_name = $('select', this).val();
         })
 
+        
+    }
+
+    function updateComparisonVals(){
         $(".bec-comparison-selector-scatter, .bec-comparison-selector-timeseries").change(function(){
             el.comparison_name = $('select', this).val();
         })
     }
-
 
 
     var init = function() {
@@ -235,7 +238,8 @@ app.fillSelectorDropdowns = (function() {
         feedBecUnitSelector();
         // updateTimeScaleSelected();
         updateTimeScaleSelected3();
-        updateFocalAndComparisonVals();
+        updateFocalVals();
+        updateComparisonVals();
         // new climate variables fill:
         fillTimeAggregationDropdown();
         updateTimeScaleSelectedScatter();
