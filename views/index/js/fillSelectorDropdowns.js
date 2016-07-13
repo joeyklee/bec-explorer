@@ -215,11 +215,11 @@ app.fillSelectorDropdowns = (function() {
     }
 
     function updateFocalAndComparisonVals(){
-        $(".bec-comparison-selector-scatter, .bec-comparison-selector-timeseries").change(function(){
+        $(".bec-focal-selector-scatter, .bec-focal-selector-timeseries").change(function(){
             el.focal_name = $('select', this).val();
         })
 
-        $(".bec-focal-selector-scatter, .bec-focal-selector-timeseries").change(function(){
+        $(".bec-comparison-selector-scatter, .bec-comparison-selector-timeseries").change(function(){
             el.comparison_name = $('select', this).val();
         })
     }
