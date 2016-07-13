@@ -18,7 +18,7 @@ app.fillSelectorDropdowns = (function() {
 
             // populate the climate variable with the annual variable first
             populateClimateVariable('.climate-variables select', el.annual_columns);
-            
+            setScatterY();
         });
     }
 
@@ -48,6 +48,12 @@ app.fillSelectorDropdowns = (function() {
 
     function setTimeSelected() {
         $('.timescale-selector :selected').val('all');
+        $("select").material_select();
+    }
+
+    function setScatterY() {
+        $('.scatter-y select').val('map');
+        // $('.scatter-y select').text('MAP (Annual precipitation (mm)) ');
         $("select").material_select();
     }
 
@@ -218,7 +224,6 @@ app.fillSelectorDropdowns = (function() {
         })
     }
 
-    
 
 
     var init = function() {
@@ -234,6 +239,7 @@ app.fillSelectorDropdowns = (function() {
         // new climate variables fill:
         fillTimeAggregationDropdown();
         updateTimeScaleSelectedScatter();
+        
          // fillClimateVariableDropdown();
         // setTimeSelected();
         // getSelectedClimateVariable(); // set the global variable for selected climate

@@ -176,7 +176,8 @@ app.scatterplot = (function() {
                         mode: 'markers',
                         type: 'scatter',
                         title: 'PLOTS PLOTS PLOTS',
-                         marker: { size: 6, color: 'rgba(97, 97, 97, 0.75)'}
+                         marker: { size: 6, color: 'rgba(97, 97, 97, 0.75)'},
+                         name: "1971-2000 normals"
                     };
 
                     scatterFocal = {
@@ -186,7 +187,7 @@ app.scatterplot = (function() {
                         mode: 'markers',
                         type: 'scatter',
                         marker: { size: 12, color: '#d32f2f'},
-                        name: el.focal_name + " RCP 4.5"
+                        name: el.focal_name
                     };
 
                     scatterFocal_45 = {
@@ -223,7 +224,7 @@ app.scatterplot = (function() {
                         mode: 'markers',
                         type: 'scatter',
                         marker: { size: 12, color: '#303f9f'},
-                        name: el.comparison_name + " RCP 4.5"
+                        name: el.comparison_name 
                     };
 
                     scatterComparison_45 = {
