@@ -18,7 +18,7 @@ app.fillSelectorDropdowns = (function() {
 
             // populate the climate variable with the annual variable first
             populateClimateVariable('.climate-variables select', el.annual_columns);
-            
+            setScatterY();
         });
     }
 
@@ -51,6 +51,12 @@ app.fillSelectorDropdowns = (function() {
         $("select").material_select();
     }
 
+    function setScatterY() {
+        $('.scatter-y select').val('map');
+        // $('.scatter-y select').text('MAP (Annual precipitation (mm)) ');
+        $("select").material_select();
+    }
+
 
     function fillTimeRangeDropdown() {
         var timeRange = [];
@@ -77,6 +83,7 @@ app.fillSelectorDropdowns = (function() {
 
     function populateClimateVariable(selector, objlist) {
         $(selector).children().remove().end();
+
         objlist.forEach(function(d, i) {
             if (i == 0) {
                 $(selector)
@@ -107,6 +114,7 @@ app.fillSelectorDropdowns = (function() {
 
     function populate(selector, objlist) {
         $(selector).children().remove().end();
+
         objlist.forEach(function(d, i) {
             if (i == 0) {
                 $(selector)
@@ -123,15 +131,21 @@ app.fillSelectorDropdowns = (function() {
     function feedBecUnitSelector() {
         var query = "SELECT DISTINCT map_label FROM " + el.dataset_selected + " WHERE map_label IS NOT NULL";
         $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query, function(data) {
+            // data.rows.sort(function(a, b){
+            //     return a.map_label - b.map_label;
+            // });
+
             data.rows.forEach(function(d) {
                 el.bec_names.push(d.map_label);
             })
+            el.bec_names.sort();
             
             populate('.bec-unit-variables select', el.bec_names);
 
             // set the bec focal and comparison selector to the first one that is found
             el.focal_name = $('.bec-focal-selector :selected:first').text();
             el.comparison_name = $('.bec-comparison-selector :selected:first').text();
+            console.log(el.focal_name, el.comparison_name);
         });
 
     }
@@ -200,8 +214,19 @@ app.fillSelectorDropdowns = (function() {
         });
     }
 
+    function updateFocalVals(){
+        $(".bec-focal-selector-scatter, .bec-focal-selector-timeseries").change(function(){
+            el.focal_name = $('select', this).val();
+        })
 
-    
+        
+    }
+
+    function updateComparisonVals(){
+        $(".bec-comparison-selector-scatter, .bec-comparison-selector-timeseries").change(function(){
+            el.comparison_name = $('select', this).val();
+        })
+    }
 
 
     var init = function() {
@@ -213,9 +238,12 @@ app.fillSelectorDropdowns = (function() {
         feedBecUnitSelector();
         // updateTimeScaleSelected();
         updateTimeScaleSelected3();
+        updateFocalVals();
+        updateComparisonVals();
         // new climate variables fill:
         fillTimeAggregationDropdown();
         updateTimeScaleSelectedScatter();
+        
          // fillClimateVariableDropdown();
         // setTimeSelected();
         // getSelectedClimateVariable(); // set the global variable for selected climate

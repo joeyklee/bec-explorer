@@ -1,11 +1,11 @@
-<link rel="stylesheet" type="text/css" href="index/style/style-ui-refactor.css">
+﻿<link rel="stylesheet" type="text/css" href="index/style/style-ui-refactor.css">
 {{!-- <link rel="stylesheet" type="text/css" href="index/style/nouislider.css"> --}}
 
 
 <div id="mapid"></div>
 <div class="row">
     <div class="sidebar-expander z-depth-1"></div>
-    <div class="sidebar col l5 m5 s5 z-depth-2">
+    <div class="sidebar col l5 m6 s6 z-depth-2">
         <div class="sidebar-main">
             <div class="chart-selector-row row">
                     <div class="col l4 m12 s12 sidebar-display-buttons waves-effect waves-light btn-flat btn-large grey darken-1 sidebar-display-map disabled tooltipped" data-position="bottom" data-delay="50" data-tooltip="Change what's displayed on the map">Map Controls</div>
@@ -14,7 +14,7 @@
             </div>
             <div class="map-selection-row">
                 <div class="welcome-map-outer">
-                    <div class="row welcome-map-inner">
+                    <div class="row welcome-map-inner active">
                         <div class="col l12 m12 s12">
                             <center><h4>The BC Climate Explorer</h4></center>
                             <div class="col s4 offset-s4">
@@ -40,8 +40,8 @@
                                 <a class="waves-effect waves-light btn-floating map-display-buttons grey darken-3"></a> BEC Zone</div>
                             <div class="col l4 m12 s12 map-display-buttons">
                                 <a class="waves-effect waves-light btn-floating disabled map-display-buttons climate-variables-button grey darken-3"><i class="material-icons"></i></a> Climate</div> --}}
-                            <div class="col l4 m12 s12 waves-effect waves-light  map-display-buttons btn btn-flat disabled grey darken-1 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Includes subzones and variants">BEC Unit</div>
-                            <div class="col l4 m12 s12 waves-effect waves-light map-display-buttons btn btn-flat grey darken-1 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Aggregates BEC subzones and variants">BEC Zone</div>
+                            <div class="col l4 m12 s12 waves-effect waves-light  map-display-buttons bec-unit-button btn btn-flat disabled grey darken-1 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Includes subzones and variants">BEC Unit</div>
+                            <div class="col l4 m12 s12 waves-effect waves-light map-display-buttons bec-zone-button btn btn-flat grey darken-1 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Aggregates BEC subzones and variants">BEC Zone</div>
                             <div class="col l4 m12 s12 waves-effect waves-light  map-display-buttons btn btn-flat disabled climate-variables-button grey darken-1 tooltipped" data-position="bottom" data-delay="50" data-tooltip="Climate variables at the BEC unit level">Climate</div>
                         </div>
                     </div>
@@ -70,7 +70,8 @@
                     </div>
                     <div class="row">
                         <div class="col l6 m12 s12">
-                            <label>Choose basemap</label>
+                            {{!-- <label>Choose basemap</label> --}}
+                            <label>&nbsp;</label>
                         </div>
                         <div class="col l6 m12 s12">
                             <label>Legend</label>
@@ -203,7 +204,7 @@
                     <div class="row scatter-control-panel">
                         <div class="col s12">
                             <div class="col s6">
-                                <label>Time Aggregations: X Variable</label>
+                                <label>Time Aggregations: X axis</label>
                                 <div class="input-field timescale-selector timescale-selector-scatterx">
                                     <select>
                                         <option value="all" selected>All Time Scales</option>
@@ -212,7 +213,7 @@
                                         <option value="monthly">Monthly</option>
                                     </select>
                                 </div>
-                                <label>X Axis: Climate Variable</label>
+                                <label>Climate Element: X Axis</label>
                                 <div class="input-field scatter-x climate-variables">
                                     <select>
                                         <option value="map" selected>map</option>
@@ -229,7 +230,7 @@
                                 </div>
                             </div>
                             <div class="col s6">
-                                <label>Time Aggregations: Y Variable</label>
+                                <label>Time Aggregations: X axis</label>
                                 <div class="input-field timescale-selector timescale-selector-scattery">
                                     <select>
                                         <option value="all" selected>All Time Scales</option>
@@ -238,7 +239,7 @@
                                         <option value="monthly">Monthly</option>
                                     </select>
                                 </div>
-                                <label>Y Axis: Climate Variable</label>
+                                <label>Climate Element: Y Axis</label>
                                 <div class="input-field scatter-y climate-variables">
                                     <select>
                                         <option value="map" selected>map</option>
@@ -329,6 +330,20 @@
 </div>
 
 
+<!-- Small screen modal -->
+<a class="waves-effect waves-light btn modal-trigger" href="#screenSizeModal" id="toosmall"></a>
+
+<!-- Modal Structure -->
+<div id="screenSizeModal" class="modal">
+  <div class="modal-content">
+    <h4>Hi There!</h4>
+    <p>Sorry but the BC Climate Explorer is best viewed on screens larger than 750px. In the meantime you can learn more <a href="http://www.bc-climate-explorer.org/about/">here</a>.</p>
+  </div>
+  <div class="modal-footer">
+    <a href="/about" class=" modal-action modal-close waves-effect waves-green btn-flat">Ok</a>
+  </div>
+</div>
+        
 
 {{!-- <script type="text/javascript" src="index/js/nouislider.js"></script> --}}
 <script type="text/javascript" src="index/js/index.js"></script>

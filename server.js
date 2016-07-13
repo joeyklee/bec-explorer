@@ -64,9 +64,24 @@ app.get('/', function(req, res) {
     res.render('index');
 });
 
+app.get('/about', function(req, res) {
+    // res.send('Hello World!');
+    res.render('about');
+});
+
 app.get('/contact', function(req, res) {
     // res.send('Hello World!');
     res.render('contact');
+});
+
+app.get('/howto', function(req, res) {
+    // res.send('Hello World!');
+    res.render('howto');
+});
+
+app.get('/climate-data', function(req, res) {
+    // res.send('Hello World!');
+    res.render('climate-data');
 });
 
 app.get('/api', function(req, res) {
@@ -74,15 +89,11 @@ app.get('/api', function(req, res) {
     res.render('api');
 });
 
-app.get('/current', function(req, res) {
-    // res.send('Hello World!');
-    res.render('current');
-});
 
-app.get('/about', function(req, res) {
-    // res.send('Hello World!');
-    res.render('about');
-});
+
+
+
+
 
 
 app.set('port', (process.env.PORT || 5000));

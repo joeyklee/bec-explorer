@@ -71,7 +71,10 @@ window.addEventListener('DOMContentLoaded', function() {
     app.mapapp.init();
     app.sidebarix.init();
     app.mapui.init();
-    app.climatetimeseries.init();
-    app.scatterplot.init();
+    setTimeout(function(){
+        app.climatetimeseries.init();
+        app.scatterplot.init();
+    }, 2000);
+    
     
 });

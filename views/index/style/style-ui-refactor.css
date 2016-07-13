@@ -22,8 +22,10 @@ body {
 .sidebar.active{
 	position: absolute;
 	height:100%;
+	width:650px !important;
 	background-color: white;
 	padding:0px;
+	margin-top:-23px;
 	left:0px;
 	display: block;
 	z-index: 1000;
@@ -40,7 +42,8 @@ body {
     height:48px;
     margin-top: 10px;
     z-index:500;
-    left:41.71%;
+    /*left:41.71%;*/
+    left:650px;
     position: absolute;
     background:rgba(255,255,255,0.9) url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAUCAQAAAAXDMSnAAAAi0lEQVR4AX3JQcqBURQG4O/+9WNG30D3vOfSDTuQsgcZyBakZANSzMVMBme3zsBI5/VMn4ZKLP5ki1E4tYejWpilxVUtzOEUD68odYmXR5BJNp/4zllXD2phllYvamHmirsayUkfJ5ruHzueTldC08kcT5YOY9xYujqQM03XKXuaLmEtNF1e1Nz89gbL+0do6OEwRwAAAABJRU5ErkJggg==) 7px center/7px 10px no-repeat;
     transform: scaleX(1);   
@@ -78,7 +81,14 @@ body {
 }
 .welcome-map-inner{
 	padding: 10px 5px 5px 5px;
+	display: none;
 }
+
+.welcome-map-inner.active{
+	display:block;
+	padding: 10px 5px 5px 5px;
+}
+
 
 .map-selection-row{
 	display:none;
@@ -171,4 +181,10 @@ i.add-comparison-pin{
 /* --- lever --- */
 .switch label input[type="checkbox"]:checked + .lever::after {
 	background-color:#5e35b1;
+}
+
+/* --- modal screen size trigger --- */
+
+#toosmall {
+	display: none;
 }

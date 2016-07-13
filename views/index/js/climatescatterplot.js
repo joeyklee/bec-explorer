@@ -6,6 +6,7 @@ app.scatterplot = (function() {
 
     function getSelectedClimate(climateSelector, timeaggSelector){
         var climateSelected = $(climateSelector).val();
+        var climateText = $(climateSelector).text();
         var timeagg = $(timeaggSelector).val();
 
         var climate_selected = null;
@@ -18,7 +19,7 @@ app.scatterplot = (function() {
             climate_selected = climateSelected + timeagg; // for jan - dec
         }
 
-        return climate_selected;
+        return {val: climate_selected, text: climateText};
     }
 
     // var plotScatter = function() {
@@ -118,8 +119,11 @@ app.scatterplot = (function() {
     var plotScatter2 = function(){
 
 
-        el.xSelector = getSelectedClimate('.scatter-x select option:selected', '.timescale-selector-scatterx select') //$(".scatter-x select option:selected").val();
-        el.ySelector = getSelectedClimate('.scatter-y select option:selected', '.timescale-selector-scattery select') //$(".scatter-y select option:selected").val();
+        el.xSelector = getSelectedClimate('.scatter-x select option:selected', '.timescale-selector-scatterx select').val //$(".scatter-x select option:selected").val();
+        el.ySelector = getSelectedClimate('.scatter-y select option:selected', '.timescale-selector-scattery select').val //$(".scatter-y select option:selected").val();
+
+        var xText = getSelectedClimate('.scatter-x select option:selected', '.timescale-selector-scatterx select').text //$(".scatter-x select option:selected").val();
+        var yText = getSelectedClimate('.scatter-y select option:selected', '.timescale-selector-scattery select').text //$(".scatter-y select option:selected").val();
 
         // var focalUnit = $('.bec-focal-selector select').val();
         // var comparisonUnit = $('.bec-comparison-selector select').val();
@@ -127,11 +131,11 @@ app.scatterplot = (function() {
         
 
         var queryClimateNormals = "SELECT DISTINCT map_label, " + el.xSelector + ", + " + el.ySelector + " FROM  " + el.dataset_selected + " WHERE map_label IS NOT NULL AND " + el.xSelector + " IS NOT NULL AND " + el.ySelector + " IS NOT NULL";
-        var query_45 = "SELECT DISTINCT id2, year," + el.xSelector + ", + " + el.ySelector + " FROM " + 'bec10centroid_access1_0_rcp45_2011_2100msyt' + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year = " + 2070;
-        var query_85 = "SELECT DISTINCT id2, year," + el.xSelector + ", + " + el.ySelector + " FROM " + 'bec10centroid_access1_0_rcp85_2011_2100msyt' + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND year = " + 2070;
+        var query_45 = "SELECT DISTINCT id2, year," + el.xSelector + ", + " + el.ySelector + " FROM " + 'bec10centroid_ensemblemean_rcp45_2011_2100msyt' + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND (year > " + 2070 + " AND year <=2100)";
+        var query_85 = "SELECT DISTINCT id2, year," + el.xSelector + ", + " + el.ySelector + " FROM " + 'bec10centroid_ensemblemean_rcp85_2011_2100msyt' + " WHERE id2 IS NOT NULL AND (id2 = '" + el.focal_name + "' OR id2 = '" + el.comparison_name + "') AND (year > " + 2070 + " AND year <=2100)";
         
 
-
+        var d3 = Plotly.d3;
         $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + queryClimateNormals, function(data) {
             $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query_45, function(data_45) {
                 $.getJSON('https://becexplorer.cartodb.com/api/v2/sql?q=' + query_85, function(data_85) {
@@ -143,6 +147,7 @@ app.scatterplot = (function() {
 
                     var xdat = [],
                         ydat = [],
+                        pointLabels = [],
                         focal_x = [],
                         focal_y = [],
                         focal_x_45 = [],
@@ -167,11 +172,12 @@ app.scatterplot = (function() {
                     scatterClimateNormals = {
                         x: xdat,
                         y: ydat,
-                        text: el.scatter_labels,
+                        text: pointLabels,
                         mode: 'markers',
                         type: 'scatter',
                         title: 'PLOTS PLOTS PLOTS',
-                         marker: { size: 12, color: 'rgba(97, 97, 97, 0.75)'}
+                         marker: { size: 6, color: 'rgba(97, 97, 97, 0.75)'},
+                         name: "1971-2000 normals"
                     };
 
                     scatterFocal = {
@@ -181,7 +187,7 @@ app.scatterplot = (function() {
                         mode: 'markers',
                         type: 'scatter',
                         marker: { size: 12, color: '#d32f2f'},
-                        name: el.focal_name + " RCP 4.5"
+                        name: el.focal_name
                     };
 
                     scatterFocal_45 = {
@@ -218,7 +224,7 @@ app.scatterplot = (function() {
                         mode: 'markers',
                         type: 'scatter',
                         marker: { size: 12, color: '#303f9f'},
-                        name: el.comparison_name + " RCP 4.5"
+                        name: el.comparison_name 
                     };
 
                     scatterComparison_45 = {
@@ -251,7 +257,7 @@ app.scatterplot = (function() {
                     data.rows.forEach(function(obj){
                         xdat.push(obj[el.xSelector]);
                         ydat.push(obj[el.ySelector]);
-                        el.scatter_labels.push(obj.map_label);
+                        pointLabels.push(obj.map_label);
 
                         if(obj.map_label == el.focal_name){
                             console.log('focal true');
@@ -282,31 +288,63 @@ app.scatterplot = (function() {
 
                     });
 
-                    data_45.rows.forEach(function(d){
-                        if(d.id2 == el.focal_name){
-                            focal_x_45.push(d[el.xSelector]);
-                            focal_y_45.push(d[el.ySelector]);
-                        } else{
-                            comparison_x_45.push(d[el.xSelector]);
-                            comparison_y_45.push(d[el.ySelector]);
-                        }
-                    });
+                    // data_45.rows.forEach(function(d){
+                    //     if(d.id2 == el.focal_name){
+                    //         focal_x_45.push(d[el.xSelector]);
+                    //         focal_y_45.push(d[el.ySelector]);
+                    //     } else{
+                    //         comparison_x_45.push(d[el.xSelector]);
+                    //         comparison_y_45.push(d[el.ySelector]);
+                    //     }
+                    // });
 
-                    data_85.rows.forEach(function(d){
-                        if(d.id2 == el.focal_name){
-                            focal_x_85.push(d[el.xSelector]);
-                            focal_y_85.push(d[el.ySelector]);
-                        } else{
-                            comparison_x_85.push(d[el.xSelector]);
-                            comparison_y_85.push(d[el.ySelector]);
-                        }
-                    });
+                    // data_85.rows.forEach(function(d){
+                    //     if(d.id2 == el.focal_name){
+                    //         focal_x_85.push(d[el.xSelector]);
+                    //         focal_y_85.push(d[el.ySelector]);
+                    //     } else{
+                    //         comparison_x_85.push(d[el.xSelector]);
+                    //         comparison_y_85.push(d[el.ySelector]);
+                    //     }
+                    // });
+
+                    function sendFocalMeans(xArrayHolder,yArrayHolder, dataArray){
+                        xArrayHolder.push(d3.mean(dataArray.rows, function(d){
+                            if(d.id2 == el.focal_name){
+                                return d[el.xSelector];
+                            }
+                        }));
+                        yArrayHolder.push(d3.mean(dataArray.rows, function(d){
+                            if(d.id2 == el.focal_name){
+                                return d[el.ySelector];
+                            }
+                        }));
+                    }
+                    function sendComparisonMeans(xArrayHolder,yArrayHolder, dataArray){
+                        xArrayHolder.push(d3.mean(dataArray.rows, function(d){
+                            if(d.id2 == el.comparison_name){
+                                return d[el.xSelector];
+                            }
+                        }));
+                        yArrayHolder.push(d3.mean(dataArray.rows, function(d){
+                            if(d.id2 == el.comparison_name){
+                                return d[el.ySelector];
+                            }
+                        }));
+                    }
+
+                    sendFocalMeans(focal_x_45, focal_y_45, data_45)
+                    sendFocalMeans(focal_x_85, focal_y_85, data_85)
+                    sendComparisonMeans(comparison_x_45, comparison_y_45, data_45)
+                    sendComparisonMeans(comparison_x_85, comparison_y_85, data_85)
+
 
                     var scatterData = [scatterClimateNormals, scatterFocal_45, scatterFocal_85, scatterComparison_45, scatterComparison_85, scatterFocal, scatterComparison];
+                    // var scatterData = [scatterClimateNormals, scatterFocal_45, scatterFocal, scatterComparison];
 
                     var layout_responsive = {
-                                    xaxis: { title: el.xSelector, type: el.xSelector_axis },
-                                    yaxis: { title: el.ySelector, type: el.ySelector_axis },
+                                    xaxis: { title: xText, type: el.xSelector_axis },
+                                    yaxis: { title: yText, type: el.ySelector_axis },
                                     margin: {
                                         l: 60,
                                         r: 40,
@@ -321,16 +359,16 @@ app.scatterplot = (function() {
 
                     
                     // Plotly.relayout('scatter-chart', update);
-                    var d3 = Plotly.d3;
+                    // var d3 = Plotly.d3;
                     
                     // var WIDTH_IN_PERCENT_OF_PARENT = 1,
                     //     HEIGHT_IN_PERCENT_OF_PARENT = 10;
                     d3.select("#scatter-child").remove();
                     var gd3 = d3.select("#scatter-chart").append('div').attr('id', 'scatter-child')
                         .style({
-                            width: 650 + 'px',
+                            width: 600 + 'px',
                             'margin-left': 10 + 'px',
-                            height: 400+ 'px'
+                            height: 450+ 'px'
                             // 'margin-top': (100 - HEIGHT_IN_PERCENT_OF_PARENT) / 2 + 'vh'
                         });
                     el.chart_div = document.getElementById('scatter-child'); // weird issue with jquery selector, use vanilla js - https://plot.ly/javascript/hover-events/
@@ -340,6 +378,8 @@ app.scatterplot = (function() {
                     // window.onresize = function() { Plotly.Plots.resize( Green_Line_E ); };
                     window.addEventListener('resize', function() { Plotly.Plots.resize('scatter_chart'); });
 
+                    // set the scatter labels
+                    el.scatter_labels = pointLabels;
                     highlightUnit();
 
                 });
@@ -353,10 +393,9 @@ app.scatterplot = (function() {
     function highlightUnit() {
         el.chart_div.on('plotly_hover', function(data) {
                 // add geojson polygon for hovered poly
-
-
+                // el.hover_poly.clearLayers(); 
+                // console.log(data.points);
                 el.hover_poly = L.geoJson(null, el.hover_style).addTo(el.map);
-                
                 
                 if(Array.isArray(data.points[0].data.text) == true ){
                     var pointNumber = data.points[0].pointNumber;
@@ -367,12 +406,12 @@ app.scatterplot = (function() {
                     el.selected_unit = data.points[0].data.text;
                 }
                 
-                console.log(el.selected_unit);
-
                 var sql = new cartodb.SQL({ user: 'becexplorer', format: 'geojson' });
                 sql.execute("SELECT map_label, the_geom FROM " + el.dataset_selected + " WHERE map_label LIKE '{{unit}}'", { unit: el.selected_unit })
                     .done(function(geo_data) {
+                        el.hover_poly.clearLayers(); 
                         el.hover_poly.addData(geo_data);
+                        console.log(el.hover_poly)
                     })
                     .error(function(errors) {
                         // errors contains a list of errors
@@ -382,6 +421,7 @@ app.scatterplot = (function() {
             })
             .on('plotly_unhover', function() {
                 el.map.removeLayer(el.hover_poly);
+                // el.hover_poly.clearLayers();
             });
 
         el.chart_div.on('plotly_click', function(data) {
@@ -398,12 +438,19 @@ app.scatterplot = (function() {
                 .done(function(data) {
                     var geojsonLayer = L.geoJson(data);
                     el.map.fitBounds(geojsonLayer.getBounds());
+
                 })
                 .error(function(errors) {
                     // errors contains a list of errors
                     console.log("errors:" + errors);
                 })
         });
+
+        $('#scatter-child').bind('plotly_relayout',
+            function(event,eventdata){
+                console.log('relayout!');
+                el.map.removeLayer(el.hover_poly);
+            });
     }
 
     
