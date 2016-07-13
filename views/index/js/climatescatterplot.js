@@ -393,6 +393,7 @@ app.scatterplot = (function() {
     function highlightUnit() {
         el.chart_div.on('plotly_hover', function(data) {
                 // add geojson polygon for hovered poly
+                // el.map.removeLayer(el.hover_poly);
                 // el.hover_poly.clearLayers(); 
                 // console.log(data.points);
                 el.hover_poly = L.geoJson(null, el.hover_style).addTo(el.map);
@@ -425,6 +426,7 @@ app.scatterplot = (function() {
             });
 
         el.chart_div.on('plotly_click', function(data) {
+            el.map.removeLayer(el.hover_poly);
             var sql = new cartodb.SQL({ user: 'becexplorer', format: 'geojson' });
             if(Array.isArray(data.points[0].data.text) == true ){
                 var pointNumber = data.points[0].pointNumber;
