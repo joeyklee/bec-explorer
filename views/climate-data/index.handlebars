@@ -20,12 +20,12 @@ section{
             <div class="col s6 offset-s4"></div>
             <h3><b>Learning about the climate data</b></h3>
             <section>
-                <p>This page gives some information and links about the climate data used in this tool. if you read this page, you will understand: 
+                <p>This page gives some information and links about the climate data used in this tool. if you read this page, you will understand:
                 <ul class="browser-default">
 	                <li>1. The climatic component of the Biogeoclimatic Ecosystem Classification (BEC); </li>
 	                <li>2. The sources and appropriate uses of the data; </li>
 	                <li>3. The climate variables: what they are and how they were calculated; and </li>
-	                <li>4. The basics of climate change projections.</li>
+	                <li>4. How we incorporated climate change projections into the tool.</li>
                 </ul>
                 </p>
             </section>
@@ -37,13 +37,13 @@ section{
                 <h5><b>BEC unit names</b>	</h5>
                 <p>The names of the BEC units reflect a hierarchical climate classification. The core unit of the climate classification is the BEC subzone. Subzones are aggregated into 14 BEC zones, and in some cases are subdivided into variants and phases. For example, the IDFdk1a unit is the code for the "grassland" <em>phase</em> of the "Thompson" <em>variant</em> of the "dry, cool" <em>subzone</em> of the "Interior Douglas-fir" <em>zone</em>. Some BEC units do not have variants or phases, for example the coastal western hemlock dry maritime subzone (CWHdm). Selkirk College provides a <a href="http://selkirk.ca/discover/bec/zones/whatis.html">good introduction</a> to the BEC climate classification system. <a href="https://www.for.gov.bc.ca/HRE/becweb/index.html">BECWeb</a> provides <a href="https://www.for.gov.bc.ca/HRE/becweb/resources/classificationreports/subzones/index.html">detailed descriptions of each BEC unit</a>, along with a wealth of other information about the BEC system.</p>
                 <p>
-                <center><img src="https://raw.githubusercontent.com/joeyklee/bec-explorer/master/assets/img/data-naming-convention.png" alt="becnamingdiagram" /> <br>
+                <center><img src="https://raw.githubusercontent.com/joeyklee/bec-explorer/master/assets/img/BECnamingdiagram.png" alt="becnamingdiagram" /> <br>
                 <strong>Anatomy of the BEC unit code for the grassland phase of the Thompson dry-cool Interior Douglas-fir BEC variant.</strong></center></p>
             </section>
             <section>
                 <h5><b>One location for each BEC unit</b> </h5>
                 <p>This tool provides climatic information for 233 locations across British Columbia -- one location for each BEC unit. As a result, the data presented for each BEC unit is actually the climate of a single location within that unit. This was a necessary simplification in building this tool. It's a reasonable approach, since BEC units by definition are somewhat climatically homogeneous: the climatic variation can generally be expected to be lower within than between BEC units. We took care in choosing the representative locations for the BEC units, and subdivided very large BEC units to ensure that regional differences were accounted for. Nevertheless, comparisons between similar BEC units may be biased for certain variables due to the choice of representative locations.</p>
-                
+
                 <center> <p><img src="https://cloud.githubusercontent.com/assets/17104005/16629705/b5569054-436b-11e6-9f18-b588aa33aa96.png" alt="bec10_centroidsurrogates" /> <br>
                     <strong>Representative locations for the BEC units of Southwestern BC</strong></p>
                     </center>
@@ -54,13 +54,13 @@ section{
             </section>
             <section>
                 <h4><b>Climate data sources</b> </h4>
-                <p>All climate data in this tool are downloaded from <a href="http://cfcg.forestry.ubc.ca/projects/climate-data/climatebcwna/">ClimateBC</a>, a free software that pulls together data from a number of different data sources. The foundation of ClimateBC is a set of <a href="https://www.pacificclimate.org/data/high-resolution-prism-climatology">PRISM climatological surfaces</a> (maps) of 1971-2000 monthly climate normals for temperature and precipitation. These maps are made by careful interpolation between thousands of weather stations, accounting for local effects such as rainshadows, lakes and inversions, and with special attention to informing high elevation estimates with supplemental information. The historical 1901-2013 time series are based on a <a href="https://crudata.uea.ac.uk/cru/data/hrg/#current">global data set</a> (~60km grid) provided by the Climatic Research Unit (CRU) at the University of East Anglia. The projected future (2011-2100) time series are based on global climate model projections (>100km grid) from several different modeling centers. ClimateBC downscales the historical and projected time series by converting them to anomalies and subtracting them from the PRISM climate normals for any location, an approach called the "delta method." ClimateBC's methods are documented in <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0156720">Wang et al. (2016)</a>.</p>
+                <p>All climate data in this tool are downloaded from <a href="http://cfcg.forestry.ubc.ca/projects/climate-data/climatebcwna/">ClimateBC</a>, a free software that pulls together data from a number of different data sources. The foundation of ClimateBC is a set of <a href="https://www.pacificclimate.org/data/high-resolution-prism-climatology">PRISM climatological surfaces</a> (maps) of 1971-2000 monthly climate normals for temperature and precipitation (Pacific Climate Impacts Consortium and PRISM Climate Group 2014). These maps are made by careful interpolation between thousands of weather stations, accounting for local effects such as rainshadows, lakes and inversions, and with special attention to informing high elevation estimates with supplemental information. The historical 1901-2013 time series are based on a <a href="https://crudata.uea.ac.uk/cru/data/hrg/#current">global data set</a> (~60km grid) provided by the Climatic Research Unit (CRU) at the University of East Anglia (<a href="http://onlinelibrary.wiley.com/doi/10.1002/joc.3711/abstract">Harris et al. 2014</a>). The projected future (2011-2100) time series are based on global climate model projections (>100km grid) from several different modeling centers. ClimateBC downscales the historical and projected time series by converting them to anomalies and subtracting them from the PRISM climate normals for any location, an approach called the "delta method." ClimateBC's methods are documented in <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0156720">Wang et al. (2016)</a>.</p>
             </section>
             <section>
                 <h5><b>How reliable are the climate normals?</b> </h5>
                 <p>The PRISM climate surfaces are assembled by and for British Columbians, with a lot of expert review and attention to local detail. For this reason, the climate normals for the primary elements (Tmin, Tmax, and PPT) can be considered the best possible estimate for the representative locations of each BEC unit. Here are the caveats:</p>
                 <ul class="browser-default">
-                    <li>The representative location for a BEC unit may not be perfectly representative of a specific location that you are interested in elsewhere in that BEC unit. Our tool is designed for fairly broad-scale comparisons between BEC units. If you want reliable climate normals for a specific location, ClimateBC is the tool for you.</li>
+                    <li>The representative location for a BEC unit may not be perfectly representative of a specific location that you are interested in elsewhere in that BEC unit. Our tool is designed for fairly broad-scale comparisons between BEC units. If you want climate normals for a precise location, ClimateBC is the tool for you.</li>
                     <li>Climate normals for derived elements are subject to errors associated with building the statistical relationships between daily and monthly values and extrapolating these relationships across the landscape and through time. On average, these estimates are reliable for areas with good weather station coverage, but they may be substantially biased for a particular location you are interested in. In particular, high-elevation and northern regions are poorly sampled by the network of weather stations used to statistically estimate the derived climate elements.</li>
                 </ul>
             </section>
@@ -74,7 +74,7 @@ section{
                     <li>assessing the scale of climate change or differences between BEC units relative to the range of interannual climatic variability (e.g., the mean temperature difference between the ESSFwk1 and SBSwk1 is much less than interannual variability in winter, but greater in summer.)</li>
                     <li>assessing differences in climate variability and change at a regional scale (e.g., the interior has warmed more than the coast over the past 60 years.)</li>
                 </ul>
-                <p>The time series are not at all reliable for</p>
+                <p>The time series are not reliable for</p>
                 <ul class="browser-default">
                     <li>comparing climate variability and change along elevational transects</li>
                     <li>precise calculation of climate change trends, particularly prior to 1950 and at mid-to-high elevations.</li>
@@ -82,16 +82,12 @@ section{
                 <p>To get a sense of the source data for the CRU time series, check out their awesome <a href="https://crudata.uea.ac.uk/cru/data/hrg/cru_ts_3.23/ge/">Google Earth interface</a>. If you want reliable time series data for a particular location, your best bet is to get the data for one or more local weather stations <a href="https://www.ncdc.noaa.gov/cdo-web/datatools/findstation">here</a>, <a href="https://www.pacificclimate.org/data/bc-station-data">here</a>, or <a href="http://www.ec.gc.ca/dccha-ahccd/">here</a>.</p>
             </section>
             <section>
-                <h5><b>How reliable are the projected future time series?</b> </h5>
-                <p>Like the historical time series, the projected future time series are useful for some purposes, and highly unreliable for others. Global climate model ensembles have proved to be very reliable at modeling historical evolution of the global climate, but exhibit biases at regional and local scales. There are substantial differences between projections of different models for the same emissions scenarios. We have included the climate model projections to provide users with a sense of the scale of climate change under two different emissions scenarios, and of the scale of uncertainty related to differences between the models. Keep in mind that climate model projections start in the 19th century and are run forward with no calibration to the observed climate. As a result, the transition from the observed historical climate to the modeled future climate may not be smooth, and the projected values for years in the immediate future should not be considered predictions.</p>
-            </section>
-            <section>
                 <h4><b>Climate variables</b> </h4>
                 <p>Users of this tool have the ability to choose from many climate variables. We define climate variables in terms of a climate element (e.g. temperature, precipitation, degree days, etc.) and a time aggregate (e.g. winter, spring, january, etc.). Some of the climate elements, such as temperature and precipitation, are broadly relevant to many contexts. Others are relevant to specific applications: degree-days above 5 degrees and below 0 degrees celsius are relevant to plant development; degree-days above &amp; below 18 degrees celsius are used by building engineers to assess cooling and heating demand.</p>
             </section>
             <section>
-                <h5><b>How are climate variables are calculated?</b> </h5>
-                <p>All of the climate elements provided in this tool are derived from the monthly values of three primary climate elements: Tmin, Tmax, and PPT. These primary monthly elements are interpolated from weather stations to create the PRISM climate normal surfaces and the CRU TS3.23 time series that underly this tool. The other climate elements are either calculated directly or estimated statistically from the primary elements. Directly calculated elements are simple roll-ups or selections of the primary variables; for example, Tave is the average of Tmin and Tmax in each month, and MAT is the average of Tave over all twelve months. Statistically estimated elements are derived by finding a relationship between daily observations of the target element (e.g., degree-days) and monthly values of primary elements at a large sample of weather stations. These statistical relationships are then used to estimate the monthly values of the target element across the landscape and in different time periods. Seasonal and annual values of each element are rolled up from monthly values. The methods for calculating climate elements in ClimateBC are documented in <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0156720">Wang et al. (2016)</a>.</p>
+                <h5><b>How are the climate variables calculated?</b> </h5>
+                <p>All of the climate elements provided in this tool are derived from the monthly values of three primary climate elements: mean daily minimum and maximum temperatures (Tmin, Tmax) and precipitation (PPT). These primary monthly elements are interpolated from weather stations to create the PRISM climate normal surfaces and the CRU TS3.23 time series that underly this tool. The other climate elements are either calculated directly or estimated statistically from the primary elements. Directly calculated elements are simple roll-ups or selections of the primary variables; for example, Tave is the average of Tmin and Tmax in each month, and MAT is the average of Tave over all twelve months. Statistically estimated elements are derived by finding a relationship between daily observations of the target element (e.g., degree-days) and monthly values of primary elements at a large sample of weather stations. These statistical relationships are then used to estimate the monthly values of the target element across the landscape and in different time periods. Seasonal and annual values of each element are rolled up from monthly values. The methods for calculating climate elements in ClimateBC are documented in <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0156720">Wang et al. (2016)</a>.</p>
                 <center>
                 <p>
                     <img src="https://cloud.githubusercontent.com/assets/17104005/16629626/48702748-436b-11e6-9be0-2b99f0af33ee.png" alt="elementstable" /></p> <br>
@@ -100,11 +96,70 @@ section{
             </section>
             <section>
                 <h5><b>Raw vs. logarithmic scaling</b> </h5>
-                <p>Some climate elements are scaled logarithmically in the scatterplot for this tool, and we provide the option to turn log-transformation off. Why log-transform? log-transformation provides relative scaling: the logarithmic difference between 50 and 100 is the same as between 100 and 200. Many climate variables are most meaningful in a relative sense. Is an change from 1000mm to 1100mm of precipitation as significant as an change from 100mm to 200mm? In most ecological and engineering contexts, this equal 100mm increase is much more significant when it represents a 100% increase rather than a 10% increase. With the exception of temperatures, most climate elements (e.g. precipitation, heat sums, drought indices) start at zero and span many orders of magnitude. Comparisons between locations, and through time, make more sense when these variables are log-transformed.</p>
+                <p>Some climate elements are scaled logarithmically in the scatterplot for this tool, and we provide the option to turn log-transformation off. Why log-transform? log-transformation provides relative scaling: the logarithmic difference between 50 and 100 is the same as between 100 and 200. Many climate variables are most meaningful in a relative sense. Is a change from 1000mm to 1100mm of precipitation as significant as an change from 100mm to 200mm? In most ecological and engineering contexts, this equal 100mm increase is much more significant when it represents a 100% increase rather than a 10% increase. With the exception of temperatures, most climate elements (e.g. precipitation, heat sums, drought indices) start at zero and span many orders of magnitude. Comparisons between locations, and through time, make more sense when these variables are log-transformed.</p>
             </section>
             <section>
                 <h4><b>Climate Change Projections</b> </h4>
-                <p>A core objective of this tool is to help people to understand what climate change means to their local environment. ClimateBC provides time series for 6 global climate models and projected normals for 15 global climate models. At the moment, our graphs show the projection only for the CanESM2 model. We aim to provide projections for the full ClimateBC ensemble sometime soon.</p>
+                <p>A core objective of this tool is to help people to understand what climate change means to their local environment. We provide downscaled climate change projections for two 21st-century emissions scenarios from an ensemble of six global climate models. In this tool, downscaling means calibrating the coarse-scale global climate model projections to the local climate. See <a href="http://www.pacificclimatefutures.net/en/help/climate-projections/introduction-climate-change-projections/">here</a> for an introduction to global climate models and downscaling</p>
+            </section>
+            <section>
+                <h5><b>Ensemble of global climate models</b> </h4>
+                <p>ClimateBC provides downscaled time series for individual model runs of 6 global climate models (see table below). In this beta version, our graphs show only the average of these six models. In future versions, we aim to show the individual model time series so that users can see the interannual and inter-model variability in the ensemble. We also aim to show the historical component of the global climate model projections for comparison to the observed historical climate, though historical projections are not currently available in ClimateBC. </p>
+                <html>
+                  <head>
+                  <style>
+                  table {
+                      font-family: arial, sans-serif;
+                      border-collapse: collapse;
+                      width: 100%;
+                  }
+
+                  td, th {
+                      border: 1px solid #dddddd;
+                      text-align: left;
+                      padding: 8px;
+                  }
+
+                  tr:nth-child(even) {
+                      background-color: #dddddd;
+                  }
+                  </style>
+                  </head>
+                  <body>
+
+                  <table>
+                    <tr>
+                      <th>Model</th>
+                      <th>Modeling Center (or Group)</th>
+                    </tr>
+                    <tr>
+                      <td>ACCESS1.0</td>
+                      <td>Commonwealth Scientific and Industrial Research Organization (CSIRO) and Bureau of Meteorology (BOM), Australia</td>
+                    </tr>
+                    <tr>
+                      <td>CanESM2</td>
+                      <td>Canadian Centre for Climate Modelling and Analysis</td>
+                    </tr>
+                    <tr>
+                      <td>CCSM4</td>
+                      <td>National Center for Atmospheric Research</td>
+                    </tr>
+                    <tr>
+                      <td>CNRM-CM5</td>
+                      <td>Centre National de Recherches Météorologiques / Centre Européen de Recherche et Formation Avancée en Calcul Scientifique</td>
+                    </tr>
+                    <tr>
+                      <td>CSIRO-Mk3.6.0</td>
+                      <td>Commonwealth Scientific and Industrial Research Organization in collaboration with Queensland Climate Change Centre of Excellence</td>
+                    </tr>
+                    <tr>
+                      <td>INM-CM4</td>
+                      <td>Institute for Numerical Mathematics</td>
+                    </tr>
+                  </table>
+
+                  </body>
+                  </html>
             </section>
             <section>
                 <h5><b>Representative concentration pathways (RCPs)</b> </h5>
@@ -117,9 +172,27 @@ section{
                 </center>
             </section>
             <section>
+                <h5><b>How reliable are the projected future time series?</b> </h5>
+                <p>Like the historical time series, the projected future time series are useful for some purposes, and highly unreliable for others. Global climate model ensembles have proved to be very reliable at modeling historical evolution of the global climate, but exhibit biases at regional and local scales. There are substantial differences between projections of different models for the same emissions scenarios, due to differences in the model themselves but also due to differences in the timing of natural variability. The simple downscaling method used in climateBC can exaggerate these differences. Keep in mind that climate model projections start in the 19th century and are run forward without calibration to the observed climate. As a result, the transition from the observed historical climate to the modeled future climate may not be smooth, and the projected values for years in the immediate future should not be considered predictions. For all these reasons, an ensemble mean is much more reliable than individual downscaled model runs for the purpose of assessing the general trajectory of climate change.  </p>
+                <p>The ensemble mean projections are useful for:</p>
+                <ul class="browser-default">
+                    <li>comparing differences between emmissions scenarios (RCP4.5 vs. RCP8.5);</li>
+                    <li>comparing the scale of climate change in different regions (e.g. coast vs. interior);</li>
+                    <li>comparing future climate conditions in one location to the historical climate of other locations (e.g. the end-of-21st-century winter temperature of the high-elevation coastal CWHvm2n is projected under RCP8.5 to be similar to the end-of-20th century climate of nearby sea level units (e.g. CWHvh2)); and</li>
+                    <li>identifying novel climates (trajectories outside the current range of climates found in British Columbia).</li>
+                  </ul>
+                <p>The ensemble mean projections are not reliable for:</p>
+                <ul class="browser-default">
+                    <li>assessing changes in interannual variability (because averaging across several time series dampens variability); and </li>
+                    <li>predicting conditions for individual years in the future.</li>
+                </ul>
+            </section>
+            <section>
                 <h4><b>References</b>	</h4>
-                <p>Wang, T., Hamann, A., Spittlehouse, D., &amp; Carroll, C. (2016). <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0156720">Locally Downscaled and Spatially Customizable Climate Data for Historical and Future Periods for North America.</a> Plos One, 11(6), e0156720. doi:10.1371/journal.pone.0156720</p>
+                <p>Harris, I., P. D. Jones, T. J. Osborn, and D. H. Lister. 2014. <a href="http://onlinelibrary.wiley.com/doi/10.1002/joc.3711/abstract">Updated high-resolution grids of monthly climatic observations - the CRU TS3.10 Dataset</a>. International Journal of Climatology 34:623–642.</p>
+                <p>Pacific Climate Impacts Consortium, and PRISM Climate Group. 2014. <a href="https://www.pacificclimate.org/data/high-resolution-prism-climatology">High Resolution Climatology</a>.</p>
                 <p>van Vuuren, D. P., Edmonds, J., Kainuma, M., Riahi, K., Thomson, A., Hibbard, K., … Rose, S. K. (2011). <a href="http://link.springer.com/article/10.1007/s10584-011-0148-z">The representative concentration pathways: An overview</a>. Climatic Change, 109(1), 5–31. doi:10.1007/s10584-011-0148-z</p>
+                <p>Wang, T., Hamann, A., Spittlehouse, D., &amp; Carroll, C. (2016). <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0156720">Locally Downscaled and Spatially Customizable Climate Data for Historical and Future Periods for North America.</a> Plos One, 11(6), e0156720. doi:10.1371/journal.pone.0156720</p>
             </section>
             <br>
         </div>
