@@ -23,7 +23,7 @@ Fire up your terimal:
 ```
 cd bec-explorer
 npm install
-npm server.js
+node server.js
 ```
 See the magic at:
 
